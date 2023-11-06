@@ -30,7 +30,7 @@ jobs:
       - name: Set up NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: Change yarn version
         run: yarn policies set-version 1.22.15
       - name: Cache node modules
@@ -46,6 +46,10 @@ jobs:
         run: yarn list
       - name: Install packages
         run: yarn install --frozen-lockfile
+      - name: Lint PR
+        uses: amannn/action-semantic-pull-request@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
       - name: Check format
         run: yarn format
       - name: Check lint
@@ -58,9 +62,5 @@ jobs:
           report-json: "eslint_report.json"
           markdown-report-on-step-summary: true
           check-name: "eslint-report"
-      - name: Lint PR
-        uses: amannn/action-semantic-pull-request@v1.2.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
       - name: Build
         run: yarn build
