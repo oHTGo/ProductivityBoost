@@ -31,8 +31,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Change yarn version
-        run: yarn policies set-version 1.22.15
       - name: Cache node modules
         id: cache_node_modules
         uses: actions/cache@v3
