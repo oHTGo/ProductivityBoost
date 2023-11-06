@@ -1,0 +1,58 @@
+name: CI
+on:
+  pull_request:
+    branches:
+      - master
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+  checks: write
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.base_ref }}
+          fetch-depth: 0
+      - name: Git pull
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+          git merge origin/${{ github.head_ref }} --allow-unrelated-histories
+      - name: Set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Change yarn version
+        run: yarn policies set-version 1.22.15
+      - name: Cache node modules
+        id: cache_node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
+          restore-keys: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
+      - if: ${{ steps.cache_node_modules.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: yarn list
+      - name: Install packages
+        run: yarn install --frozen-lockfile
+      - name: Check format
+        run: yarn format
+      - name: Check lint
+        run: yarn lint
+        continue-on-error: true
+      - name: Annotate linting results
+        uses: ataylorme/eslint-annotate-action@v2
+        with:
+          repo-token: "${{ github.token }}"
+          report-json: "eslint_report.json"
+          markdown-report-on-step-summary: true
+          check-name: "eslint-report"
+      - name: Build
+        run: yarn build
