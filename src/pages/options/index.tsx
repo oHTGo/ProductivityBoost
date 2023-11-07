@@ -1,7 +1,7 @@
+import Options from '@pages/options/options';
 import { createRoot } from 'react-dom/client';
-import Options from '@root/src/pages/options/options';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
-import '@src/shared/styles/global.css';
+import '@shared/styles/global.css';
 
 refreshOnUpdate('pages/options');
 

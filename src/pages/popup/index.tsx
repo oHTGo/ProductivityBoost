@@ -1,7 +1,7 @@
+import Popup from '@pages/popup/popup';
 import { createRoot } from 'react-dom/client';
-import Popup from '@root/src/pages/popup/popup';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
-import '@src/shared/styles/global.css';
+import '@shared/styles/global.css';
 
 refreshOnUpdate('pages/popup');
 

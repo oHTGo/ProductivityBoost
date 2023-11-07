@@ -1,7 +1,7 @@
+import Panel from '@pages/panel/panel';
 import { createRoot } from 'react-dom/client';
-import Panel from '@root/src/pages/panel/panel';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
-import '@src/shared/styles/global.css';
+import '@shared/styles/global.css';
 
 refreshOnUpdate('pages/panel');
 
