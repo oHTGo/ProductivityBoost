@@ -33,7 +33,6 @@ export default defineConfig({
     react(),
     makeManifest(manifest, {
       isDev,
-      contentScriptCssKey: regenerateCacheInvalidationKey(),
     }),
     customDynamicImport(),
     addHmr({ background: enableHmrInBackgroundScript, view: true }),
@@ -69,13 +68,3 @@ export default defineConfig({
     },
   },
 });
-
-let cacheInvalidationKey: string = generateKey();
-function regenerateCacheInvalidationKey() {
-  cacheInvalidationKey = generateKey();
-  return cacheInvalidationKey;
-}
-
-function generateKey(): string {
-  return `${(Date.now() / 100).toFixed()}`;
-}
