@@ -3,6 +3,7 @@ import withErrorBoundary from '@shared/hoc/withErrorBoundary';
 import withSuspense from '@shared/hoc/withSuspense';
 import useStorage from '@shared/hooks/useStorage';
 import exampleThemeStorage from '@shared/storages/exampleThemeStorage';
+import { tw } from '@twind/core';
 
 const NewTab = () => {
   const theme = useStorage(exampleThemeStorage);
@@ -17,7 +18,7 @@ const NewTab = () => {
         <a className="App-link" href="https://reactjs.org" target="_blank" rel="noopener noreferrer">
           Learn React!
         </a>
-        <h6>The color of this paragraph is defined using SASS.</h6>
+        <h6 className={tw`text-blue-600`}>The color of this paragraph is defined using SASS.</h6>
         <button
           style={{
             color: theme === 'light' ? '#fff' : '#000',
