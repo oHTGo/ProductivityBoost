@@ -1,4 +1,4 @@
-import path, { resolve } from 'path';
+import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import manifest from './manifest';
@@ -33,7 +33,6 @@ export default defineConfig({
     react(),
     makeManifest(manifest, {
       isDev,
-      contentScriptCssKey: regenerateCacheInvalidationKey(),
     }),
     customDynamicImport(),
     addHmr({ background: enableHmrInBackgroundScript, view: true }),
@@ -51,7 +50,6 @@ export default defineConfig({
         panel: resolve(pagesDir, 'panel', 'index.html'),
         content: resolve(pagesDir, 'content', 'index.ts'),
         background: resolve(pagesDir, 'background', 'index.ts'),
-        contentStyle: resolve(sharedDir, 'styles', 'global.css'),
         popup: resolve(pagesDir, 'popup', 'index.html'),
         newtab: resolve(pagesDir, 'newtab', 'index.html'),
         options: resolve(pagesDir, 'options', 'index.html'),
@@ -59,24 +57,8 @@ export default defineConfig({
       output: {
         entryFileNames: 'src/pages/[name]/index.js',
         chunkFileNames: isDev ? 'assets/js/[name].js' : 'assets/js/[name].[hash].js',
-        assetFileNames: (assetInfo) => {
-          const { name, ext } = path.parse(assetInfo.name);
-          if (isDev && ext === '.css') {
-            return `assets/css/${name}${cacheInvalidationKey}.chunk.css`;
-          }
-          return `assets/[ext]/${name}.chunk.[ext]`;
-        },
+        assetFileNames: isDev ? 'assets/[ext]/[name].[ext]' : 'assets/[ext]/[name].[hash].[ext]',
       },
     },
   },
 });
-
-let cacheInvalidationKey: string = generateKey();
-function regenerateCacheInvalidationKey() {
-  cacheInvalidationKey = generateKey();
-  return cacheInvalidationKey;
-}
-
-function generateKey(): string {
-  return `${(Date.now() / 100).toFixed()}`;
-}

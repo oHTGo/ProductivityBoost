@@ -28,7 +28,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "construct-style-sheets-polyfill": "3.1.0",
+    "construct-style-sheets-polyfill": "^3.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "webextension-polyfill": "0.10.0"
@@ -38,6 +38,10 @@
     "@commitlint/config-conventional": "18.1.0",
     "@rollup/plugin-typescript": "11.1.5",
     "@testing-library/react": "14.0.0",
+    "@twind/core": "^1.1.3",
+    "@twind/intellisense": "^1.1.3",
+    "@twind/preset-autoprefix": "^1.0.7",
+    "@twind/preset-tailwind": "^1.1.4",
     "@types/chrome": "0.0.248",
     "@types/jest": "29.5.7",
     "@types/node": "20.8.10",
@@ -64,11 +68,8 @@
     "jest-environment-jsdom": "29.7.0",
     "lint-staged": "15.0.2",
     "npm-run-all": "4.1.5",
-    "postcss": "^8.4.31",
     "prettier": "3.0.3",
-    "prettier-plugin-tailwindcss": "^0.4.1",
     "rollup": "4.3.0",
-    "tailwindcss": "^3.3.5",
     "ts-jest": "29.1.1",
     "ts-loader": "9.5.0",
     "tslib": "2.6.2",

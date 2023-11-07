@@ -1,8 +1,5 @@
 /** @type {import("prettier").Config} */
 module.exports = {
-  plugins: [require.resolve('prettier-plugin-tailwindcss')],
-  tailwindFunctions: ['classNames'],
-
   endOfLine: 'crlf',
   trailingComma: 'all',
   semi: true,
