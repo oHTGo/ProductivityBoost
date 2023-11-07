@@ -1,3 +1,4 @@
+import Sidebar from '@shared/components/sidebar';
 import { useEffect } from 'react';
 
 export default function App() {
@@ -5,5 +6,9 @@ export default function App() {
     console.log('content view loaded');
   }, []);
 
-  return <div className="">content view</div>;
+  return (
+    <div>
+      <Sidebar />
+    </div>
+  );
 }

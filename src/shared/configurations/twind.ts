@@ -18,5 +18,11 @@ const presetRemToPx = ({ baseValue = 16 } = {}): Preset => {
 };
 
 export default defineConfig({
-  presets: [presetAutoprefix(), presetTailwind(), presetRemToPx()],
+  presets: [
+    presetAutoprefix(),
+    presetTailwind({
+      disablePreflight: true,
+    }),
+    presetRemToPx(),
+  ],
 });

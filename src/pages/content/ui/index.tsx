@@ -8,6 +8,7 @@ import 'construct-style-sheets-polyfill';
 refreshOnUpdate('pages/content');
 
 const root = document.createElement('productivity-boost');
+root.className = 'fixed z-50 top-0 left-0 h-full';
 document.body.parentNode.append(root);
 
 const sheet = cssom(new CSSStyleSheet());
