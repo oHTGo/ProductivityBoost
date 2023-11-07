@@ -1,4 +1,5 @@
-import { Component, ComponentType, ReactElement } from 'react';
+import { Component } from 'react';
+import type { ComponentType, ReactElement } from 'react';
 
 class ErrorBoundary extends Component<
   {

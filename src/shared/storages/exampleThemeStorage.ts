@@ -1,4 +1,5 @@
-import { BaseStorage, createStorage, StorageType } from '@src/shared/storages/base';
+import { createStorage, StorageType } from '@src/shared/storages/base';
+import type { BaseStorage } from '@src/shared/storages/base';
 
 type Theme = 'light' | 'dark';
 
