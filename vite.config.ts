@@ -24,8 +24,6 @@ const enableHmrInBackgroundScript = true;
 export default defineConfig({
   resolve: {
     alias: {
-      '@root': rootDir,
-      '@src': srcDir,
       '@assets': assetsDir,
       '@pages': pagesDir,
       '@shared': sharedDir,
