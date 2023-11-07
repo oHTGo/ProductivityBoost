@@ -21,7 +21,7 @@
     "dev": "yarn build:hmr && (run-p wss build:watch)",
     "dev:firefox": "yarn build:hmr && (run-p wss build:firefox:watch)",
     "test": "jest",
-    "lint": "eslint src --ext .ts --ext .tsx --output-file eslint_report.json --format json",
+    "lint": "eslint src --ext .js --ext .jsx --ext .ts --ext .tsx --output-file eslint_report.json --format json",
     "lint:fix": "yarn lint --fix",
     "format": "prettier . --check",
     "format:fix": "prettier . --write",
