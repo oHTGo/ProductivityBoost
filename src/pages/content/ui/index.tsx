@@ -7,7 +7,7 @@ import 'construct-style-sheets-polyfill';
 
 refreshOnUpdate('pages/content');
 
-const root = document.createElement('productivity-boost');
+const root = document.createElement('productivity-booster');
 document.body.parentNode.append(root);
 
 const sheet = cssom(new CSSStyleSheet());
