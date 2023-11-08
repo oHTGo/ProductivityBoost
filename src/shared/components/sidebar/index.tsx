@@ -13,14 +13,12 @@ const Sidebar: FC = () => {
   if (!store) throw new Error('Missing context in the tree');
   const { isOpen } = useStore(store, (state) => state);
 
-  console.log(isOpen);
-
   return (
     <motion.div
       initial={'closed'}
       animate={isOpen ? 'open' : 'closed'}
       variants={variants}
-      className="fixed ml-2 top-2 z-50 inline-flex h-[calc(100%-1rem)] w-11 flex-col items-center justify-center rounded-md border bg-stone-50 shadow-2xl">
+      className="fixed ml-2 top-2 z-[1000] inline-flex h-[calc(100%-1rem)] w-11 flex-col items-center justify-center rounded-md border bg-stone-50 shadow-2xl">
       {Array.from({ length: 10 }).map((_, k) => (
         <div className="relative flex w-full items-center justify-center py-2" key={k}>
           <svg
