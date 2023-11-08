@@ -1,8 +1,33 @@
-import type { FC } from 'react';
+import { motion } from 'framer-motion';
+import { useState, useEffect, type FC } from 'react';
+
+const variants = {
+  open: { opacity: 1, x: 0 },
+  closed: { opacity: 0, x: '-100%' },
+};
 
 const Sidebar: FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (e.x <= 2) {
+        setIsOpen(true);
+      }
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isOpen]);
+
   return (
-    <div className="fixed left-2 top-2 z-50 inline-flex h-[calc(100%-1rem)] w-11 flex-col items-center justify-center rounded-md border bg-stone-50 shadow-2xl">
+    <motion.div
+      initial={'closed'}
+      animate={isOpen ? 'open' : 'closed'}
+      variants={variants}
+      className="fixed ml-2 top-2 z-50 inline-flex h-[calc(100%-1rem)] w-11 flex-col items-center justify-center rounded-md border bg-stone-50 shadow-2xl">
       {Array.from({ length: 10 }).map((_, k) => (
         <div className="relative flex w-full items-center justify-center py-2" key={k}>
           <svg
@@ -20,7 +45,7 @@ const Sidebar: FC = () => {
           </svg>
         </div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 
