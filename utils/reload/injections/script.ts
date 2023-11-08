@@ -1,4 +1,4 @@
-import initReloadClient from '../initReloadClient';
+import initReloadClient from '../init-reload-client';
 
 export default function addHmrIntoScript(watchPath: string) {
   initReloadClient({
