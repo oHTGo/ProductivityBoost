@@ -3,3 +3,4 @@ async function run() {
 }
 
 void run();
+export {};
