@@ -1,7 +1,7 @@
 import logo from '@assets/img/logo.svg';
-import withErrorBoundary from '@shared/hoc/withErrorBoundary';
-import withSuspense from '@shared/hoc/withSuspense';
-import useStorage from '@shared/hooks/useStorage';
+import withErrorBoundary from '@shared/hoc/with-error-boundary';
+import withSuspense from '@shared/hoc/with-suspense';
+import useStorage from '@shared/hooks/use-storage';
 import exampleThemeStorage from '@shared/storages/exampleThemeStorage';
 
 const NewTab = () => {
