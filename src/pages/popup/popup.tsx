@@ -2,7 +2,6 @@ import logo from '@assets/img/logo.svg';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
 import useStorage from '@shared/hooks/use-storage';
-import exampleThemeStorage from '@shared/storages/exampleThemeStorage';
 
 const Popup = () => {
   const theme = useStorage(exampleThemeStorage);

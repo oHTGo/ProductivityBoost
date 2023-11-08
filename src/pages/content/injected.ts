@@ -1,1 +1,5 @@
-console.log('injected');
+async function run() {
+  console.log('injected');
+}
+
+void run();
