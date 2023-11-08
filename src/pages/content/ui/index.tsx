@@ -1,5 +1,6 @@
 import App from '@pages/content/ui/app';
 import config from '@shared/configurations/twind';
+import { useCreateSidebarStore, context } from '@shared/hooks/use-sidebar-store';
 import { twind, cssom, observe } from '@twind/core';
 import { createRoot } from 'react-dom/client';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
@@ -20,5 +21,9 @@ observe(tw, shadowRoot);
 /**
  * In the firefox environment, the adoptedStyleSheets bug may prevent contentStyle from being applied properly.
  */
-
-createRoot(shadowRoot).render(<App />);
+const { Provider } = context;
+createRoot(shadowRoot).render(
+  <Provider value={useCreateSidebarStore}>
+    <App />
+  </Provider>,
+);

@@ -1,5 +1,7 @@
+import { context } from '@shared/hooks/use-sidebar-store';
 import { motion } from 'framer-motion';
-import { useState, useEffect, type FC } from 'react';
+import { type FC, useContext } from 'react';
+import { useStore } from 'zustand';
 
 const variants = {
   open: { opacity: 1, x: 0 },
@@ -7,20 +9,11 @@ const variants = {
 };
 
 const Sidebar: FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const store = useContext(context);
+  if (!store) throw new Error('Missing context in the tree');
+  const { isOpen } = useStore(store, (state) => state);
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (e.x <= 2) {
-        setIsOpen(true);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [isOpen]);
+  console.log(isOpen);
 
   return (
     <motion.div
