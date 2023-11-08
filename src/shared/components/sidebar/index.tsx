@@ -1,7 +1,8 @@
+import { CalendarIcon, EmailIcon, TranslatorIcon } from '@shared/components/sidebar/icons';
+import useAppSelector from '@shared/hooks/use-app-selector';
 import { getIsOpen } from '@shared/slices/sidebar';
 import { motion } from 'framer-motion';
 import { type FC } from 'react';
-import useAppSelector from '../../hooks/use-app-selector';
 
 const variants = {
   open: { opacity: 1, x: 0 },
@@ -16,22 +17,10 @@ const Sidebar: FC = () => {
       initial={'closed'}
       animate={isOpen ? 'open' : 'closed'}
       variants={variants}
-      className="fixed ml-2 top-2 z-[1000] inline-flex h-[calc(100%-1rem)] w-11 flex-col items-center justify-center rounded-md border bg-stone-50 shadow-2xl">
-      {Array.from({ length: 10 }).map((_, k) => (
-        <div className="relative flex w-full items-center justify-center py-2" key={k}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={0.75}
-            stroke="#000"
-            className="h-7 w-7 cursor-pointer rounded-md p-1 hover:bg-stone-300">
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"
-            />
-          </svg>
+      className="fixed ml-2 top-2 z-[1000] inline-flex h-[calc(100%-1rem)] w-11 flex-col items-center justify-center rounded-md border border-slate-300 border-solid bg-stone-50 shadow-2xl">
+      {[EmailIcon, CalendarIcon, TranslatorIcon].map((Icon, key) => (
+        <div className="relative flex w-full items-center justify-center py-2" key={key}>
+          <Icon className="h-7 w-7 cursor-pointer rounded-md p-1 hover:bg-stone-300" />
         </div>
       ))}
     </motion.div>
