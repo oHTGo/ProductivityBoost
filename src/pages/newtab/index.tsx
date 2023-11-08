@@ -1,8 +1,9 @@
 import Newtab from '@pages/newtab/newtab';
+import { store } from '@shared/common/store';
 import config from '@shared/configurations/twind';
-import { useCreateSidebarStore, context } from '@shared/hooks/use-sidebar-store';
 import { install } from '@twind/core';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
 
 refreshOnUpdate('pages/newtab');
@@ -16,9 +17,8 @@ function init() {
   }
   const root = createRoot(appContainer);
 
-  const { Provider } = context;
   root.render(
-    <Provider value={useCreateSidebarStore}>
+    <Provider store={store}>
       <Newtab />
     </Provider>,
   );

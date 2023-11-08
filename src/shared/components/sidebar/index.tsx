@@ -1,7 +1,7 @@
-import { context } from '@shared/hooks/use-sidebar-store';
+import { getIsOpen } from '@shared/slices/sidebar';
 import { motion } from 'framer-motion';
-import { type FC, useContext } from 'react';
-import { useStore } from 'zustand';
+import { type FC } from 'react';
+import useAppSelector from '../../hooks/use-app-selector';
 
 const variants = {
   open: { opacity: 1, x: 0 },
@@ -9,9 +9,7 @@ const variants = {
 };
 
 const Sidebar: FC = () => {
-  const store = useContext(context);
-  if (!store) throw new Error('Missing context in the tree');
-  const { isOpen } = useStore(store, (state) => state);
+  const isOpen = useAppSelector(getIsOpen);
 
   return (
     <motion.div

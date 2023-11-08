@@ -1,25 +1,16 @@
 import Sidebar from '@shared/components/sidebar';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
-import { context } from '@shared/hooks/use-sidebar-store';
-import { useContext, useEffect } from 'react';
-import { useStore } from 'zustand';
+import useAppDispatch from '@shared/hooks/use-app-dispatch';
+import { set } from '@shared/slices/sidebar';
+import { useEffect } from 'react';
 
 const NewTab = () => {
-  const store = useContext(context);
-  if (!store) throw new Error('Missing context in the tree');
-  const { set } = useStore(store, (state) => state);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (e.x <= 2) return set(true);
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [set]);
+    dispatch(set(true));
+  }, [dispatch]);
 
   return (
     <div className="App">
