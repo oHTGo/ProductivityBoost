@@ -1,7 +1,9 @@
 import App from '@pages/content/ui/app';
+import { store } from '@shared/common/store';
 import config from '@shared/configurations/twind';
 import { twind, cssom, observe } from '@twind/core';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
 import 'construct-style-sheets-polyfill';
 
@@ -19,5 +21,8 @@ observe(tw, shadowRoot);
 /**
  * In the firefox environment, the adoptedStyleSheets bug may prevent contentStyle from being applied properly.
  */
-
-createRoot(shadowRoot).render(<App />);
+createRoot(shadowRoot).render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+);

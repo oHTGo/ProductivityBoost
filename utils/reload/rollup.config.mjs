@@ -5,9 +5,9 @@ const plugins = [typescript()];
 export default [
   {
     plugins,
-    input: 'utils/reload/initReloadServer.ts',
+    input: 'utils/reload/init-reload-server.ts',
     output: {
-      file: 'utils/reload/initReloadServer.js',
+      file: 'utils/reload/init-reload-server.js',
     },
     external: ['ws', 'chokidar', 'timers'],
   },
