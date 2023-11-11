@@ -1,4 +1,4 @@
-import Newtab from '@pages/newtab/newtab';
+import NewTab from '@pages/newtab/newtab';
 import { store } from '@shared/common/store';
 import config from '@shared/configurations/twind';
 import { install } from '@twind/core';
@@ -19,7 +19,7 @@ function init() {
 
   root.render(
     <Provider store={store}>
-      <Newtab />
+      <NewTab />
     </Provider>,
   );
 }

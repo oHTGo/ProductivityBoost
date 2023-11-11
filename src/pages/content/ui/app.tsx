@@ -1,6 +1,6 @@
 import Sidebar from '@shared/components/sidebar';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
-import { set } from '@shared/slices/sidebar';
+import { open, close } from '@shared/slices/sidebar';
 import { useEffect } from 'react';
 
 export default function App() {
@@ -8,7 +8,7 @@ export default function App() {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (e.x <= 2) return dispatch(set(true));
+      if (e.x <= 2) return dispatch(open());
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -19,7 +19,7 @@ export default function App() {
 
   return (
     <div className="fixed z-[1000] h-full">
-      <Sidebar />
+      <Sidebar onClickOutside={() => dispatch(close())} />
     </div>
   );
 }

@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@shared/common/store';
 
 interface SidebarState {
   isOpen: boolean;
+  isExpanded: boolean;
 }
 const initialState: SidebarState = {
   isOpen: false,
+  isExpanded: false,
 };
 
 export const sidebarSlice = createSlice({
@@ -16,12 +17,24 @@ export const sidebarSlice = createSlice({
     toggle: (state) => {
       state.isOpen = !state.isOpen;
     },
-    set: (state, action: PayloadAction<boolean>) => {
-      state.isOpen = action.payload;
+    open: (state) => {
+      state.isOpen = true;
+      state.isExpanded = false;
+    },
+    close: (state) => {
+      state.isOpen = false;
+      state.isExpanded = false;
+    },
+    expand: (state) => {
+      state.isExpanded = true;
+    },
+    collapse: (state) => {
+      state.isExpanded = false;
     },
   },
 });
-export const { toggle, set } = sidebarSlice.actions;
+export const { toggle, open, close, expand, collapse } = sidebarSlice.actions;
 export const getIsOpen = ({ sidebar }: RootState) => sidebar.isOpen;
+export const getIsExpanded = ({ sidebar }: RootState) => sidebar.isExpanded;
 export const reducer = sidebarSlice.reducer;
 export default sidebarSlice;

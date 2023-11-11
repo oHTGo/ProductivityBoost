@@ -2,19 +2,19 @@ import Sidebar from '@shared/components/sidebar';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
-import { set } from '@shared/slices/sidebar';
+import { collapse, open } from '@shared/slices/sidebar';
 import { useEffect } from 'react';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(set(true));
+    dispatch(open());
   }, [dispatch]);
 
   return (
-    <div className="App">
-      <Sidebar />
+    <div>
+      <Sidebar onClickOutside={() => dispatch(collapse())} />
     </div>
   );
 };
