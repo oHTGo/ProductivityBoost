@@ -5,6 +5,7 @@ import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import { collapse, open } from '@shared/slices/sidebar';
 import { useEffect } from 'react';
+import type { IMessage } from '@shared/interfaces/commons';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,9 @@ const NewTab = () => {
         <button
           className="bg-stone-300 rounded-md p-2"
           onClick={() => {
-            chrome.runtime.sendMessage(event.LOGIN);
+            chrome.runtime.sendMessage<IMessage>({
+              event: event.LOGIN,
+            });
           }}>
           Login
         </button>

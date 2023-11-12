@@ -55,3 +55,7 @@ export const getAllEmails = async (): Promise<IEmail[]> => {
       };
     });
 };
+
+export const openEmail = async (id: string): Promise<void> => {
+  chrome.tabs.create({ url: `https://mail.google.com/mail/u/0/#inbox/${id}` });
+};
