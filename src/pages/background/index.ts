@@ -6,7 +6,6 @@ import type { IMessage } from '@shared/interfaces/commons';
 import 'webextension-polyfill';
 
 reloadOnUpdate('pages/background');
-reloadOnUpdate('shared/styles/global.css');
 
 console.log('background loaded');
 
