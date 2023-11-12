@@ -27,6 +27,7 @@ const Email: FC = () => {
           onClick={() => {
             chrome.runtime.sendMessage<IMessage>({
               event: event.OPEN_EMAIL,
+              payload: id,
             });
           }}>
           <div className="text-sm my-2 flex justify-between">
