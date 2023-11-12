@@ -1,9 +1,8 @@
 import Email from '@shared/components/email';
-import { variants, sizes } from '@shared/components/sidebar/configurations';
-import { CalendarIcon, EmailIcon, TranslatorIcon } from '@shared/components/sidebar/icons';
+import { variants, sizes, sidebarFeatures } from '@shared/components/sidebar/configurations';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import useAppSelector from '@shared/hooks/use-app-selector';
-import { expand, getIsExpanded, getIsOpen } from '@shared/slices/sidebar';
+import { collapse, expand, getIsExpanded, getIsOpen, getUI, setUI } from '@shared/slices/sidebar';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
 import { useRef, type FC, useEffect } from 'react';
@@ -15,7 +14,17 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
   const ref = useRef<HTMLDivElement>(null);
   const isOpen = useAppSelector(getIsOpen);
   const isExpanded = useAppSelector(getIsExpanded);
+  const ui = useAppSelector(getUI);
   const dispatch = useAppDispatch();
+
+  const renderUI = () => {
+    switch (ui) {
+      case 'email':
+        return <Email />;
+      default:
+        return <></>;
+    }
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent & { target?: Element }) => {
@@ -47,11 +56,14 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
           'w-11 h-full inline-flex flex-col justify-center items-center border-solid border-0 border-r',
           isExpanded ? 'border-slate-300' : 'border-transparent',
         )}>
-        {[EmailIcon, CalendarIcon, TranslatorIcon].map((Icon, key) => (
+        {sidebarFeatures.map(({ Icon, feature }, key) => (
           <div
             className="flex items-center justify-center py-2"
             key={key}
             onClick={() => {
+              if (isExpanded) return dispatch(collapse());
+
+              dispatch(setUI(feature));
               dispatch(expand());
             }}>
             <Icon className="h-7 w-7 cursor-pointer rounded-md p-1 hover:bg-stone-300" />
@@ -62,7 +74,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
         initial={{ opacity: 0, width: 0 }}
         animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? sizes.md : '0' }}
         className={classNames('h-full flex-1 overflow-auto', isExpanded ? 'm-1' : '')}>
-        <Email />
+        {renderUI()}
       </motion.div>
     </motion.div>
   );

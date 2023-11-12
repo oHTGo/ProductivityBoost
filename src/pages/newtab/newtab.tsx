@@ -1,4 +1,5 @@
 import Sidebar from '@shared/components/sidebar';
+import event from '@shared/constants/event';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
@@ -15,6 +16,15 @@ const NewTab = () => {
   return (
     <div>
       <Sidebar onClickOutside={() => dispatch(collapse())} />
+      <div className="w-screen h-screen flex justify-center items-center">
+        <button
+          className="bg-stone-300 rounded-md p-2"
+          onClick={() => {
+            chrome.runtime.sendMessage(event.LOGIN);
+          }}>
+          Login
+        </button>
+      </div>
     </div>
   );
 };

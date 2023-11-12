@@ -1,6 +1,6 @@
 import { type FC, type SVGProps } from 'react';
 
-interface IconProps {
+export interface IconProps {
   className?: SVGProps<SVGElement>['className'];
 }
 

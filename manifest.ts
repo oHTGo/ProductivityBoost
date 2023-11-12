@@ -8,7 +8,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   name: packageJson.name,
   version: packageJson.version,
   description: packageJson.description,
-  permissions: ['storage'],
+  permissions: ['storage', 'identity'],
   options_page: 'src/pages/options/index.html',
   background: {
     service_worker: 'src/pages/background/index.js',
@@ -30,6 +30,9 @@ const manifest: chrome.runtime.ManifestV3 = {
       js: ['src/pages/content/index.js'],
     },
   ],
+  content_security_policy: {
+    extension_pages: "font-src 'self'; script-src 'self'; object-src 'self'; worker-src 'self'",
+  },
   devtools_page: 'src/pages/devtools/index.html',
   web_accessible_resources: [
     {
