@@ -21,7 +21,7 @@ const NewTab = () => {
         <button
           className="bg-stone-300 rounded-md p-2"
           onClick={() => {
-            chrome.runtime.sendMessage<IMessage>({
+            chrome.runtime.sendMessage<IMessage<void>>({
               event: event.LOGIN,
             });
           }}>
