@@ -73,7 +73,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
       <motion.div
         initial={{ opacity: 0, width: 0 }}
         animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? sizes.md : '0' }}
-        className={classNames('h-full flex-1 overflow-auto', isExpanded ? 'm-1' : '')}>
+        className={classNames('h-full flex-1', isExpanded ? 'ml-1' : '')}>
         {renderUI()}
       </motion.div>
     </motion.div>

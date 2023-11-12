@@ -19,7 +19,7 @@ const Email: FC = () => {
   }, []);
 
   return (
-    <div className="overflow-hidden">
+    <div className="overflow-y-auto overflow-x-hidden w-full h-full">
       {emails.map(({ id, name, date, subject, body }) => (
         <div
           key={id}
