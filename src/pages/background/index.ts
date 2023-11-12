@@ -10,13 +10,15 @@ reloadOnUpdate('shared/styles/global.css');
 
 console.log('background loaded');
 
-const eventsMap = {
+export type BackgroundFunction<TPayload, TResult> = (payload?: TPayload) => Promise<TResult>;
+
+const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
   [event.LOGIN]: auth,
   [event.GET_ALL_EMAILS]: getAllEmails,
   [event.OPEN_EMAIL]: openEmail,
-} as Record<string, (payload?: unknown) => Promise<void>>;
+};
 
-chrome.runtime.onMessage.addListener((message: IMessage, _, sendResponse) => {
+chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendResponse) => {
   (async () => {
     const { event, payload } = message;
 

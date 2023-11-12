@@ -1,4 +1,5 @@
 import api from '@shared/clients/api';
+import type { BackgroundFunction } from '@pages/background';
 import type { IEmail } from '@shared/interfaces/email';
 
 const userId = '108879829292288659402';
@@ -24,7 +25,7 @@ interface IGetEmailResponse {
   };
 }
 
-export const getAllEmails = async (): Promise<IEmail[]> => {
+export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
   const q = 'is:unread newer_than:30d';
   const response = await api.get<IGetAllEmailsResponse>(
     `https://gmail.googleapis.com/gmail/v1/users/${userId}/messages?q=${q}`,
@@ -56,6 +57,6 @@ export const getAllEmails = async (): Promise<IEmail[]> => {
     });
 };
 
-export const openEmail = async (id: string): Promise<void> => {
+export const openEmail: BackgroundFunction<string, void> = async (id: string) => {
   chrome.tabs.create({ url: `https://mail.google.com/mail/u/0/#inbox/${id}` });
 };

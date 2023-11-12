@@ -8,7 +8,7 @@ const Email: FC = () => {
   const [emails, setEmails] = useState<IEmail[]>([]);
 
   useEffect(() => {
-    chrome.runtime.sendMessage<IMessage, IEmail[]>(
+    chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
       {
         event: event.GET_ALL_EMAILS,
       },
@@ -25,7 +25,7 @@ const Email: FC = () => {
           key={id}
           className="border-0 border-y border-gray-200 border-solid py-2 cursor-pointer"
           onClick={() => {
-            chrome.runtime.sendMessage<IMessage>({
+            chrome.runtime.sendMessage<IMessage<string>>({
               event: event.OPEN_EMAIL,
               payload: id,
             });

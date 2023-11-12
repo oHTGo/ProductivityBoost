@@ -1,4 +1,4 @@
-export interface IMessage {
+export interface IMessage<T> {
   event: string;
-  payload?: unknown;
+  payload?: T;
 }

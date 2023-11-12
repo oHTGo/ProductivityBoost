@@ -2,6 +2,7 @@ import { getClientId, getClientSecret } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
 import { setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
+import type { BackgroundFunction } from '@pages/background';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
 
@@ -12,7 +13,7 @@ function parseRedirectUrl(redirectUrl: string) {
   return { code };
 }
 
-export const auth = async () => {
+export const auth: BackgroundFunction<void, void> = async () => {
   const redirectUrlResponse = await chrome.identity.launchWebAuthFlow({
     url:
       'https://accounts.google.com/o/oauth2/v2/auth?' +
@@ -26,10 +27,10 @@ export const auth = async () => {
       }).toString(),
     interactive: true,
   });
-  if (!redirectUrlResponse) return false;
+  if (!redirectUrlResponse) return;
 
   const { code } = parseRedirectUrl(redirectUrlResponse);
-  if (!code) return false;
+  if (!code) return;
 
   const response = await ky
     .post('https://oauth2.googleapis.com/token', {
@@ -45,12 +46,10 @@ export const auth = async () => {
       }).toString(),
     })
     .json<{ access_token: string; refresh_token: string }>();
-  if (!response) return false;
+  if (!response) return;
 
   const { access_token, refresh_token } = response;
 
   await setLocalStorage(common.ACCESS_TOKEN, access_token ?? '');
   await setLocalStorage(common.REFRESH_TOKEN, refresh_token ?? '');
-
-  return true;
 };
