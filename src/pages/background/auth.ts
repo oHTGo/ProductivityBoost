@@ -14,7 +14,7 @@ function parseRedirectUrl(redirectUrl: string) {
 }
 
 export const auth: BackgroundFunction<void, void> = async () => {
-  const redirectUrlResponse = await chrome.identity.launchWebAuthFlow({
+  const urlResponse = await chrome.identity.launchWebAuthFlow({
     url:
       'https://accounts.google.com/o/oauth2/v2/auth?' +
       new URLSearchParams({
@@ -27,12 +27,12 @@ export const auth: BackgroundFunction<void, void> = async () => {
       }).toString(),
     interactive: true,
   });
-  if (!redirectUrlResponse) return;
+  if (!urlResponse) return;
 
-  const { code } = parseRedirectUrl(redirectUrlResponse);
+  const { code } = parseRedirectUrl(urlResponse);
   if (!code) return;
 
-  const response = await ky
+  const tokenResponse = await ky
     .post('https://oauth2.googleapis.com/token', {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -46,9 +46,9 @@ export const auth: BackgroundFunction<void, void> = async () => {
       }).toString(),
     })
     .json<{ access_token: string; refresh_token: string }>();
-  if (!response) return;
+  if (!tokenResponse) return;
 
-  const { access_token, refresh_token } = response;
+  const { access_token, refresh_token } = tokenResponse;
 
   await setLocalStorage(common.ACCESS_TOKEN, access_token ?? '');
   await setLocalStorage(common.REFRESH_TOKEN, refresh_token ?? '');
