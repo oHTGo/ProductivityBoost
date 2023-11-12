@@ -38,7 +38,6 @@ export const sidebarSlice = createSlice({
       state.ui = '';
     },
     setUI: (state, action: PayloadAction<Feature>) => {
-      console.log(action.payload);
       state.ui = action.payload;
     },
   },

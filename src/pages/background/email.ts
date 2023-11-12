@@ -44,10 +44,7 @@ export const getAllEmails = async (): Promise<IEmail[]> => {
   );
 
   return emails
-    .filter((email) => {
-      console.log(email);
-      return !!email;
-    })
+    .filter((email) => !!email)
     .map((email) => {
       const { id, payload, snippet, internalDate } = email!;
       const { headers } = payload;
