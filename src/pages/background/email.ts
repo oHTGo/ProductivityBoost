@@ -35,12 +35,9 @@ export const getAllEmails = async (): Promise<IEmail[]> => {
   if (!messages) return [];
 
   const emails = await Promise.all(
-    messages.map(async ({ id }) => {
-      const email = await api.get<IGetEmailResponse>(
-        `https://gmail.googleapis.com/gmail/v1/users/${userId}/messages/${id}`,
-      );
-      return email;
-    }),
+    messages.map(({ id }) =>
+      api.get<IGetEmailResponse>(`https://gmail.googleapis.com/gmail/v1/users/${userId}/messages/${id}`),
+    ),
   );
 
   return emails

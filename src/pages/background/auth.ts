@@ -1,17 +1,9 @@
 import { getClientId, getClientSecret } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
+import { setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
-
-const params = {
-  scope: 'https://www.googleapis.com/auth/gmail.modify',
-  response_type: 'code',
-  redirect_uri: redirectUrl,
-  client_id: getClientId(),
-  prompt: 'consent',
-  access_type: 'offline',
-};
 
 function parseRedirectUrl(redirectUrl: string) {
   const params = new URLSearchParams(redirectUrl.split('?')?.[1]);
@@ -22,7 +14,16 @@ function parseRedirectUrl(redirectUrl: string) {
 
 export const auth = async () => {
   const redirectUrlResponse = await chrome.identity.launchWebAuthFlow({
-    url: 'https://accounts.google.com/o/oauth2/v2/auth?' + new URLSearchParams(params).toString(),
+    url:
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+      new URLSearchParams({
+        scope: 'https://www.googleapis.com/auth/gmail.modify',
+        response_type: 'code',
+        redirect_uri: redirectUrl,
+        client_id: getClientId(),
+        prompt: 'consent',
+        access_type: 'offline',
+      }).toString(),
     interactive: true,
   });
   if (!redirectUrlResponse) return false;
@@ -48,8 +49,8 @@ export const auth = async () => {
 
   const { access_token, refresh_token } = response;
 
-  chrome.storage.local.set({ [common.ACCESS_TOKEN]: access_token ?? '' });
-  chrome.storage.local.set({ [common.REFRESH_TOKEN]: refresh_token ?? '' });
+  await setLocalStorage(common.ACCESS_TOKEN, access_token ?? '');
+  await setLocalStorage(common.REFRESH_TOKEN, refresh_token ?? '');
 
   return true;
 };

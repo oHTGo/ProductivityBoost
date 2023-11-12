@@ -13,14 +13,15 @@ const Email: FC = () => {
   }, []);
 
   return (
-    <div>
+    <div className="overflow-hidden">
       {emails.map(({ id, name, date, subject, body }) => (
-        <div key={id} className="border-0 border-y border-gray-200 border-solid py-2">
-          <h5 className="text-sm m-0 my-2">
-            {name} - {moment(date).format('DD/MM/YYYY')}
-          </h5>
+        <div key={id} className="border-0 border-y border-gray-200 border-solid py-2 cursor-pointer">
+          <div className="text-sm my-2 flex justify-between">
+            <span className="font-bold">{name}</span>
+            <span className="text-xs">{moment(date).format('DD/MM/YYYY')}</span>
+          </div>
           <div>
-            <span className="text-xs font-bold">{subject}</span>
+            <span className="text-xs font-bold truncate">{subject}</span>
             <p className="text-xs truncate m-0 mt-1">{body}</p>
           </div>
         </div>

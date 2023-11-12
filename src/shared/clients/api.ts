@@ -1,9 +1,10 @@
 import { getClientId, getClientSecret } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
+import { getLocalStorage, setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 
 const getNewAccessToken = async (): Promise<string | undefined> => {
-  const refreshToken = (await chrome.storage.local.get(common.REFRESH_TOKEN))?.[common.REFRESH_TOKEN];
+  const refreshToken = await getLocalStorage(common.REFRESH_TOKEN);
   if (!refreshToken) return;
 
   const response = await ky
@@ -31,7 +32,7 @@ const instance = ky.create({
   hooks: {
     beforeRequest: [
       async (request) => {
-        const token = (await chrome.storage.local.get(common.ACCESS_TOKEN))?.[common.ACCESS_TOKEN];
+        const token = await getLocalStorage(common.ACCESS_TOKEN);
         request.headers.set('Authorization', `Bearer ${token}`);
 
         return request;
@@ -42,7 +43,7 @@ const instance = ky.create({
         if (response.status === 401) {
           const accessToken = await getNewAccessToken();
 
-          chrome.storage.local.set({ [common.ACCESS_TOKEN]: accessToken ?? '' });
+          await setLocalStorage(common.ACCESS_TOKEN, accessToken ?? '');
           request.headers.set('Authorization', `Bearer ${accessToken}`);
           return ky(request);
         }
