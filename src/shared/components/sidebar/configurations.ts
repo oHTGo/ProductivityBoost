@@ -9,9 +9,9 @@ export const variants = {
 };
 
 export const sizes = {
-  sm: '24rem',
-  md: '32rem',
-  lg: '48rem',
+  sm: '384px',
+  md: '512px',
+  lg: '768px',
 };
 
 export const sidebarFeatures: {
