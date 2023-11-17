@@ -1,22 +1,12 @@
 import event from '@shared/constants/event';
+import useAppSelector from '@shared/hooks/use-app-selector';
+import { getEmails } from '@shared/slices/email';
 import moment from 'moment';
-import { useState, type FC, useEffect } from 'react';
+import { type FC } from 'react';
 import type { IMessage } from '@shared/interfaces/commons';
-import type { IEmail } from '@shared/interfaces/email';
 
 const Email: FC = () => {
-  const [emails, setEmails] = useState<IEmail[]>([]);
-
-  useEffect(() => {
-    chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
-      {
-        event: event.GET_ALL_EMAILS,
-      },
-      (emails) => {
-        setEmails(emails ?? []);
-      },
-    );
-  }, []);
+  const emails = useAppSelector(getEmails);
 
   return (
     <div className="overflow-y-auto overflow-x-hidden w-full h-full">

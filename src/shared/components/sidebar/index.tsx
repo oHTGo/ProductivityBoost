@@ -5,7 +5,8 @@ import useAppSelector from '@shared/hooks/use-app-selector';
 import { collapse, expand, getIsExpanded, getIsOpen, getUI, setUI } from '@shared/slices/sidebar';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
-import { useRef, type FC, useEffect } from 'react';
+import { useRef, type FC } from 'react';
+import { useOnClickOutside } from 'usehooks-ts';
 
 type SidebarProps = {
   onClickOutside?: () => void;
@@ -26,20 +27,9 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
     }
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent & { target?: Element }) => {
-      if (event?.target?.tagName?.toLowerCase() === chrome.runtime.getManifest().name) return;
-
-      if (ref.current && !ref.current.contains(event.target)) {
-        if (onClickOutside) onClickOutside();
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref, onClickOutside]);
+  useOnClickOutside(ref, () => {
+    if (onClickOutside) onClickOutside();
+  });
 
   return (
     <motion.div
