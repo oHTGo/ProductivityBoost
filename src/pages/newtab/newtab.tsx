@@ -1,18 +1,34 @@
 import Sidebar from '@shared/components/sidebar';
+import delay from '@shared/constants/delay';
 import event from '@shared/constants/event';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
+import { setEmails } from '@shared/slices/email';
 import { collapse, open } from '@shared/slices/sidebar';
 import { useEffect } from 'react';
+import { useInterval } from 'usehooks-ts';
 import type { IMessage } from '@shared/interfaces/commons';
+import type { IEmail } from '@shared/interfaces/email';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
 
+  const getAllEmails = () =>
+    chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
+      {
+        event: event.GET_ALL_EMAILS,
+      },
+      (emails) => {
+        dispatch(setEmails(emails ?? []));
+      },
+    );
+
   useEffect(() => {
     dispatch(open());
+    getAllEmails();
   }, [dispatch]);
+  useInterval(() => getAllEmails(), delay.FETCH_EMAILS);
 
   return (
     <div>
