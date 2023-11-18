@@ -17,6 +17,8 @@ const presetRemToPx = ({ baseValue = 16 } = {}): Preset => {
   };
 };
 
+export const DEFAULT_STYLES = 'font-mono text-black bg-white';
+
 export default defineConfig({
   presets: [presetAutoprefix(), presetTailwind(), presetRemToPx()],
 });

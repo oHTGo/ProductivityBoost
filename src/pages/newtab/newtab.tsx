@@ -1,4 +1,5 @@
 import Sidebar from '@shared/components/sidebar';
+import { DEFAULT_STYLES } from '@shared/configurations/twind';
 import delay from '@shared/constants/delay';
 import event from '@shared/constants/event';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
@@ -6,6 +7,7 @@ import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import { setEmails } from '@shared/slices/email';
 import { collapse, open } from '@shared/slices/sidebar';
+import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useInterval } from 'usehooks-ts';
 import type { IMessage } from '@shared/interfaces/commons';
@@ -31,7 +33,7 @@ const NewTab = () => {
   useInterval(() => getAllEmails(), delay.FETCH_EMAILS);
 
   return (
-    <div>
+    <div className={classNames(DEFAULT_STYLES)}>
       <Sidebar onClickOutside={() => dispatch(collapse())} />
       <div className="w-screen h-screen flex justify-center items-center">
         <button
