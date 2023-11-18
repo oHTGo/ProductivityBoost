@@ -44,7 +44,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
       )}>
       <div
         className={classNames(
-          'w-11 h-full inline-flex flex-col justify-center items-center border-solid border-0 border-r',
+          'w-11 h-full inline-flex flex-col justify-center items-center border-solid border-0',
           isExpanded ? 'border-slate-300' : 'border-transparent',
         )}>
         {sidebarFeatures.map(({ Icon, feature }, key) => (
@@ -64,7 +64,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
       <motion.div
         initial={{ opacity: 0, width: 0 }}
         animate={{ opacity: isExpanded ? 1 : 0, width: isExpanded ? sizes.md : '0' }}
-        className={classNames('h-full flex-1', isExpanded ? 'ml-1' : '')}>
+        className={classNames('h-full flex-1 border-solid border-0 border-slate-300', isExpanded ? ' border-l-1' : '')}>
         {renderUI()}
       </motion.div>
     </motion.div>

@@ -13,7 +13,7 @@ const Email: FC = () => {
       {emails.map(({ id, name, date, subject, body }) => (
         <div
           key={id}
-          className="border-0 border-y border-gray-200 border-solid py-2 cursor-pointer"
+          className="border-0 border-y border-gray-200 border-solid py-2 cursor-pointer mx-1"
           onClick={() => {
             chrome.runtime.sendMessage<IMessage<string>>({
               event: event.OPEN_EMAIL,
