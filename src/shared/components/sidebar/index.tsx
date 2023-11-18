@@ -27,7 +27,8 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
     }
   };
 
-  useOnClickOutside(ref, () => {
+  useOnClickOutside(ref, (event: MouseEvent & { target?: Element }) => {
+    if (event?.target?.tagName?.toLowerCase() === chrome.runtime.getManifest().name) return;
     if (onClickOutside) onClickOutside();
   });
 
