@@ -5,17 +5,10 @@ import ky from 'ky';
 import type { BackgroundFunction } from '@pages/background';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
-const scopes = ['https://www.googleapis.com/auth/gmail.modify'];
+const scopes = ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/gmail.modify'];
 
-function parseRedirectUrl(redirectUrl: string) {
-  const params = new URLSearchParams(redirectUrl.split('?')?.[1]);
-  const code = params.get('code') ?? '';
-
-  return { code };
-}
-
-export const auth: BackgroundFunction<void, void> = async () => {
-  const urlResponse = await chrome.identity.launchWebAuthFlow({
+const getAuthorizationCode = async (): Promise<string | undefined> => {
+  const response = await chrome.identity.launchWebAuthFlow({
     url:
       'https://accounts.google.com/o/oauth2/v2/auth?' +
       new URLSearchParams({
@@ -28,12 +21,16 @@ export const auth: BackgroundFunction<void, void> = async () => {
       }).toString(),
     interactive: true,
   });
-  if (!urlResponse) return;
+  if (!response) return;
 
-  const { code } = parseRedirectUrl(urlResponse);
-  if (!code) return;
+  const params = new URLSearchParams(response.split('?')?.[1]);
+  const code = params.get('code') ?? '';
 
-  const tokenResponse = await ky
+  return code;
+};
+
+const getTokens = async (code: string): Promise<{ accessToken: string; refreshToken: string } | undefined> => {
+  const response = await ky
     .post('https://oauth2.googleapis.com/token', {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -47,12 +44,43 @@ export const auth: BackgroundFunction<void, void> = async () => {
       }).toString(),
     })
     .json<{ access_token: string; refresh_token: string }>();
-  if (!tokenResponse) return;
+  if (!response) return;
 
-  const { access_token, refresh_token } = tokenResponse;
-
+  const { access_token, refresh_token } = response;
   if (!access_token || !refresh_token) return;
 
-  await setLocalStorage(common.ACCESS_TOKEN, access_token);
-  await setLocalStorage(common.REFRESH_TOKEN, refresh_token);
+  return { accessToken: access_token, refreshToken: refresh_token };
+};
+
+const getProfile = async (accessToken: string): Promise<{ id: string; name: string } | undefined> => {
+  const response = await ky
+    .get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .json<{ id: string; name: string }>();
+  if (!response) return;
+
+  const { id, name } = response;
+  return { id, name };
+};
+
+export const auth: BackgroundFunction<void, void> = async () => {
+  const code = await getAuthorizationCode();
+  if (!code) return;
+
+  const tokens = await getTokens(code);
+  if (!tokens) return;
+
+  const { accessToken, refreshToken } = tokens;
+  await setLocalStorage(common.ACCESS_TOKEN, accessToken);
+  await setLocalStorage(common.REFRESH_TOKEN, refreshToken);
+
+  const profile = await getProfile(accessToken);
+  if (!profile) return;
+
+  const { id, name } = profile;
+  await setLocalStorage(common.USER_ID, id);
+  await setLocalStorage(common.USER_NAME, name);
 };

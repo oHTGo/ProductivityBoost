@@ -2,8 +2,6 @@ import api from '@shared/clients/api';
 import type { BackgroundFunction } from '@pages/background';
 import type { IEmail } from '@shared/interfaces/email';
 
-const userId = '108879829292288659402';
-
 interface IGetAllEmailsResponse {
   messages: [
     {
@@ -28,7 +26,7 @@ interface IGetEmailResponse {
 export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
   const q = 'is:unread newer_than:30d';
   const response = await api.get<IGetAllEmailsResponse>(
-    `https://gmail.googleapis.com/gmail/v1/users/${userId}/messages?q=${q}`,
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${q}`,
   );
   if (!response) return [];
 
@@ -37,7 +35,7 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
 
   const emails = await Promise.all(
     messages.map(({ id }) =>
-      api.get<IGetEmailResponse>(`https://gmail.googleapis.com/gmail/v1/users/${userId}/messages/${id}`),
+      api.get<IGetEmailResponse>(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}`),
     ),
   );
 
