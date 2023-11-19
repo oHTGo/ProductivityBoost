@@ -62,11 +62,12 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
           <div className="relative w-11 h-11 py-2" key={key}>
             <Icon
               className={classNames(
-                'h-8 w-8 cursor-pointer rounded-md p-1 hover:bg-stone-300',
+                'h-8 w-8 cursor-pointer rounded-md p-1 hover:bg-stone-200',
                 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
+                ui === feature ? 'bg-stone-300 hover:bg-stone-300' : '',
               )}
               onClick={() => {
-                if (isExpanded) return dispatch(collapse());
+                if (ui === feature) return dispatch(collapse());
 
                 dispatch(setUI(feature));
                 dispatch(expand());
