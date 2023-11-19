@@ -1,6 +1,7 @@
 import { defineConfig } from '@twind/core';
 import presetAutoprefix from '@twind/preset-autoprefix';
 import presetTailwind from '@twind/preset-tailwind';
+import presetTypography from '@twind/preset-typography';
 import type { Preset } from '@twind/core';
 
 const presetRemToPx = ({ baseValue = 16 } = {}): Preset => {
@@ -20,5 +21,5 @@ const presetRemToPx = ({ baseValue = 16 } = {}): Preset => {
 export const DEFAULT_STYLES = 'font-mono text-black bg-white';
 
 export default defineConfig({
-  presets: [presetAutoprefix(), presetTailwind(), presetRemToPx()],
+  presets: [presetAutoprefix(), presetTailwind(), presetTypography(), presetRemToPx()],
 });

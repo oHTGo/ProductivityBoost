@@ -32,7 +32,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
   const renderBadge = (feature: Feature) => {
     switch (feature) {
       case 'email':
-        return `${emails.length}`;
+        return emails.length !== 0 ? `${emails.length}` : '';
       default:
         return '';
     }
