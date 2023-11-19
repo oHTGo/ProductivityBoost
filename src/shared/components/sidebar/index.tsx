@@ -73,7 +73,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
               }}
             />
             {renderBadge(feature) !== '' && (
-              <span className="whitespace-nowrap w-4 h-4 rounded-sm bg-blue-300 text-sm text-white z-10 absolute top-1/2 left-1 inline-flex justify-center items-center">
+              <span className="whitespace-nowrap w-4 h-4 rounded-sm bg-blue-300 text-[0.8rem] text-white z-10 absolute top-1/2 left-1 inline-flex justify-center items-center">
                 {renderBadge(feature)}
               </span>
             )}
