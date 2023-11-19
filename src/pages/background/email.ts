@@ -1,4 +1,6 @@
 import api from '@shared/clients/api';
+import common from '@shared/constants/common';
+import { getLocalStorage } from '@shared/utils/storage';
 import type { BackgroundFunction } from '@pages/background';
 import type { IEmail } from '@shared/interfaces/email';
 
@@ -56,5 +58,6 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
 };
 
 export const openEmail: BackgroundFunction<string, void> = async (id: string) => {
-  chrome.tabs.create({ url: `https://mail.google.com/mail/u/0/#inbox/${id}` });
+  const email = await getLocalStorage(common.USER_EMAIL);
+  chrome.tabs.create({ url: `https://mail.google.com/mail/u/${email}/#inbox/${id}` });
 };

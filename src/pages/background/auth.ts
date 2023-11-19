@@ -5,7 +5,7 @@ import ky from 'ky';
 import type { BackgroundFunction } from '@pages/background';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
-const scopes = ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/gmail.modify'];
+const scopes = ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.modify'];
 
 const getAuthorizationCode = async (): Promise<string | undefined> => {
   const response = await chrome.identity.launchWebAuthFlow({
@@ -52,18 +52,18 @@ const getTokens = async (code: string): Promise<{ accessToken: string; refreshTo
   return { accessToken: access_token, refreshToken: refresh_token };
 };
 
-const getProfile = async (accessToken: string): Promise<{ id: string; name: string } | undefined> => {
+const getProfile = async (accessToken: string): Promise<{ id: string; name: string; email: string } | undefined> => {
   const response = await ky
     .get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     })
-    .json<{ id: string; name: string }>();
+    .json<{ id: string; name: string; email: string }>();
   if (!response) return;
 
-  const { id, name } = response;
-  return { id, name };
+  const { id, name, email } = response;
+  return { id, name, email };
 };
 
 export const auth: BackgroundFunction<void, void> = async () => {
@@ -80,7 +80,8 @@ export const auth: BackgroundFunction<void, void> = async () => {
   const profile = await getProfile(accessToken);
   if (!profile) return;
 
-  const { id, name } = profile;
+  const { id, name, email } = profile;
   await setLocalStorage(common.USER_ID, id);
   await setLocalStorage(common.USER_NAME, name);
+  await setLocalStorage(common.USER_EMAIL, email);
 };
