@@ -50,12 +50,12 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
       animate={isOpen ? 'open' : 'closed'}
       variants={variants}
       className={classNames(
-        'fixed ml-2 top-2 z-[1000] h-[calc(100%-1rem)] rounded-md border border-slate-300 border-solid bg-stone-50 shadow-2xl',
+        'fixed ml-2 top-2 z-[1000] h-[calc(100%-1rem)] rounded-md border border-slate-300 bg-stone-50 shadow-2xl',
         'flex',
       )}>
       <div
         className={classNames(
-          'w-11 h-full inline-flex flex-col justify-center items-center border-solid border-0',
+          'w-11 h-full inline-flex flex-col justify-center items-center border-0',
           isExpanded ? 'border-slate-300' : 'border-transparent',
         )}>
         {sidebarFeatures.map(({ Icon, feature }, key) => (
@@ -64,7 +64,9 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
               className={classNames(
                 'h-8 w-8 cursor-pointer rounded-md p-1 hover:bg-stone-200',
                 'absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2',
-                ui === feature ? 'bg-stone-300 hover:bg-stone-300' : '',
+                {
+                  'bg-stone-300 hover:bg-stone-300': ui === feature,
+                },
               )}
               onClick={() => {
                 if (ui === feature) return dispatch(collapse());
@@ -88,8 +90,11 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
           width: isExpanded ? sizes.md : '0',
           borderLeftWidth: isExpanded ? '1px' : '0px',
         }}
-        className={classNames('h-full flex-1 border-solid border-0 border-slate-300')}>
-        {renderUI(ui as Feature)}
+        className={classNames('h-full flex-1 border-0 border-slate-300', 'flex flex-col')}>
+        <h4 className="h-8 w-full prose prose-h4 flex justify-center items-center font-semibold border-b-2">
+          {ui.toUpperCase()}
+        </h4>
+        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full">{renderUI(ui as Feature)}</div>
       </motion.div>
     </motion.div>
   );
