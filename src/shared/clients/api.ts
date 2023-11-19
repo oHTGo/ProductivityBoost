@@ -42,8 +42,9 @@ const instance = ky.create({
       async (request, _options, response) => {
         if (response.status === 401) {
           const accessToken = await getNewAccessToken();
+          if (!accessToken) return new Response(null, { status: response.status });
 
-          await setLocalStorage(common.ACCESS_TOKEN, accessToken ?? '');
+          await setLocalStorage(common.ACCESS_TOKEN, accessToken);
           request.headers.set('Authorization', `Bearer ${accessToken}`);
           return ky(request);
         }

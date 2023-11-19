@@ -5,6 +5,7 @@ import ky from 'ky';
 import type { BackgroundFunction } from '@pages/background';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
+const scopes = ['https://www.googleapis.com/auth/gmail.modify'];
 
 function parseRedirectUrl(redirectUrl: string) {
   const params = new URLSearchParams(redirectUrl.split('?')?.[1]);
@@ -18,7 +19,7 @@ export const auth: BackgroundFunction<void, void> = async () => {
     url:
       'https://accounts.google.com/o/oauth2/v2/auth?' +
       new URLSearchParams({
-        scope: 'https://www.googleapis.com/auth/gmail.modify',
+        scope: scopes.join(' '),
         response_type: 'code',
         redirect_uri: redirectUrl,
         client_id: getClientId(),
@@ -50,6 +51,8 @@ export const auth: BackgroundFunction<void, void> = async () => {
 
   const { access_token, refresh_token } = tokenResponse;
 
-  await setLocalStorage(common.ACCESS_TOKEN, access_token ?? '');
-  await setLocalStorage(common.REFRESH_TOKEN, refresh_token ?? '');
+  if (!access_token || !refresh_token) return;
+
+  await setLocalStorage(common.ACCESS_TOKEN, access_token);
+  await setLocalStorage(common.REFRESH_TOKEN, refresh_token);
 };
