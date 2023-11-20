@@ -14,7 +14,7 @@ import type { IEmail } from '@shared/interfaces/email';
 export default function App() {
   const dispatch = useAppDispatch();
 
-  const getAllEmails = () =>
+  const fetchAllEmails = () =>
     chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
       {
         event: event.GET_ALL_EMAILS,
@@ -30,12 +30,12 @@ export default function App() {
     };
     window.addEventListener('mousemove', handleMouseMove);
 
-    getAllEmails();
+    fetchAllEmails();
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [dispatch]);
-  useInterval(() => getAllEmails, delay.FETCH_EMAILS);
+  useInterval(() => fetchAllEmails(), delay.FETCH_EMAILS);
 
   return (
     <div className={classNames(DEFAULT_STYLES, 'fixed z-[1000] h-full')}>

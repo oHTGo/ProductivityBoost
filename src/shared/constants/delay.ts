@@ -1,6 +1,6 @@
-const seconds = 1000;
-const minutes = 60 * seconds;
+const second = 1000;
+const minute = 60 * second;
 
 export default {
-  FETCH_EMAILS: minutes * 5,
+  FETCH_EMAILS: minute * 5,
 };

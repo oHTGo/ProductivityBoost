@@ -51,7 +51,7 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
         id,
         name: headers.find(({ name }) => name === 'From')?.value ?? '',
         subject: headers.find(({ name }) => name === 'Subject')?.value ?? '',
-        body: snippet,
+        snippet,
         date: parseInt(internalDate),
       };
     });

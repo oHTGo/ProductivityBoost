@@ -24,35 +24,36 @@ const EmptyIcon = () => (
 const Email: FC = () => {
   const emails = useAppSelector(getEmails);
 
-  return emails.length === 0 ? (
-    <div className="w-full h-full flex justify-center items-center flex-col">
-      <span className="prose prose-sm prose-slate">No emails</span>
-      <EmptyIcon />
-    </div>
-  ) : (
-    emails.map(({ id, name, date, subject, body }, index) => (
-      <div
-        key={id}
-        className={classNames('border-0 border-y border-gray-200 py-2 cursor-pointer mx-1', {
-          'border-t-0': index === 0,
-        })}
-        onClick={() => {
-          chrome.runtime.sendMessage<IMessage<string>>({
-            event: event.OPEN_EMAIL,
-            payload: id,
-          });
-        }}>
-        <div className="text-sm my-2 flex justify-between">
-          <span className="font-bold">{name}</span>
-          <span className="text-xs">{moment(date).format('DD/MM/YYYY')}</span>
-        </div>
-        <div>
-          <span className="text-xs font-bold truncate">{subject}</span>
-          <p className="text-xs truncate m-0 mt-1">{body}</p>
-        </div>
+  if (emails.length === 0)
+    return (
+      <div className="w-full h-full flex justify-center items-center flex-col">
+        <span className="prose prose-sm prose-slate">No emails</span>
+        <EmptyIcon />
       </div>
-    ))
-  );
+    );
+
+  return emails.map(({ id, name, date, subject, snippet }, index) => (
+    <div
+      key={id}
+      className={classNames('border-0 border-y border-gray-200 py-2 cursor-pointer mx-1', {
+        'border-t-0': index === 0,
+      })}
+      onClick={() => {
+        chrome.runtime.sendMessage<IMessage<string>>({
+          event: event.OPEN_EMAIL,
+          payload: id,
+        });
+      }}>
+      <div className="text-sm my-2 flex justify-between">
+        <span className="font-bold">{name}</span>
+        <span className="text-xs">{moment(date).format('DD/MM/YYYY')}</span>
+      </div>
+      <div>
+        <span className="text-xs font-bold truncate">{subject}</span>
+        <p className="text-xs truncate m-0 mt-1">{snippet}</p>
+      </div>
+    </div>
+  ));
 };
 
 export default Email;

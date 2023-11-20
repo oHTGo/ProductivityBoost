@@ -2,6 +2,6 @@ export interface IEmail {
   id: string;
   name: string;
   subject: string;
-  body: string;
+  snippet: string;
   date: number;
 }

@@ -16,7 +16,7 @@ import type { IEmail } from '@shared/interfaces/email';
 const NewTab = () => {
   const dispatch = useAppDispatch();
 
-  const getAllEmails = () =>
+  const fetchAllEmails = () =>
     chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
       {
         event: event.GET_ALL_EMAILS,
@@ -28,9 +28,9 @@ const NewTab = () => {
 
   useEffect(() => {
     dispatch(open());
-    getAllEmails();
+    fetchAllEmails();
   }, [dispatch]);
-  useInterval(() => getAllEmails(), delay.FETCH_EMAILS);
+  useInterval(() => fetchAllEmails(), delay.FETCH_EMAILS);
 
   return (
     <div className={classNames(DEFAULT_STYLES)}>
