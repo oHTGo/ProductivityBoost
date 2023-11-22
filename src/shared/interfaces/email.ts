@@ -3,5 +3,6 @@ export interface IEmail {
   name: string;
   subject: string;
   snippet: string;
+  body: string;
   date: number;
 }

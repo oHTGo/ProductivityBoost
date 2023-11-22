@@ -3,7 +3,7 @@ import useAppSelector from '@shared/hooks/use-app-selector';
 import { getEmails } from '@shared/slices/email';
 import classNames from 'classnames';
 import moment from 'moment';
-import { type FC } from 'react';
+import { useState, type FC } from 'react';
 import type { IMessage } from '@shared/interfaces/commons';
 
 const EmptyIcon = () => (
@@ -21,8 +21,17 @@ const EmptyIcon = () => (
   </svg>
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const openEmail = (id: string) => {
+  chrome.runtime.sendMessage<IMessage<string>>({
+    event: event.OPEN_EMAIL,
+    payload: id,
+  });
+};
+
 const Email: FC = () => {
   const emails = useAppSelector(getEmails);
+  const [content, setContent] = useState<string>('');
 
   if (emails.length === 0)
     return (
@@ -32,17 +41,18 @@ const Email: FC = () => {
       </div>
     );
 
-  return emails.map(({ id, name, date, subject, snippet }, index) => (
+  if (content) {
+    return <iframe src={content} title={'Email Content'} className="w-full h-full" />;
+  }
+
+  return emails.map(({ id, name, date, subject, body, snippet }, index) => (
     <div
       key={id}
       className={classNames('border-0 border-y border-gray-200 py-2 cursor-pointer mx-1', {
         'border-t-0': index === 0,
       })}
       onClick={() => {
-        chrome.runtime.sendMessage<IMessage<string>>({
-          event: event.OPEN_EMAIL,
-          payload: id,
-        });
+        setContent(body);
       }}>
       <div className="text-sm my-2 flex justify-between">
         <span className="font-bold">{name}</span>
