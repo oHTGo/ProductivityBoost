@@ -9,6 +9,10 @@ const manifest: chrome.runtime.ManifestV3 = {
   version: packageJson.version,
   description: packageJson.description,
   permissions: ['storage', 'identity', 'tabs'],
+  oauth2: {
+    client_id: '',
+    scopes: ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.modify'],
+  },
   options_page: 'src/pages/options/index.html',
   background: {
     service_worker: 'src/pages/background/index.js',
