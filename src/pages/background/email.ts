@@ -14,6 +14,12 @@ interface IGetAllEmailsResponse {
   ];
 }
 interface IPart {
+  headers: [
+    {
+      name: string;
+      value: string;
+    },
+  ];
   mimeType: string;
   body: {
     data: string;
@@ -86,7 +92,7 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
         name: headers.find(({ name }) => name === 'From')?.value ?? '',
         subject: headers.find(({ name }) => name === 'Subject')?.value ?? '',
         snippet: unescape(snippet),
-        body: getBody(parts),
+        body: parts ? getBody(parts) : getBody([payload]),
         date: parseInt(internalDate),
       };
     });
