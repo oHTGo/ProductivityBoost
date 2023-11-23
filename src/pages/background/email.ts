@@ -30,15 +30,7 @@ interface IGetEmailResponse {
   id: string;
   internalDate: string;
   snippet: string;
-  payload: {
-    headers: [
-      {
-        name: string;
-        value: string;
-      },
-    ];
-    parts: IPart[];
-  };
+  payload: IPart;
 }
 
 const getBody = (parts: IPart[]) => {
