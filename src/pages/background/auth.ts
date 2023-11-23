@@ -140,12 +140,6 @@ const customAuth = async (): Promise<void> => {
 };
 
 export const auth: BackgroundFunction<void, void> = async () => {
-  await setLocalStorage(
-    common.CUSTOM_CLIENT_ID,
-    '883947601238-nfshkfrkmkasoc7p07hcv069jga030s7.apps.googleusercontent.com',
-  );
-  await setLocalStorage(common.CUSTOM_CLIENT_SECRET, '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');
-
   const isCustomAuth =
     Boolean(await getLocalStorage(common.CUSTOM_CLIENT_ID)) &&
     Boolean(await getLocalStorage(common.CUSTOM_CLIENT_SECRET));
