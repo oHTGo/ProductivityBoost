@@ -1,5 +1,6 @@
 import { auth } from '@pages/background/auth';
 import { getAllEmails, openEmail } from '@pages/background/email';
+import { setupFrame } from '@pages/background/frame';
 import event from '@shared/constants/event';
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 import type { IMessage } from '@shared/interfaces/commons';
@@ -16,7 +17,6 @@ const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
   [event.GET_ALL_EMAILS]: getAllEmails,
   [event.OPEN_EMAIL]: openEmail,
 };
-
 chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendResponse) => {
   (async () => {
     const { event, payload } = message;
@@ -29,3 +29,5 @@ chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendRespons
   })();
   return true;
 });
+
+setupFrame();

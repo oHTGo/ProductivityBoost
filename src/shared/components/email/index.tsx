@@ -42,7 +42,8 @@ const Email: FC = () => {
     );
 
   if (content) {
-    return <iframe src={content} title={'Email Content'} className="w-full h-full" />;
+    const frameUrl = chrome.runtime.getURL('src/pages/frame/index.html');
+    return <iframe src={`${frameUrl}?src=${encodeURIComponent(content)}`} title="content" className="w-full h-full" />;
   }
 
   return emails.map(({ id, name, date, subject, body, snippet }, index) => (
