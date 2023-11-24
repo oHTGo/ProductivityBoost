@@ -1,4 +1,4 @@
-import { DEFAULT_SCROLLBAR_STYLES } from '../../shared/configurations/twind';
+import { DEFAULT_SCROLLBAR_STYLES } from '@shared/configurations/twind';
 
 const params = new URLSearchParams(window.location.search);
 const src = decodeURIComponent(params.get('src') ?? '');
