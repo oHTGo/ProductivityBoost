@@ -3,13 +3,13 @@ import refreshOnUpdate from 'virtual:reload-on-update-in-view';
 
 refreshOnUpdate('pages/newtab');
 
-const createScrollbarStyles = (document: Document | null) => {
+const insertScrollbarStyles = (document: Document | null) => {
   const style = window.document.createElement('style');
   style.innerHTML = DEFAULT_SCROLLBAR_STYLES.join('\n');
   document?.head.appendChild(style);
 };
 document.addEventListener('DOMContentLoaded', () => {
-  createScrollbarStyles(document);
+  insertScrollbarStyles(document);
 });
 
 const params = new URLSearchParams(window.location.search);
@@ -20,7 +20,7 @@ const iframe = document.createElement('iframe');
 iframe.src = src;
 iframe.style.visibility = 'hidden';
 iframe.addEventListener('load', () => {
-  createScrollbarStyles(iframe.contentDocument);
+  insertScrollbarStyles(iframe.contentDocument);
   iframe.style.visibility = 'visible';
   loader.style.display = 'none';
 });
