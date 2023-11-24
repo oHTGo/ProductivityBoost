@@ -1,9 +1,10 @@
+import common from '@shared/constants/common';
 import { StorageType, createStorage } from '@shared/storages/base';
 import type { ICredential } from '@shared/interfaces/commons';
 import type { BaseStorage } from '@shared/storages/base';
 
 const storage = createStorage<ICredential>(
-  'credential',
+  common.CREDENTIAL,
   {
     clientId: '',
     clientSecret: '',
