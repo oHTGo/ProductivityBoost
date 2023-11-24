@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
+    "@twind/preset-tailwind-forms": "^1.1.2",
     "buffer": "^6.0.3",
     "classnames": "^2.3.2",
     "construct-style-sheets-polyfill": "^3.1.0",

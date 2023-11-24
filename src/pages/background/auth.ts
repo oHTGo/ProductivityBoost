@@ -1,6 +1,11 @@
-import { getConsentClientId } from '@shared/configurations/auth';
+import {
+  checkCustomClient,
+  getConsentClientId,
+  getCustomClientId,
+  getCustomClientSecret,
+} from '@shared/configurations/auth';
 import common from '@shared/constants/common';
-import { getLocalStorage, setLocalStorage } from '@shared/utils/storage';
+import { setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 import type { BackgroundFunction } from '@pages/background';
 
@@ -29,7 +34,7 @@ const getToken = async (): Promise<string | undefined> => {
 };
 
 const getAuthorizationCode = async (): Promise<string | undefined> => {
-  const clientId = await getLocalStorage(common.CUSTOM_CLIENT_ID);
+  const clientId = await getCustomClientId();
   if (!clientId) return;
 
   const response = await chrome.identity.launchWebAuthFlow({
@@ -54,11 +59,9 @@ const getAuthorizationCode = async (): Promise<string | undefined> => {
 };
 
 const getTokens = async (code: string): Promise<{ accessToken: string; refreshToken: string } | undefined> => {
-  const clientId = await getLocalStorage(common.CUSTOM_CLIENT_ID);
-  if (!clientId) return;
-
-  const clientSecret = await getLocalStorage(common.CUSTOM_CLIENT_SECRET);
-  if (!clientSecret) return;
+  const clientId = await getCustomClientId();
+  const clientSecret = await getCustomClientSecret();
+  if (!clientId || !clientSecret) return;
 
   const response = await ky
     .post('https://oauth2.googleapis.com/token', {
@@ -140,9 +143,7 @@ const customAuth = async (): Promise<void> => {
 };
 
 export const auth: BackgroundFunction<void, void> = async () => {
-  const isCustomAuth =
-    Boolean(await getLocalStorage(common.CUSTOM_CLIENT_ID)) &&
-    Boolean(await getLocalStorage(common.CUSTOM_CLIENT_SECRET));
+  const isCustomAuth = await checkCustomClient();
 
   if (isCustomAuth) await customAuth();
   else await defaultAuth();

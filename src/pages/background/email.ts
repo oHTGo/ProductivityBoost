@@ -91,6 +91,6 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
 };
 
 export const openEmail: BackgroundFunction<string, void> = async (id: string) => {
-  const email = await getLocalStorage(common.USER_EMAIL);
+  const email = await getLocalStorage<string>(common.USER_EMAIL);
   chrome.tabs.create({ url: `https://mail.google.com/mail/u/${email}/#inbox/${id}` });
 };

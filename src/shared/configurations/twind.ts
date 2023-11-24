@@ -1,6 +1,7 @@
 import { defineConfig } from '@twind/core';
 import presetAutoprefix from '@twind/preset-autoprefix';
 import presetTailwind from '@twind/preset-tailwind';
+import presetTailwindForms from '@twind/preset-tailwind-forms';
 import presetTypography from '@twind/preset-typography';
 import type { Preset } from '@twind/core';
 
@@ -27,5 +28,5 @@ export const DEFAULT_SCROLLBAR_STYLES = [
 ];
 
 export default defineConfig({
-  presets: [presetAutoprefix(), presetTailwind(), presetTypography(), presetRemToPx()],
+  presets: [presetAutoprefix(), presetTailwind(), presetTypography(), presetTailwindForms(), presetRemToPx()],
 });

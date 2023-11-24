@@ -1,14 +1,16 @@
+import { checkCustomClient, getCustomClientId, getCustomClientSecret } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
 import { getLocalStorage, setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 import type { NormalizedOptions } from 'ky';
 
 const getNewAccessToken = async (): Promise<string | undefined> => {
-  const refreshToken = await getLocalStorage(common.REFRESH_TOKEN);
+  const refreshToken = await getLocalStorage<string>(common.REFRESH_TOKEN);
   if (!refreshToken) return;
 
-  const clientId = await getLocalStorage(common.CUSTOM_CLIENT_ID);
-  const clientSecret = await getLocalStorage(common.CUSTOM_CLIENT_SECRET);
+  const clientId = await getCustomClientId();
+  const clientSecret = await getCustomClientSecret();
+  if (!clientId || !clientSecret) return;
 
   const response = await ky
     .post('https://oauth2.googleapis.com/token', {
@@ -16,8 +18,8 @@ const getNewAccessToken = async (): Promise<string | undefined> => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-        client_id: clientId!,
-        client_secret: clientSecret!,
+        client_id: clientId,
+        client_secret: clientSecret,
         refresh_token: refreshToken,
         grant_type: 'refresh_token',
       }).toString(),
@@ -31,7 +33,7 @@ const getNewAccessToken = async (): Promise<string | undefined> => {
 };
 
 const defaultBeforeInterceptor = async (request: Request) => {
-  const userId = await getLocalStorage(common.USER_ID);
+  const userId = await getLocalStorage<string>(common.USER_ID);
   if (!userId) return request;
 
   const { token } = await chrome.identity.getAuthToken({
@@ -46,7 +48,7 @@ const defaultBeforeInterceptor = async (request: Request) => {
   return request;
 };
 const customBeforeInterceptor = async (request: Request) => {
-  const token = await getLocalStorage(common.ACCESS_TOKEN);
+  const token = await getLocalStorage<string>(common.ACCESS_TOKEN);
   if (!token) return request;
 
   request.headers.set('Authorization', `Bearer ${token}`);
@@ -74,9 +76,7 @@ const instance = ky.create({
   hooks: {
     beforeRequest: [
       async (request) => {
-        const isCustomAuth =
-          Boolean(await getLocalStorage(common.CUSTOM_CLIENT_ID)) &&
-          Boolean(await getLocalStorage(common.CUSTOM_CLIENT_SECRET));
+        const isCustomAuth = await checkCustomClient();
 
         if (isCustomAuth) return await customBeforeInterceptor(request);
         return await defaultBeforeInterceptor(request);
@@ -84,9 +84,7 @@ const instance = ky.create({
     ],
     afterResponse: [
       async (request, options, response) => {
-        const isCustomAuth =
-          Boolean(await getLocalStorage(common.CUSTOM_CLIENT_ID)) &&
-          Boolean(await getLocalStorage(common.CUSTOM_CLIENT_SECRET));
+        const isCustomAuth = await checkCustomClient();
         if (isCustomAuth) return await defaultAfterInterceptor(request, options, response);
         return response;
       },
