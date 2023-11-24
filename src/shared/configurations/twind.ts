@@ -21,7 +21,7 @@ const presetRemToPx = ({ baseValue = 16 } = {}): Preset => {
 
 export const DEFAULT_STYLES = 'font-mono text-black bg-white';
 export const DEFAULT_SCROLLBAR_STYLES = [
-  `::-webkit-scrollbar { width: 5px; }`,
+  `::-webkit-scrollbar { width: 5px; height: 5px; }`,
   `::-webkit-scrollbar-track { background: #f1f1f1; }`,
   `::-webkit-scrollbar-thumb { background: #888; border-radius: 9999px; }`,
   `::-webkit-scrollbar-thumb:hover { background: #555; }`,
