@@ -40,6 +40,7 @@ module.exports = {
     ],
     'import/newline-after-import': 'error',
     'import/no-named-as-default': 'off',
+    'max-lines': ['error', 200],
   },
   globals: { chrome: 'readonly' },
   ignorePatterns: ['watch.js', 'dist/**'],
