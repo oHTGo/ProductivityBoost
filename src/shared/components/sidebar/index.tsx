@@ -96,11 +96,11 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
           width: isExpanded ? sizes.md : '0',
           borderLeftWidth: isExpanded ? '1px' : '0px',
         }}
-        className={classNames('h-full flex-1 border-0 border-slate-300', 'flex flex-col')}>
-        <h4 className="h-8 w-full prose prose-h4 flex justify-center items-center font-semibold border-b-2">
+        className={classNames('h-full border-0 border-slate-300', 'flex flex-col')}>
+        <h4 className="h-8 w-full prose prose-h4 flex justify-center items-center font-semibold border-b-2 select-none">
           {ui.toUpperCase()}
         </h4>
-        <div className="flex-1 overflow-y-auto overflow-x-hidden w-full">{renderUI(ui as Feature)}</div>
+        <div className="flex-1 overflow-auto w-full flex flex-col">{renderUI(ui as Feature)}</div>
       </motion.div>
     </motion.div>
   );

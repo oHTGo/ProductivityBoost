@@ -68,3 +68,9 @@ export const openEmail: BackgroundFunction<string, void> = async (id: string) =>
   const email = await getLocalStorage<string>(common.USER_EMAIL);
   chrome.tabs.create({ url: `https://mail.google.com/mail/u/${email}/#inbox/${id}` });
 };
+
+export const markAsRead: BackgroundFunction<string, void> = async (id: string) => {
+  await api.post(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}/modify`, {
+    removeLabelIds: ['UNREAD'],
+  });
+};
