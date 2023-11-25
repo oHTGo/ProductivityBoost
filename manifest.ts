@@ -8,7 +8,12 @@ const manifest: chrome.runtime.ManifestV3 = {
   name: packageJson.name,
   version: packageJson.version,
   description: packageJson.description,
-  permissions: ['storage'],
+  minimum_chrome_version: '101',
+  permissions: ['storage', 'identity', 'tabs', 'declarativeNetRequest'],
+  oauth2: {
+    client_id: '',
+    scopes: ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.modify'],
+  },
   options_page: 'src/pages/options/index.html',
   background: {
     service_worker: 'src/pages/background/index.js',
@@ -26,14 +31,22 @@ const manifest: chrome.runtime.ManifestV3 = {
   },
   content_scripts: [
     {
-      matches: ['http://*/*', 'https://*/*', '<all_urls>'],
+      matches: ['http://*/*', 'https://*/*'],
       js: ['src/pages/content/index.js'],
     },
   ],
+  content_security_policy: {
+    extension_pages: "font-src 'self'; script-src 'self'; object-src 'self'; worker-src 'self'",
+  },
   devtools_page: 'src/pages/devtools/index.html',
+  host_permissions: ['<all_urls>'],
   web_accessible_resources: [
     {
       resources: ['assets/js/*.js', 'assets/css/*.css', 'icon-128.png', 'icon-34.png'],
+      matches: ['*://*/*'],
+    },
+    {
+      resources: ['src/pages/frame/index.html'],
       matches: ['*://*/*'],
     },
   ],

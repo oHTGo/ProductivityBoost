@@ -15,6 +15,9 @@ module.exports = {
   settings: { react: { version: 'detect' } },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react-hooks/exhaustive-deps': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
     'import/no-unresolved': 'off',
     '@typescript-eslint/consistent-type-imports': 'error',
     'import/order': [
@@ -37,6 +40,7 @@ module.exports = {
     ],
     'import/newline-after-import': 'error',
     'import/no-named-as-default': 'off',
+    'max-lines': ['error', 200],
   },
   globals: { chrome: 'readonly' },
   ignorePatterns: ['watch.js', 'dist/**'],

@@ -9,8 +9,11 @@ const { resolve } = path;
 const distDir = resolve(__dirname, '..', '..', 'dist');
 const publicDir = resolve(__dirname, '..', '..', 'public');
 
-export default function makeManifest(manifest: chrome.runtime.ManifestV3, config: { isDev: boolean }): PluginOption {
-  const { isDev } = config;
+export default function makeManifest(
+  manifest: chrome.runtime.ManifestV3,
+  config: { isDev: boolean; clientId?: string },
+): PluginOption {
+  const { isDev, clientId } = config;
 
   function makeManifest(to: string) {
     if (!fs.existsSync(to)) {
@@ -18,8 +21,11 @@ export default function makeManifest(manifest: chrome.runtime.ManifestV3, config
     }
     const manifestPath = resolve(to, 'manifest.json');
 
-    fs.writeFileSync(manifestPath, ManifestParser.convertManifestToString(manifest));
+    if (clientId) {
+      manifest.oauth2!.client_id = clientId;
+    }
 
+    fs.writeFileSync(manifestPath, ManifestParser.convertManifestToString(manifest));
     colorLog(`Manifest file copy complete: ${manifestPath}`, 'success');
   }
 

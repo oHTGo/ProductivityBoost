@@ -1,6 +1,6 @@
 import App from '@pages/content/ui/app';
 import { store } from '@shared/common/store';
-import config from '@shared/configurations/twind';
+import config, { DEFAULT_SCROLLBAR_STYLES } from '@shared/configurations/twind';
 import { twind, cssom, observe } from '@twind/core';
 import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
@@ -10,11 +10,16 @@ import 'construct-style-sheets-polyfill';
 refreshOnUpdate('pages/content');
 
 const root = document.createElement('productivity-booster');
-document.body.parentNode.append(root);
+document.body.parentNode?.append(root);
 
 const sheet = cssom(new CSSStyleSheet());
 const tw = twind(config, sheet);
 const shadowRoot = root.attachShadow({ mode: 'open' });
+
+for (const rule of DEFAULT_SCROLLBAR_STYLES) {
+  sheet.target.insertRule(rule);
+}
+
 shadowRoot.adoptedStyleSheets = [sheet.target];
 observe(tw, shadowRoot);
 
