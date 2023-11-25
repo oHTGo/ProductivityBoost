@@ -1,7 +1,6 @@
 import { EmailIcon, CalendarIcon, TranslatorIcon } from '@shared/components/sidebar/icons';
-import type { IconProps } from '@shared/components/sidebar/icons';
 import type { Feature } from '@shared/types/commons';
-import type { FC } from 'react';
+import type { FC, SVGProps } from 'react';
 
 export const variants = {
   open: { opacity: 1, x: 0 },
@@ -15,7 +14,7 @@ export const sizes = {
 };
 
 export const sidebarFeatures: {
-  Icon: FC<IconProps>;
+  Icon: FC<SVGProps<SVGSVGElement>>;
   feature: Feature;
 }[] = [
   {
