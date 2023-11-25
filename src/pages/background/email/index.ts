@@ -4,34 +4,8 @@ import common from '@shared/constants/common';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
 import type { BackgroundFunction } from '@pages/background';
+import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@pages/background/email/interfaces';
 import type { IEmail } from '@shared/interfaces/email';
-
-interface IGetAllEmailsResponse {
-  messages: [
-    {
-      id: string;
-    },
-  ];
-}
-interface IPart {
-  headers: [
-    {
-      name: string;
-      value: string;
-    },
-  ];
-  mimeType: string;
-  body: {
-    data: string;
-  };
-  parts?: IPart[];
-}
-interface IGetEmailResponse {
-  id: string;
-  internalDate: string;
-  snippet: string;
-  payload: IPart;
-}
 
 const getBody = (parts: IPart[]) => {
   const alternative = parts.find(
@@ -47,11 +21,11 @@ const getBody = (parts: IPart[]) => {
   try {
     const buffer = Buffer.from(base64HTML, 'base64');
     const html = buffer.toString('utf-8');
-    const insertedHtml = html.includes('<body>')
+    const insertedHTML = html.includes('<body>')
       ? html
       : `<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>${html}</body></html>`;
 
-    return `data:text/html;base64,${Buffer.from(insertedHtml, 'utf-8').toString('base64')}`;
+    return `data:text/html;base64,${Buffer.from(insertedHTML, 'utf-8').toString('base64')}`;
   } catch (error) {
     return '';
   }
