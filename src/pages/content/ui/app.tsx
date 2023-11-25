@@ -38,7 +38,7 @@ export default function App() {
   useInterval(() => fetchAllEmails(), delay.FETCH_EMAILS);
 
   return (
-    <div className={classNames(DEFAULT_STYLES, 'fixed z-[1000] h-full')}>
+    <div className={classNames(DEFAULT_STYLES, 'fixed z-[2147483645] h-full')}>
       <Sidebar onClickOutside={() => dispatch(close())} />
     </div>
   );

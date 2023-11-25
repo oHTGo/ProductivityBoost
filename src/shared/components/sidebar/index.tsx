@@ -50,7 +50,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
       animate={isOpen ? 'open' : 'closed'}
       variants={variants}
       className={classNames(
-        'fixed ml-2 top-2 z-[1000] h-[calc(100%-1rem)] rounded-md border border-slate-300 bg-stone-50 shadow-2xl',
+        'fixed ml-2 top-2 z-[2147483645] h-[calc(100%-1rem)] rounded-md border border-slate-300 bg-stone-50 shadow-2xl',
         'flex',
       )}>
       <div
