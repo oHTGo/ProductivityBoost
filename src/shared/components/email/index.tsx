@@ -20,11 +20,12 @@ const EmptyIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
     </g>
   </svg>
 );
-const CloseIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
+const BackIcon: FC<SVGProps<SVGSVGElement>> = (props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     xmlnsXlink="http://www.w3.org/1999/xlink"
     viewBox="0 0 45.58 45.58"
+    strokeWidth={2}
     xmlSpace="preserve"
     {...props}>
     <g>
@@ -105,7 +106,7 @@ const Email: FC = () => {
   return (
     <>
       <div className="h-5 border-b-2 flex justify-evenly items-center">
-        <CloseIcon
+        <BackIcon
           className="stroke-black fill-white w-3 h-3 cursor-pointer hover:scale-110"
           onClick={() => setEmail(undefined)}
         />
