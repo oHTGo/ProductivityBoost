@@ -1,7 +1,9 @@
 import { auth } from '@pages/background/auth';
 import { getAllEmails, markAsRead, openEmail } from '@pages/background/email';
 import { setupFrame } from '@pages/background/frame';
+import { setupOffscreen } from '@pages/background/offscreen';
 import event from '@shared/constants/event';
+import isNil from 'lodash.isnil';
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 import type { IMessage } from '@shared/interfaces/commons';
 import 'webextension-polyfill';
@@ -25,10 +27,11 @@ chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendRespons
     const func = eventsMap[event];
     if (!func) return sendResponse();
 
-    const response = payload ? await func(payload) : await func();
+    const response = !isNil(payload) ? await func(payload) : await func();
     sendResponse(response);
   })();
   return true;
 });
 
 setupFrame();
+setupOffscreen();

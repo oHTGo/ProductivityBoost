@@ -1,13 +1,14 @@
-import { Buffer } from 'buffer';
 import api from '@shared/clients/api';
 import common from '@shared/constants/common';
+import event from '@shared/constants/event';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
 import type { BackgroundFunction } from '@pages/background';
 import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@pages/background/email/interfaces';
+import type { IMessage } from '@shared/interfaces/commons';
 import type { IEmail } from '@shared/interfaces/email';
 
-const getBody = (parts: IPart[]) => {
+const getBody = async (parts: IPart[]) => {
   const alternative = parts.find(
     (item) => item.mimeType === 'multipart/alternative' || item.mimeType === 'multipart/related',
   );
@@ -19,13 +20,11 @@ const getBody = (parts: IPart[]) => {
   if (!base64HTML) return '';
 
   try {
-    const buffer = Buffer.from(base64HTML, 'base64');
-    const html = buffer.toString('utf-8');
-    const insertedHTML = html.includes('<body>')
-      ? html
-      : `<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>${html}</body></html>`;
-
-    return `data:text/html;base64,${Buffer.from(insertedHTML, 'utf-8').toString('base64')}`;
+    const formattedHTML: string = await chrome.runtime.sendMessage<IMessage<string>>({
+      event: event.FORMAT_EMAIL,
+      payload: base64HTML,
+    });
+    return `data:text/html;base64,${formattedHTML}`;
   } catch (error) {
     return '';
   }
@@ -47,21 +46,23 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
     ),
   );
 
-  return emails
-    .filter((email) => !!email)
-    .map((email) => {
-      const { id, payload, snippet, internalDate } = email!;
-      const { headers, parts } = payload;
+  return await Promise.all(
+    emails
+      .filter((email) => !!email)
+      .map(async (email) => {
+        const { id, payload, snippet, internalDate } = email!;
+        const { headers, parts } = payload;
 
-      return {
-        id,
-        name: headers.find(({ name }) => name === 'From')?.value ?? '',
-        subject: headers.find(({ name }) => name === 'Subject')?.value ?? '',
-        snippet: unescape(snippet),
-        body: parts ? getBody(parts) : getBody([payload]),
-        date: parseInt(internalDate),
-      };
-    });
+        return {
+          id,
+          name: headers.find(({ name }) => name === 'From')?.value ?? '',
+          subject: headers.find(({ name }) => name === 'Subject')?.value ?? '',
+          snippet: unescape(snippet),
+          body: parts ? await getBody(parts) : await getBody([payload]),
+          date: parseInt(internalDate),
+        };
+      }),
+  );
 };
 
 export const openEmail: BackgroundFunction<string, void> = async (id: string) => {

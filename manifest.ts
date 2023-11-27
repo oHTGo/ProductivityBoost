@@ -9,7 +9,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   version: packageJson.version,
   description: packageJson.description,
   minimum_chrome_version: '101',
-  permissions: ['storage', 'identity', 'tabs', 'declarativeNetRequest'],
+  permissions: ['storage', 'identity', 'tabs', 'declarativeNetRequest', 'offscreen'],
   oauth2: {
     client_id: '',
     scopes: ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/gmail.modify'],

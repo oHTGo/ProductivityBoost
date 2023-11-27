@@ -58,6 +58,7 @@ export default defineConfig(({ mode }) => {
           newtab: resolve(pagesDir, 'newtab', 'index.html'),
           options: resolve(pagesDir, 'options', 'index.html'),
           frame: resolve(pagesDir, 'frame', 'index.html'),
+          offscreen: resolve(pagesDir, 'offscreen', 'index.html'),
         },
         output: {
           entryFileNames: 'src/pages/[name]/index.js',
