@@ -46,7 +46,7 @@ const Email: FC = () => {
           <div>
             <DotLottiePlayer className="w-20 h-20" src={emptyLottie} autoplay loop></DotLottiePlayer>
           </div>
-          <span className="prose prose-sm prose-slate">No emails</span>
+          <span className="prose prose-sm prose-slate">No email</span>
         </div>
       );
 
@@ -76,8 +76,8 @@ const Email: FC = () => {
   return (
     <>
       <div className="h-5 border-b-2 flex justify-evenly items-center">
-        <BackIcon className=" w-4 h-4 cursor-pointer hover:scale-110" onClick={() => setEmail(undefined)} />
-        <OpenIcon className=" w-4 h-4 cursor-pointer hover:scale-110" onClick={() => openEmail(email?.id ?? '')} />
+        <BackIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => setEmail(undefined)} />
+        <OpenIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => openEmail(email?.id ?? '')} />
       </div>
       <div className="flex-1 overflow-x-hidden overflow-y-auto">{render()}</div>
     </>

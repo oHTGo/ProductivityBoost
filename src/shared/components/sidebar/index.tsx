@@ -21,7 +21,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
   const emails = useAppSelector(getEmails);
   const dispatch = useAppDispatch();
 
-  const renderUI = (feature: Feature) => {
+  const renderViewer = (feature: Feature) => {
     switch (feature) {
       case 'email':
         return <Email />;
@@ -100,7 +100,7 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
         <h4 className="h-8 w-full prose prose-h4 flex justify-center items-center font-semibold border-b-2 select-none">
           {ui.toUpperCase()}
         </h4>
-        <div className="flex-1 overflow-auto w-full flex flex-col">{renderUI(ui as Feature)}</div>
+        <div className="flex-1 overflow-auto w-full flex flex-col">{renderViewer(ui as Feature)}</div>
       </motion.div>
     </motion.div>
   );
