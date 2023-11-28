@@ -1,4 +1,4 @@
-import { EmailIcon, CalendarIcon, TranslatorIcon } from '@shared/components/sidebar/icons';
+import { EmailIcon, CalendarIcon, TranslatorIcon } from '@shared/components/icons/outline';
 import type { Feature } from '@shared/types/commons';
 import type { FC, SVGProps } from 'react';
 
