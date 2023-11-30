@@ -1,6 +1,6 @@
 import emptyLottie from '@assets/lotties/empty.json';
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { BackIcon, OpenIcon } from '@shared/components/icons/outline';
+import { BackIcon, DeleteIcon, OpenIcon } from '@shared/components/icons/outline';
 import SidebarView from '@shared/components/sidebar/view';
 import event from '@shared/constants/event';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
@@ -76,12 +76,24 @@ const Email: FC = () => {
 
   return (
     <SidebarView
-      menu={
-        <>
-          <BackIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => setEmail(undefined)} />
-          <OpenIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => openEmail(email?.id ?? '')} />
-        </>
-      }
+      startMenu={[
+        {
+          Icon: BackIcon,
+          onClick: () => setEmail(undefined),
+          isHide: !email,
+        },
+        {
+          Icon: DeleteIcon,
+          onClick: () => {},
+          isHide: !email,
+        },
+      ]}
+      endMenu={[
+        {
+          Icon: OpenIcon,
+          onClick: () => openEmail(email?.id ?? ''),
+        },
+      ]}
       content={render()}
     />
   );
