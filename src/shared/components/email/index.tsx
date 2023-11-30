@@ -1,6 +1,7 @@
 import emptyLottie from '@assets/lotties/empty.json';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { BackIcon, OpenIcon } from '@shared/components/icons/outline';
+import SidebarViewer from '@shared/components/sidebar/viewer';
 import event from '@shared/constants/event';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import useAppSelector from '@shared/hooks/use-app-selector';
@@ -74,13 +75,15 @@ const Email: FC = () => {
   };
 
   return (
-    <>
-      <div className="h-5 border-b-2 flex justify-evenly items-center">
-        <BackIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => setEmail(undefined)} />
-        <OpenIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => openEmail(email?.id ?? '')} />
-      </div>
-      <div className="flex-1 overflow-x-hidden overflow-y-auto">{render()}</div>
-    </>
+    <SidebarViewer
+      menu={
+        <>
+          <BackIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => setEmail(undefined)} />
+          <OpenIcon className="w-4 h-4 cursor-pointer hover:scale-110" onClick={() => openEmail(email?.id ?? '')} />
+        </>
+      }
+      content={render()}
+    />
   );
 };
 
