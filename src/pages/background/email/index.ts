@@ -17,7 +17,10 @@ const getBody = async (parts: IPart[]) => {
   }
 
   const base64HTML = parts.find((item) => item.mimeType === 'text/html')?.body?.data ?? '';
-  if (!base64HTML) return '';
+  if (!base64HTML) {
+    const base64Text = parts.find((item) => item.mimeType === 'text/plain')?.body?.data ?? '';
+    return `data:text/plain;base64,${base64Text}`;
+  }
 
   try {
     const formattedHTML: string = await chrome.runtime.sendMessage<IMessage<string>>({
