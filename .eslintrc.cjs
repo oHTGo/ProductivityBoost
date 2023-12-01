@@ -41,6 +41,8 @@ module.exports = {
     'import/newline-after-import': 'error',
     'import/no-named-as-default': 'off',
     'max-lines': ['error', 200],
+    'no-new-wrappers': 'error',
+    radix: 'error',
   },
   globals: { chrome: 'readonly' },
   ignorePatterns: ['watch.js', 'dist/**'],

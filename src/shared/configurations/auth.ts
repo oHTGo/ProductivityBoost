@@ -23,5 +23,5 @@ export const getCustomClientSecret = async (): Promise<string | undefined> => {
 export const checkCustomClient = async (): Promise<boolean> => {
   const clientId = await getCustomClientId();
   const clientSecret = await getCustomClientSecret();
-  return Boolean(clientId) && Boolean(clientSecret);
+  return !!clientId && !!clientSecret;
 };

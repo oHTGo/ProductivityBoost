@@ -112,6 +112,7 @@ const Email: FC = () => {
           onClick: () => {
             reloadEmails((emails) => dispatch(setEmails(emails)));
           },
+          isHide: !!email,
         },
         {
           Icon: OpenIcon,
