@@ -75,3 +75,7 @@ export const markAsRead: BackgroundFunction<string, void> = async (id: string) =
     removeLabelIds: ['UNREAD'],
   });
 };
+
+export const deleteEmail: BackgroundFunction<string, void> = async (id: string) => {
+  await api.post(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}/trash`);
+};

@@ -24,6 +24,12 @@ const openEmail = (id: string) => {
     payload: id,
   });
 };
+const deleteEmail = (id: string) => {
+  chrome.runtime.sendMessage<IMessage<string>>({
+    event: event.DELETE_EMAIL,
+    payload: id,
+  });
+};
 
 const Email: FC = () => {
   const emails = useAppSelector(getEmails);
@@ -84,7 +90,10 @@ const Email: FC = () => {
         },
         {
           Icon: DeleteIcon,
-          onClick: () => {},
+          onClick: () => {
+            deleteEmail(email!.id);
+            setEmail(undefined);
+          },
           isHide: !email,
         },
       ]}

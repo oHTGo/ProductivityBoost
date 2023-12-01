@@ -1,5 +1,5 @@
 import { auth } from '@pages/background/auth';
-import { getAllEmails, markAsRead, openEmail } from '@pages/background/email';
+import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@pages/background/email';
 import { setupFrame } from '@pages/background/frame';
 import { setupOffscreen } from '@pages/background/offscreen';
 import event from '@shared/constants/event';
@@ -19,6 +19,7 @@ const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
   [event.GET_ALL_EMAILS]: getAllEmails,
   [event.OPEN_EMAIL]: openEmail,
   [event.MARK_AS_READ]: markAsRead,
+  [event.DELETE_EMAIL]: deleteEmail,
 };
 chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendResponse) => {
   (async () => {
