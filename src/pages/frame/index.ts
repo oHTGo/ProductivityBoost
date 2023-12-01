@@ -1,4 +1,5 @@
 import { DEFAULT_SCROLLBAR_STYLES } from '@shared/configurations/twind';
+import moment from 'moment';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
 
 refreshOnUpdate('pages/newtab');
@@ -24,5 +25,9 @@ iframe.addEventListener('load', () => {
   iframe.style.visibility = 'visible';
   loader.style.display = 'none';
 });
+setTimeout(() => {
+  iframe.style.visibility = 'visible';
+  loader.style.display = 'none';
+}, moment.duration(5, 'seconds').asMilliseconds());
 
 document.body.appendChild(iframe);
