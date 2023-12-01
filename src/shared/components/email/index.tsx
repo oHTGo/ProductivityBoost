@@ -1,6 +1,6 @@
 import emptyLottie from '@assets/lotties/empty.json';
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { BackIcon, DeleteIcon, OpenIcon } from '@shared/components/icons/outline';
+import { BackIcon, DeleteIcon, OpenIcon, ReloadIcon } from '@shared/components/icons/outline';
 import SidebarView from '@shared/components/sidebar/view';
 import event from '@shared/constants/event';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import { useState } from 'react';
 import type { IMessage } from '@shared/interfaces/commons';
+import type { IEmail } from '@shared/interfaces/email';
 import type { FC } from 'react';
 
 const markAsRead = (id: string) => {
@@ -29,6 +30,14 @@ const deleteEmail = (id: string) => {
     event: event.DELETE_EMAIL,
     payload: id,
   });
+};
+const reloadEmails = (callback: (emails: IEmail[]) => void) => {
+  chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
+    {
+      event: event.GET_ALL_EMAILS,
+    },
+    callback,
+  );
 };
 
 const Email: FC = () => {
@@ -98,6 +107,12 @@ const Email: FC = () => {
         },
       ]}
       endMenu={[
+        {
+          Icon: ReloadIcon,
+          onClick: () => {
+            reloadEmails((emails) => dispatch(setEmails(emails)));
+          },
+        },
         {
           Icon: OpenIcon,
           onClick: () => openEmail(email?.id ?? ''),
