@@ -3,10 +3,10 @@ import common from '@shared/constants/common';
 import event from '@shared/constants/event';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
-import type { BackgroundFunction } from '@pages/background';
-import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@pages/background/email/interfaces';
+import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@shared/common/email/interfaces';
 import type { IMessage } from '@shared/interfaces/commons';
 import type { IEmail } from '@shared/interfaces/email';
+import type { BackgroundFunction } from '@shared/types/commons';
 
 const getBody = async (parts: IPart[]) => {
   const alternative = parts.find(

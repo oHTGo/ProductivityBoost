@@ -1,18 +1,17 @@
-import { auth } from '@pages/background/auth';
-import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@pages/background/email';
-import { setupFrame } from '@pages/background/frame';
-import { setupOffscreen } from '@pages/background/offscreen';
+import { auth } from '@shared/common/auth/background';
+import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@shared/common/email/background';
+import { setupFrame } from '@shared/common/frame/background';
+import { setupOffscreen } from '@shared/common/offscreen/background';
 import event from '@shared/constants/event';
 import isNil from 'lodash.isnil';
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
 import type { IMessage } from '@shared/interfaces/commons';
+import type { BackgroundFunction } from '@shared/types/commons';
 import 'webextension-polyfill';
 
 reloadOnUpdate('pages/background');
 
 console.log('background loaded');
-
-export type BackgroundFunction<TPayload, TResult> = (payload?: TPayload) => Promise<TResult>;
 
 const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
   [event.LOGIN]: auth,

@@ -1,7 +1,8 @@
+import { auth } from '@shared/common/auth/action';
+import { fetchEmails } from '@shared/common/email/action';
 import Sidebar from '@shared/components/sidebar';
 import { DEFAULT_STYLES } from '@shared/configurations/twind';
 import delay from '@shared/constants/delay';
-import event from '@shared/constants/event';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
@@ -12,28 +13,18 @@ import credentialStorage from '@shared/storages/credential';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useInterval } from 'usehooks-ts';
-import type { IMessage } from '@shared/interfaces/commons';
 import type { IEmail } from '@shared/interfaces/email';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
+  const callback = (emails: IEmail[]) => dispatch(setEmails(emails));
   const { clientId, clientSecret } = useStorage(credentialStorage);
-
-  const fetchAllEmails = () =>
-    chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
-      {
-        event: event.GET_ALL_EMAILS,
-      },
-      (emails) => {
-        dispatch(setEmails(emails ?? []));
-      },
-    );
 
   useEffect(() => {
     dispatch(open());
-    fetchAllEmails();
+    fetchEmails(callback);
   }, [dispatch]);
-  useInterval(() => fetchAllEmails(), delay.FETCH_EMAILS);
+  useInterval(() => fetchEmails(callback), delay.FETCH_EMAILS);
 
   return (
     <div className={classNames(DEFAULT_STYLES)}>
@@ -63,13 +54,7 @@ const NewTab = () => {
             onChange={(e) => credentialStorage.setClientSecret(e.target.value)}
           />
         </div>
-        <button
-          className="bg-stone-300 rounded-md p-2"
-          onClick={() => {
-            chrome.runtime.sendMessage<IMessage<void>>({
-              event: event.LOGIN,
-            });
-          }}>
+        <button className="bg-stone-300 rounded-md p-2" onClick={auth}>
           Login
         </button>
       </div>
