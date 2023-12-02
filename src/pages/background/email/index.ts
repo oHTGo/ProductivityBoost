@@ -27,7 +27,7 @@ const getBody = async (parts: IPart[]) => {
       event: event.FORMAT_EMAIL,
       payload: base64HTML,
     });
-    return `data:text/html;base64,${formattedHTML}`;
+    return `data:text/html;charset=utf-8;base64,${formattedHTML}`;
   } catch (error) {
     return '';
   }
