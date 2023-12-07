@@ -33,7 +33,7 @@ const Email: FC = () => {
           <div>
             <DotLottiePlayer className="w-20 h-20" src={emptyLottie} autoplay loop></DotLottiePlayer>
           </div>
-          <span className="prose prose-sm prose-slate">No email</span>
+          <span className="prose prose-slate select-none">No email</span>
         </div>
       );
 
