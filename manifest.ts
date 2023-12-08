@@ -33,6 +33,9 @@ const manifest: chrome.runtime.ManifestV3 = {
     {
       matches: ['http://*/*', 'https://*/*'],
       js: ['src/pages/content/index.js'],
+      all_frames: true,
+      match_about_blank: true,
+      run_at: 'document_end',
     },
   ],
   content_security_policy: {

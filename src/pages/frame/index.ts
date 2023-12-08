@@ -2,16 +2,13 @@ import { DEFAULT_SCROLLBAR_STYLES } from '@shared/configurations/twind';
 import moment from 'moment';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
 
-refreshOnUpdate('pages/newtab');
+refreshOnUpdate('pages/frame');
 
 const insertScrollbarStyles = (document: Document | null) => {
   const style = window.document.createElement('style');
   style.innerHTML = DEFAULT_SCROLLBAR_STYLES.join('\n');
   document?.head.appendChild(style);
 };
-document.addEventListener('DOMContentLoaded', () => {
-  insertScrollbarStyles(document);
-});
 
 const params = new URLSearchParams(window.location.search);
 const src = decodeURIComponent(params.get('src') ?? '');
