@@ -1,10 +1,9 @@
 import api from '@shared/clients/api';
+import { parseEmail } from '@shared/common/offscreen/action';
 import common from '@shared/constants/common';
-import event from '@shared/constants/event';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
 import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@shared/common/email/interfaces';
-import type { IMessage } from '@shared/interfaces/commons';
 import type { IEmail } from '@shared/interfaces/email';
 import type { BackgroundFunction } from '@shared/types/commons';
 
@@ -23,11 +22,8 @@ const getBody = async (parts: IPart[]) => {
   }
 
   try {
-    const formattedHTML: string = await chrome.runtime.sendMessage<IMessage<string>>({
-      event: event.FORMAT_EMAIL,
-      payload: base64HTML,
-    });
-    return `data:text/html;charset=utf-8;base64,${formattedHTML}`;
+    const parsedEmail: string = await parseEmail(base64HTML);
+    return `data:text/html;charset=utf-8;base64,${parsedEmail}`;
   } catch (error) {
     return '';
   }
