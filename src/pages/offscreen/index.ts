@@ -1,4 +1,4 @@
-import { parseEmail } from '@shared/common/offscreen/background';
+import { parseEmail } from '@shared/common/offscreen/backgrounds';
 import event from '@shared/constants/event';
 import type { IMessage } from '@shared/interfaces/commons';
 

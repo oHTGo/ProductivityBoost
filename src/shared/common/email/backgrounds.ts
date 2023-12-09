@@ -1,5 +1,5 @@
 import api from '@shared/clients/api';
-import { parseEmail } from '@shared/common/offscreen/action';
+import { parseEmail } from '@shared/common/offscreen/actions';
 import common from '@shared/constants/common';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';

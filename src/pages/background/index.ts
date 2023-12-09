@@ -1,7 +1,7 @@
-import { auth } from '@shared/common/auth/background';
-import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@shared/common/email/background';
-import { setupFrame } from '@shared/common/frame/background';
-import { setupOffscreen } from '@shared/common/offscreen/background';
+import { auth } from '@shared/common/auth/backgrounds';
+import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@shared/common/email/backgrounds';
+import { setupFrame } from '@shared/common/frame/backgrounds';
+import { setupOffscreen } from '@shared/common/offscreen/backgrounds';
 import event from '@shared/constants/event';
 import isNil from 'lodash.isnil';
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';

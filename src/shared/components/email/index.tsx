@@ -1,6 +1,6 @@
 import emptyLottie from '@assets/lotties/empty.json';
 import { DotLottiePlayer } from '@dotlottie/react-player';
-import { fetchEmails, openEmail, deleteEmail, markAsRead } from '@shared/common/email/action';
+import { fetchEmails, openEmail, deleteEmail, markAsRead } from '@shared/common/email/actions';
 import { BackIcon, DeleteIcon, OpenIcon, ReloadIcon } from '@shared/components/icons/outline';
 import SidebarView from '@shared/components/sidebar/view';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';

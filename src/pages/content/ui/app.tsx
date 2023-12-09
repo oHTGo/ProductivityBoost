@@ -1,4 +1,4 @@
-import { fetchEmails } from '@shared/common/email/action';
+import { fetchEmails } from '@shared/common/email/actions';
 import Sidebar from '@shared/components/sidebar';
 import { DEFAULT_STYLES } from '@shared/configurations/twind';
 import delay from '@shared/constants/delay';
