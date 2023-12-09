@@ -28,6 +28,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.5",
     "@reduxjs/toolkit": "^1.9.7",
     "@twind/preset-tailwind-forms": "^1.1.2",
     "buffer": "^6.0.3",
@@ -35,6 +36,7 @@
     "construct-style-sheets-polyfill": "^3.1.0",
     "framer-motion": "^10.16.4",
     "ky": "0.33.3",
+    "lodash.isnil": "^4.0.0",
     "lodash.unescape": "^4.0.1",
     "moment": "^2.29.4",
     "react": "18.2.0",
@@ -55,6 +57,7 @@
     "@twind/preset-typography": "^1.0.7",
     "@types/chrome": "0.0.248",
     "@types/jest": "29.5.7",
+    "@types/lodash.isnil": "^4.0.9",
     "@types/lodash.unescape": "^4.0.9",
     "@types/node": "20.8.10",
     "@types/react": "18.2.35",

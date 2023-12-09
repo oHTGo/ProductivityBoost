@@ -7,7 +7,7 @@ import {
 import common from '@shared/constants/common';
 import { setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
-import type { BackgroundFunction } from '@pages/background';
+import type { BackgroundFunction } from '@shared/types/commons';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
 const scopes = chrome.runtime.getManifest().oauth2?.scopes ?? [];

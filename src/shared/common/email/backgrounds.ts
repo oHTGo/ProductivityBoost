@@ -1,13 +1,13 @@
-import { Buffer } from 'buffer';
 import api from '@shared/clients/api';
+import { parseEmail } from '@shared/common/offscreen/actions';
 import common from '@shared/constants/common';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
-import type { BackgroundFunction } from '@pages/background';
-import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@pages/background/email/interfaces';
+import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@shared/common/email/interfaces';
 import type { IEmail } from '@shared/interfaces/email';
+import type { BackgroundFunction } from '@shared/types/commons';
 
-const getBody = (parts: IPart[]) => {
+const getBody = async (parts: IPart[]) => {
   const alternative = parts.find(
     (item) => item.mimeType === 'multipart/alternative' || item.mimeType === 'multipart/related',
   );
@@ -16,16 +16,14 @@ const getBody = (parts: IPart[]) => {
   }
 
   const base64HTML = parts.find((item) => item.mimeType === 'text/html')?.body?.data ?? '';
-  if (!base64HTML) return '';
+  if (!base64HTML) {
+    const base64Text = parts.find((item) => item.mimeType === 'text/plain')?.body?.data ?? '';
+    return `data:text/plain;charset=utf-8;base64,${base64Text}`;
+  }
 
   try {
-    const buffer = Buffer.from(base64HTML, 'base64');
-    const html = buffer.toString('utf-8');
-    const insertedHTML = html.includes('<body>')
-      ? html
-      : `<!doctype html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head><body>${html}</body></html>`;
-
-    return `data:text/html;base64,${Buffer.from(insertedHTML, 'utf-8').toString('base64')}`;
+    const parsedEmail: string = await parseEmail(base64HTML);
+    return `data:text/html;charset=utf-8;base64,${parsedEmail}`;
   } catch (error) {
     return '';
   }
@@ -47,21 +45,23 @@ export const getAllEmails: BackgroundFunction<void, IEmail[]> = async () => {
     ),
   );
 
-  return emails
-    .filter((email) => !!email)
-    .map((email) => {
-      const { id, payload, snippet, internalDate } = email!;
-      const { headers, parts } = payload;
+  return await Promise.all(
+    emails
+      .filter((email) => !!email)
+      .map(async (email) => {
+        const { id, payload, snippet, internalDate } = email!;
+        const { headers, parts } = payload;
 
-      return {
-        id,
-        name: headers.find(({ name }) => name === 'From')?.value ?? '',
-        subject: headers.find(({ name }) => name === 'Subject')?.value ?? '',
-        snippet: unescape(snippet),
-        body: parts ? getBody(parts) : getBody([payload]),
-        date: parseInt(internalDate),
-      };
-    });
+        return {
+          id,
+          name: headers.find(({ name }) => name === 'From')?.value ?? '',
+          subject: headers.find(({ name }) => name === 'Subject')?.value ?? '',
+          snippet: unescape(snippet),
+          body: parts ? await getBody(parts) : await getBody([payload]),
+          date: Number(internalDate),
+        };
+      }),
+  );
 };
 
 export const openEmail: BackgroundFunction<string, void> = async (id: string) => {
@@ -73,4 +73,8 @@ export const markAsRead: BackgroundFunction<string, void> = async (id: string) =
   await api.post(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}/modify`, {
     removeLabelIds: ['UNREAD'],
   });
+};
+
+export const deleteEmail: BackgroundFunction<string, void> = async (id: string) => {
+  await api.post(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}/trash`);
 };

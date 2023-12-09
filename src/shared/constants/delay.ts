@@ -1,6 +1,5 @@
-const second = 1000;
-const minute = 60 * second;
+import moment from 'moment';
 
 export default {
-  FETCH_EMAILS: minute * 5,
+  FETCH_EMAILS: moment.duration(5, 'minutes').asMilliseconds(),
 };
