@@ -18,6 +18,13 @@ export const parseEmail = async (base64Email: string) => {
     a.setAttribute('target', '_blank');
   });
 
+  dom.querySelectorAll('img').forEach((img) => {
+    const src = img.getAttribute('src');
+    if (!src?.startsWith('cid:')) return;
+    img.setAttribute('width', '0');
+    img.setAttribute('height', '0');
+  });
+
   const encodedEmail = Buffer.from(dom.documentElement.innerHTML, 'utf-8').toString('base64');
   return encodedEmail;
 };
