@@ -7,6 +7,7 @@ export default {
   launch: {
     dumpio: true,
     headless: false,
+    timeout: 0,
     executablePath: process.env.PUPPETEER_EXEC_PATH,
     args: [
       '--no-sandbox',
