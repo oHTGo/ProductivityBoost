@@ -6,7 +6,7 @@ const EXTENSION_PATH = join(process.cwd(), 'dist');
 export default {
   launch: {
     dumpio: true,
-    headless: false,
+    headless: 'new',
     timeout: 0,
     executablePath: process.env.PUPPETEER_EXEC_PATH,
     args: [
