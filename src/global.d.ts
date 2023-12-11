@@ -1,4 +1,10 @@
 import Chrome from 'chrome';
+import type { Browser } from 'jest-puppeteer';
+
+declare global {
+  // eslint-disable-next-line no-var
+  var browser: Browser;
+}
 
 declare namespace chrome {
   export default Chrome;

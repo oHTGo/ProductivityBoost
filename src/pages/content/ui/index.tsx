@@ -29,7 +29,7 @@ const checkWindowInIframe = (window: Window) => {
     }
   });
 
-  const root = document.createElement('productivity-booster');
+  const root = document.createElement(chrome.runtime.getManifest().name);
   document.body.parentNode?.append(root);
 
   const sheet = cssom(new CSSStyleSheet());

@@ -44,6 +44,6 @@ module.exports = {
     'no-new-wrappers': 'error',
     radix: 'error',
   },
-  globals: { chrome: 'readonly' },
+  globals: { chrome: 'readonly', page: true, browser: true, context: true, puppeteerConfig: true, jestPuppeteer: true },
   ignorePatterns: ['watch.js', 'dist/**'],
 };
