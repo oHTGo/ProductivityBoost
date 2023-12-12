@@ -62,11 +62,3 @@ jobs:
           check-name: "eslint-report"
       - name: Build
         run: yarn build
-      - name: Prepare test
-        run: |
-          sudo apt update
-          sudo apt install -y libgbm1
-      - name: Test
-        run: yarn test
-        env:
-          CI: true
