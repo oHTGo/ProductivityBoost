@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import Chrome from 'chrome';
 import type { Browser } from 'jest-puppeteer';
 
