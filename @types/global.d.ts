@@ -1,11 +1,15 @@
 /// <reference types="vite/client" />
+/* eslint-disable no-var */
 
 import Chrome from 'chrome';
-import type { Browser } from 'jest-puppeteer';
+import type { JestPuppeteerGlobal } from 'jest-environment-puppeteer';
 
 declare global {
-  // eslint-disable-next-line no-var
-  var browser: Browser;
+  // type for testing environment
+  var jestPuppeteer: JestPuppeteerGlobal['jestPuppeteer'];
+  var context: JestPuppeteerGlobal['context'];
+  var browser: JestPuppeteerGlobal['browser'];
+  var page: JestPuppeteerGlobal['page'];
 }
 
 declare namespace chrome {
