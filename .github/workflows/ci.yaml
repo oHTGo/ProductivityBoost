@@ -64,8 +64,8 @@ jobs:
         run: yarn build
       - name: Prepare test
         run: |
-          apt update
-          apt install -y ca-certificates \
+          sudo apt update
+          sudo apt install -y ca-certificates \
             fonts-liberation \
             libasound2 \
             libatk-bridge2.0-0 \
