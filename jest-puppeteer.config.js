@@ -6,7 +6,7 @@ const EXTENSION_PATH = join(process.cwd(), 'dist');
 export default {
   launch: {
     dumpio: true,
-    headless: 'new',
+    headless: false,
     args: [
       '--disable-gpu',
       '--disable-setuid-sandbox',
