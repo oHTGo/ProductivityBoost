@@ -63,7 +63,7 @@ jobs:
       - name: Build
         run: yarn build
       - name: Prepare test
-        run: /usr/bin/chromium-browser --pack-extension=dist
+        run: /usr/bin/chromium-browser --load-extension=./dist
       - name: Test
         run: xvfb-run --server-args="-screen 0 1920x1080x24" --auto-servernum yarn test
         env:
