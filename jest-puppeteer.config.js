@@ -6,11 +6,11 @@ const EXTENSION_PATH = join(process.cwd(), 'dist');
 export default {
   launch: {
     dumpio: true,
-    headless: process.env.CI ? 'new' : false,
+    headless: false,
     args: [
       '--disable-gpu',
-      '--no-sandbox',
       '--disable-setuid-sandbox',
+      '--no-sandbox',
       `--disable-extensions-except=${EXTENSION_PATH}`,
       `--load-extension=${EXTENSION_PATH}`,
     ],
