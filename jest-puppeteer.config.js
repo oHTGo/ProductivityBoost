@@ -6,7 +6,13 @@ const EXTENSION_PATH = join(process.cwd(), 'dist');
 export default {
   launch: {
     dumpio: true,
-    headless: false,
-    args: ['--disable-gpu', `--disable-extensions-except=${EXTENSION_PATH}`, `--load-extension=${EXTENSION_PATH}`],
+    headless: 'new',
+    args: [
+      '--disable-gpu',
+      '--disable-setuid-sandbox',
+      '--no-sandbox',
+      `--disable-extensions-except=${EXTENSION_PATH}`,
+      `--load-extension=${EXTENSION_PATH}`,
+    ],
   },
 };
