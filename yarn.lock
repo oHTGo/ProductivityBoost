@@ -5650,6 +5650,14 @@ postcss@^8.4.18:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
+pptr-mock-server@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/pptr-mock-server/-/pptr-mock-server-1.3.0.tgz#e282eb692a1320c65537ae29c1c7c3f18f79850f"
+  integrity sha512-I3luSZS8BL4nrVY0dgP/Wwe/emI8kBRxzwQArOvr9CU+qyzJTKgHoDMvFL+yNx/lJmgw239Jgi7JW9KNY8lMtg==
+  dependencies:
+    chalk "^4.1.2"
+    lodash "^4.17.15"
+
 prebuild-install@^7.1.1:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/prebuild-install/-/prebuild-install-7.1.1.tgz#de97d5b34a70a0c81334fd24641f2a1702352e45"
