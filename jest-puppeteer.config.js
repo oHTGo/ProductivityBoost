@@ -9,6 +9,12 @@ export default {
     headless: false,
     timeout: 0,
     executablePath: process.env.PUPPETEER_EXEC_PATH,
-    args: ['--disable-gpu', `--load-extension=${EXTENSION_PATH}`, `--disable-extensions-except=${EXTENSION_PATH}`],
+    args: [
+      '--disable-gpu',
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      `--load-extension=${EXTENSION_PATH}`,
+      `--disable-extensions-except=${EXTENSION_PATH}`,
+    ],
   },
 };
