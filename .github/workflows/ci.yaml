@@ -63,6 +63,8 @@ jobs:
       - name: Build
         run: yarn build
       - name: Test
-        run: xvfb-run --server-args="-screen 0 1920x1080x24" yarn test
+        run: |
+          sudo sysctl -w kernel.unprivileged_userns_clone=1
+          xvfb-run --server-args="-screen 0 1920x1080x24" yarn test
         env:
           CI: true
