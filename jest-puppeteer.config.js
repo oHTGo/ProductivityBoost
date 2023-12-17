@@ -15,6 +15,7 @@ export default {
       '--disable-setuid-sandbox',
       `--load-extension=${EXTENSION_PATH}`,
       `--disable-extensions-except=${EXTENSION_PATH}`,
+      '--window-size=1280,1024',
     ],
   },
 };
