@@ -7,6 +7,7 @@ export default {
   launch: {
     dumpio: true,
     headless: false,
+    timeout: 0,
     args: ['--disable-gpu', `--load-extension=${EXTENSION_PATH}`, `--disable-extensions-except=${EXTENSION_PATH}`],
   },
 };
