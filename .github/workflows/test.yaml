@@ -1,4 +1,4 @@
-name: CI
+name: Test
 on:
   pull_request:
     branches:
@@ -8,7 +8,7 @@ on:
       - edited
       - synchronize
 jobs:
-  ci:
+  test:
     runs-on: windows-2022
     steps:
       - name: Checkout
