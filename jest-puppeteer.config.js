@@ -8,6 +8,7 @@ export default {
     dumpio: true,
     headless: false,
     timeout: 0,
+    executablePath: process.env.PUPPETEER_EXEC_PATH,
     args: ['--disable-gpu', `--load-extension=${EXTENSION_PATH}`, `--disable-extensions-except=${EXTENSION_PATH}`],
   },
 };
