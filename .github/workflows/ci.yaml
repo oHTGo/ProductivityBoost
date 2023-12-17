@@ -62,5 +62,5 @@ jobs:
           check-name: "eslint-report"
       - name: Build
         run: yarn build
-        env:
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
+      - name: Test
+        run: yarn test
