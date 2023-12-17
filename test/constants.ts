@@ -49,4 +49,4 @@ export const NETWORK_PRESETS = {
   },
 };
 
-export const EXTENSION_ID = 'pegbbopleenglkcmjbbfdbbbbgjgipma';
+export const EXTENSION_ID = 'dbddgkkekpnigajkjphjkliolfemohdn';
