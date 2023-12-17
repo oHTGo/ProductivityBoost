@@ -7,12 +7,6 @@ export default {
   launch: {
     dumpio: true,
     headless: 'new',
-    args: [
-      '--disable-gpu',
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      `--load-extension=${EXTENSION_PATH}`,
-      `--disable-extensions-except=${EXTENSION_PATH}`,
-    ],
+    args: ['--disable-gpu', `--load-extension=${EXTENSION_PATH}`, `--disable-extensions-except=${EXTENSION_PATH}`],
   },
 };
