@@ -65,10 +65,4 @@ jobs:
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - name: Test
-        uses: mujo-code/puppeteer-headful@18.9.0
-        with:
-          args: yarn test
-      # - name: Test
-      #   run: docker run -v ./:/app -w /app -e DISPLAY=:99 ghcr.io/puppeteer/puppeteer:latest yarn test
-      #   env:
-      #     DISPLAY: ":99"
+        run: docker run -v ./:/app -w /app ghcr.io/puppeteer/puppeteer:latest yarn test
