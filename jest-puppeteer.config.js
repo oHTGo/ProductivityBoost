@@ -6,7 +6,8 @@ const EXTENSION_PATH = join(process.cwd(), 'dist');
 export default {
   launch: {
     dumpio: true,
-    headless: 'new',
+    headless: false,
+    ignoreHTTPSErrors: true,
     args: [
       '--disable-gpu',
       '--disable-dev-shm-usage',
