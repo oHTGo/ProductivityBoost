@@ -15,6 +15,7 @@ export default {
       '--disable-web-security',
       `--load-extension=${EXTENSION_PATH}`,
       `--disable-extensions-except=${EXTENSION_PATH}`,
+      `--allowlisted-extension-id=dbddgkkekpnigajkjphjkliolfemohdn`,
     ],
   },
 };
