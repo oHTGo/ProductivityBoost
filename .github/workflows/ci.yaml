@@ -65,6 +65,6 @@ jobs:
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - name: Test
-        run: docker run -v ./:/app -w /app ghcr.io/puppeteer/puppeteer:latest yarn test
+        run: docker run -v ./:/app -w /app -e DISPLAY=:99 ghcr.io/puppeteer/puppeteer:latest yarn test
         env:
           DISPLAY: ":99"
