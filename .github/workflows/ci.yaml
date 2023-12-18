@@ -43,7 +43,7 @@ jobs:
       #   continue-on-error: true
       #   run: yarn list
       - name: Install packages
-        run: yarn install --frozen-lockfile
+        run: npm install -g yarn && yarn install --frozen-lockfile
       - name: Lint PR
         uses: amannn/action-semantic-pull-request@v5
         env:
