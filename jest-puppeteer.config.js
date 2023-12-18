@@ -8,6 +8,7 @@ export default {
     dumpio: true,
     headless: 'new',
     ignoreHTTPSErrors: true,
+    executablePath: process.env.PUPPETEER_EXEC_PATH,
     args: [
       '--disable-gpu',
       '--no-sandbox',
