@@ -31,17 +31,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Cache node modules
-        id: cache_node_modules
-        uses: actions/cache@v3
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
-          restore-keys: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
-      - if: ${{ steps.cache_node_modules.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: yarn list
+      # - name: Cache node modules
+      #   id: cache_node_modules
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ./node_modules
+      #     key: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
+      #     restore-keys: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
+      # - if: ${{ steps.cache_node_modules.outputs.cache-hit != 'true' }}
+      #   name: List the state of node modules
+      #   continue-on-error: true
+      #   run: yarn list
       - name: Install packages
         run: yarn install --frozen-lockfile
       - name: Lint PR
@@ -65,4 +65,4 @@ jobs:
         env:
           PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - name: Test
-        run: docker run -i --init --cap-add SYS_ADMIN -v ./:/app -w /app ghcr.io/puppeteer/puppeteer:latest yarn test
+        run: docker run -v ./:/app -w /app ghcr.io/puppeteer/puppeteer:latest yarn test
