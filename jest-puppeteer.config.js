@@ -1,6 +1,7 @@
 import { join } from 'path';
 
 const EXTENSION_PATH = join(process.cwd(), 'dist');
+const PROFILE = join(process.cwd(), 'profile');
 
 /** @type {import('jest-environment-puppeteer').JestPuppeteerConfig} */
 export default {
@@ -15,7 +16,8 @@ export default {
       '--disable-web-security',
       `--load-extension=${EXTENSION_PATH}`,
       `--disable-extensions-except=${EXTENSION_PATH}`,
-      `--allowlisted-extension-id=dbddgkkekpnigajkjphjkliolfemohdn`,
+      '--disable-dev-shm-usage',
+      `--user-data-dir=${PROFILE}`,
     ],
   },
 };
