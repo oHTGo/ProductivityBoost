@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   ci:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -31,19 +31,19 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      # - name: Cache node modules
-      #   id: cache_node_modules
-      #   uses: actions/cache@v3
-      #   with:
-      #     path: ./node_modules
-      #     key: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
-      #     restore-keys: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
-      # - if: ${{ steps.cache_node_modules.outputs.cache-hit != 'true' }}
-      #   name: List the state of node modules
-      #   continue-on-error: true
-      #   run: yarn list
+      - name: Cache node modules
+        id: cache_node_modules
+        uses: actions/cache@v3
+        with:
+          path: ./node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
+          restore-keys: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
+      - if: ${{ steps.cache_node_modules.outputs.cache-hit != 'true' }}
+        name: List the state of node modules
+        continue-on-error: true
+        run: yarn list
       - name: Install packages
-        run: npm install -g yarn && yarn install --frozen-lockfile
+        run: yarn install --frozen-lockfile
       - name: Lint PR
         uses: amannn/action-semantic-pull-request@v5
         env:
@@ -63,6 +63,4 @@ jobs:
       - name: Build
         run: yarn build
       - name: Test
-        env:
-          DEBUG: "*"
         run: yarn test
