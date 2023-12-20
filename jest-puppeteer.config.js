@@ -18,6 +18,7 @@ export default {
       `--disable-extensions-except=${EXTENSION_PATH}`,
       '--disable-dev-shm-usage',
       `--user-data-dir=${PROFILE}`,
+      '--v1=1',
     ],
   },
 };
