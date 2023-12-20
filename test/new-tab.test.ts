@@ -11,7 +11,7 @@ describe('new tab page', () => {
     const newPage = await page.$('#app-container');
 
     const sidebarIcons = await newPage?.$$('div > div > svg');
-    expect(sidebarIcons).toBeTruthy();
+
     expect(sidebarIcons?.length).toBe(3);
   });
 });

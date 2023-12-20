@@ -11,7 +11,6 @@ describe('content script', () => {
     const ui = await page.$('productivity-booster');
     const sidebarIcons = await ui?.$$('>>> div > div > svg');
 
-    expect(sidebarIcons).toBeTruthy();
     expect(sidebarIcons?.length).toBe(3);
   });
 });
