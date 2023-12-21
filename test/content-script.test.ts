@@ -1,5 +1,5 @@
 describe('content script', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await jestPuppeteer.resetPage();
     await page.goto('https://www.google.com');
   });
@@ -12,5 +12,12 @@ describe('content script', () => {
     const sidebarIcons = await ui?.$$('>>> div > div > svg');
 
     expect(sidebarIcons?.length).toBe(3);
+  });
+
+  it('should be able to close extension', async () => {
+    await page.mouse.move(0, 0);
+    await page.waitForSelector('productivity-booster');
+    await page.mouse.click(100, 100);
+    await page.waitForSelector('productivity-booster', { hidden: true });
   });
 });

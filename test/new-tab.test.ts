@@ -1,7 +1,7 @@
 import { EXTENSION_ID } from './constants';
 
 describe('new tab page', () => {
-  beforeAll(async () => {
+  beforeEach(async () => {
     await jestPuppeteer.resetPage();
     await page.goto(`chrome-extension://${EXTENSION_ID}/src/pages/newtab/index.html`);
   });
