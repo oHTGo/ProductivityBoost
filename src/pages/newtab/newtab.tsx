@@ -13,7 +13,7 @@ import credentialStorage from '@shared/storages/credential';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useInterval } from 'usehooks-ts';
-import type { IEmail } from '@shared/interfaces/email';
+import type { IEmail } from '@shared/types/email';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
