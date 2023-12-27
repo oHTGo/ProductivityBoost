@@ -45,7 +45,7 @@ const manifest: chrome.runtime.ManifestV3 = {
   host_permissions: ['<all_urls>'],
   web_accessible_resources: [
     {
-      resources: ['assets/js/*.js', 'assets/css/*.css', 'icon-128.png', 'icon-34.png'],
+      resources: ['assets/**/*', 'icon-128.png', 'icon-34.png'],
       matches: ['*://*/*'],
     },
     {
