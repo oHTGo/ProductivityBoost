@@ -1,6 +1,6 @@
 import common from '@shared/constants/common';
 import { getLocalStorage } from '@shared/utils/storage';
-import type { ICredential } from '@shared/interfaces/commons';
+import type { ICredential } from '@shared/types/commons';
 
 export const getConsentClientId = () => {
   return import.meta.env.VITE_CONSENT_CLIENT_ID as string;
