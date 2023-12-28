@@ -1,14 +1,24 @@
-import { parseEmail } from '@shared/common/offscreen/backgrounds';
+import { parseEmail, playSound } from '@shared/common/offscreen/backgrounds';
 import event from '@shared/constants/event';
-import type { IMessage } from '@shared/types/commons';
+import isNil from 'lodash.isnil';
+import refreshOnUpdate from 'virtual:reload-on-update-in-view';
+import type { BackgroundFunction, IMessage } from '@shared/types/commons';
 
-chrome.runtime.onMessage.addListener((message: IMessage<string>, _, sendResponse) => {
+refreshOnUpdate('pages/offscreen');
+
+const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
+  [event.PARSE_EMAIL]: parseEmail,
+  [event.PLAY_SOUND]: playSound,
+};
+chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendResponse) => {
   (async () => {
-    const { event: e, payload } = message;
-    if (e === event.PARSE_EMAIL) {
-      const parsedEmail = await parseEmail(payload!);
-      sendResponse(parsedEmail);
-    }
+    const { event, payload } = message;
+
+    const func = eventsMap[event];
+    if (!func) return sendResponse();
+
+    const response = !isNil(payload) ? await func(payload) : await func();
+    sendResponse(response);
   })();
   return true;
 });

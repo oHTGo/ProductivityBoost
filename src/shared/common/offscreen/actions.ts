@@ -7,3 +7,10 @@ export const parseEmail = async (base64Email: string): Promise<string> => {
     payload: base64Email,
   });
 };
+
+export const playSound = async (url: string): Promise<void> => {
+  return await chrome.runtime.sendMessage<IMessage<string>>({
+    event: event.PLAY_SOUND,
+    payload: url,
+  });
+};
