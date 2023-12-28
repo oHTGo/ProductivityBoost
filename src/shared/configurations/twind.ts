@@ -26,6 +26,7 @@ export const DEFAULT_SCROLLBAR_STYLES = [
   `::-webkit-scrollbar-thumb { background: #888; border-radius: 9999px; }`,
   `::-webkit-scrollbar-thumb:hover { background: #555; }`,
 ];
+export const MAX_Z_INDEX = 'z-[2147483645]';
 
 export default defineConfig({
   presets: [presetAutoprefix(), presetTailwind(), presetTypography(), presetTailwindForms(), presetRemToPx()],

@@ -1,6 +1,6 @@
 import { fetchEmails } from '@shared/common/email/actions';
 import Sidebar from '@shared/components/sidebar';
-import { DEFAULT_STYLES } from '@shared/configurations/twind';
+import { DEFAULT_STYLES, MAX_Z_INDEX } from '@shared/configurations/twind';
 import delay from '@shared/constants/delay';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import { setEmails } from '@shared/slices/email';
@@ -28,7 +28,7 @@ export default function App() {
   useInterval(() => fetchEmails(callback), delay.FETCH_EMAILS);
 
   return (
-    <div className={classNames(DEFAULT_STYLES, 'fixed z-[2147483645] h-full')}>
+    <div className={classNames(DEFAULT_STYLES, MAX_Z_INDEX, 'fixed h-full')}>
       <Sidebar onClickOutside={() => dispatch(close())} />
     </div>
   );
