@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendRespons
     const { event, payload } = message;
 
     const func = eventsMap[event];
-    if (!func) return sendResponse();
+    if (!func) return;
 
     const response = !isNil(payload) ? await func(payload) : await func();
     sendResponse(response);
