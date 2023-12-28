@@ -1,3 +1,4 @@
+import { readdir } from 'fs/promises';
 import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv, normalizePath } from 'vite';
@@ -22,7 +23,7 @@ const isProduction = !isDev;
 // ENABLE HMR IN BACKGROUND SCRIPT
 const enableHmrInBackgroundScript = true;
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
@@ -36,7 +37,7 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       viteStaticCopy({
-        targets: ['lotties'].map((dir) => ({
+        targets: (await readdir(assetsDir)).map((dir) => ({
           src: normalizePath(resolve(assetsDir, dir, '*')),
           dest: `assets/${dir}`,
         })),
