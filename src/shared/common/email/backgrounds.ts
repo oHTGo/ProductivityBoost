@@ -3,7 +3,7 @@ import { parseEmail } from '@shared/common/offscreen/actions';
 import common from '@shared/constants/common';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
-import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@shared/common/email/interfaces';
+import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@shared/common/email/types';
 import type { BackgroundFunction } from '@shared/types/commons';
 import type { IEmail } from '@shared/types/email';
 
