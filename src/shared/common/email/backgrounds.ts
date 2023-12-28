@@ -4,8 +4,8 @@ import common from '@shared/constants/common';
 import { getLocalStorage } from '@shared/utils/storage';
 import unescape from 'lodash/unescape';
 import type { IPart, IGetAllEmailsResponse, IGetEmailResponse } from '@shared/common/email/interfaces';
-import type { IEmail } from '@shared/interfaces/email';
 import type { BackgroundFunction } from '@shared/types/commons';
+import type { IEmail } from '@shared/types/email';
 
 const getBody = async (parts: IPart[]) => {
   const alternative = parts.find(

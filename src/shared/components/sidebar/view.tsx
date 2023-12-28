@@ -1,19 +1,18 @@
 import classNames from 'classnames';
-import type { FC, ReactNode, SVGProps } from 'react';
+import type { FC, PropsWithChildren, SVGProps } from 'react';
 
 type MenuItem = {
   Icon: FC<SVGProps<SVGSVGElement>>;
   onClick: SVGProps<SVGSVGElement>['onClick'];
   isHide?: boolean;
 };
-type SidebarViewProps = {
+type SidebarViewProps = PropsWithChildren & {
   startMenu?: MenuItem[];
   endMenu?: MenuItem[];
-  content: ReactNode;
 };
 
 const DEFAULT_MENU_ITEM_STYLE = 'cursor-pointer w-4 h-4 hover:scale-110 mx-1';
-const SidebarView: FC<SidebarViewProps> = ({ startMenu, endMenu, content }) => {
+const SidebarView: FC<SidebarViewProps> = ({ startMenu, endMenu, children }) => {
   const renderStartMenu = () => {
     if (!startMenu) return null;
 
@@ -44,11 +43,13 @@ const SidebarView: FC<SidebarViewProps> = ({ startMenu, endMenu, content }) => {
 
   return (
     <>
-      <div className="h-5 border-b-2 px-5 flex justify-between items-center">
-        {renderStartMenu()}
-        {renderEndMenu()}
-      </div>
-      <div className="flex-1 overflow-x-hidden overflow-y-auto">{content}</div>
+      {startMenu || endMenu ? (
+        <div className="h-5 border-b-2 px-5 flex justify-between items-center">
+          {renderStartMenu()}
+          {renderEndMenu()}
+        </div>
+      ) : null}
+      <div className="flex-1 overflow-x-hidden overflow-y-auto">{children}</div>
     </>
   );
 };

@@ -1,7 +1,6 @@
-import emptyLottie from '@assets/lotties/empty.json';
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import { fetchEmails, openEmail, deleteEmail, markAsRead } from '@shared/common/email/actions';
-import { BackIcon, DeleteIcon, OpenIcon, ReloadIcon } from '@shared/components/icons/outline';
+import { BackIcon, DeleteIcon, OpenIcon, ReloadIcon } from '@shared/components/icons';
 import SidebarView from '@shared/components/sidebar/view';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import useAppSelector from '@shared/hooks/use-app-selector';
@@ -31,7 +30,11 @@ const Email: FC = () => {
       return (
         <div className="w-full h-full flex justify-center items-center flex-col">
           <div>
-            <DotLottiePlayer className="w-20 h-20" src={emptyLottie} autoplay loop></DotLottiePlayer>
+            <DotLottiePlayer
+              className="w-20 h-20"
+              src={chrome.runtime.getURL('assets/lotties/empty.lottie')}
+              autoplay
+              loop></DotLottiePlayer>
           </div>
           <span className="prose prose-slate select-none">No email</span>
         </div>
@@ -89,9 +92,9 @@ const Email: FC = () => {
           Icon: OpenIcon,
           onClick: () => openEmail(email?.id ?? ''),
         },
-      ]}
-      content={render()}
-    />
+      ]}>
+      {render()}
+    </SidebarView>
   );
 };
 

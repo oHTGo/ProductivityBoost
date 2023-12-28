@@ -1,6 +1,8 @@
+import { readdir } from 'fs/promises';
 import { resolve } from 'path';
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, normalizePath } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import manifest from './manifest';
 import addHmr from './utils/plugins/add-hmr';
 import customDynamicImport from './utils/plugins/custom-dynamic-import';
@@ -21,7 +23,7 @@ const isProduction = !isDev;
 // ENABLE HMR IN BACKGROUND SCRIPT
 const enableHmrInBackgroundScript = true;
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
@@ -34,6 +36,12 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
+      viteStaticCopy({
+        targets: (await readdir(assetsDir)).map((dir) => ({
+          src: normalizePath(resolve(assetsDir, dir, '*')),
+          dest: `assets/${dir}`,
+        })),
+      }),
       makeManifest(manifest, {
         isDev,
         clientId: env.VITE_REFRESH_CLIENT_ID,

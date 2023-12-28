@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@shared/common/store';
-import type { IEmail } from '@shared/interfaces/email';
+import type { IEmail } from '@shared/types/email';
 
 interface EmailState {
   emails: IEmail[];

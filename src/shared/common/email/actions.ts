@@ -1,6 +1,6 @@
 import event from '@shared/constants/event';
-import type { IMessage } from '@shared/interfaces/commons';
-import type { IEmail } from '@shared/interfaces/email';
+import type { IMessage } from '@shared/types/commons';
+import type { IEmail } from '@shared/types/email';
 
 export const fetchEmails = (callback: (emails: IEmail[]) => void) => {
   chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(

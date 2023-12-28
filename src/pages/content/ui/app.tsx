@@ -8,7 +8,7 @@ import { open, close } from '@shared/slices/sidebar';
 import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useInterval } from 'usehooks-ts';
-import type { IEmail } from '@shared/interfaces/email';
+import type { IEmail } from '@shared/types/email';
 
 export default function App() {
   const dispatch = useAppDispatch();

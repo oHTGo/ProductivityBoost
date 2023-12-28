@@ -5,8 +5,7 @@ import { setupOffscreen } from '@shared/common/offscreen/backgrounds';
 import event from '@shared/constants/event';
 import isNil from 'lodash.isnil';
 import reloadOnUpdate from 'virtual:reload-on-update-in-background-script';
-import type { IMessage } from '@shared/interfaces/commons';
-import type { BackgroundFunction } from '@shared/types/commons';
+import type { IMessage, BackgroundFunction } from '@shared/types/commons';
 import 'webextension-polyfill';
 
 reloadOnUpdate('pages/background');
