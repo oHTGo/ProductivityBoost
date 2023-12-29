@@ -1,7 +1,7 @@
 import common from '@shared/constants/common';
 import { StorageType, createStorage } from '@shared/storages/base';
 import type { BaseStorage } from '@shared/storages/base';
-import type { ICredential } from '@shared/types/commons';
+import type { ICredential } from '@shared/types/auth';
 
 const storage = createStorage<ICredential>(
   common.CREDENTIAL,
