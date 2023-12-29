@@ -7057,6 +7057,11 @@ urlpattern-polyfill@9.0.0:
   resolved "https://registry.yarnpkg.com/urlpattern-polyfill/-/urlpattern-polyfill-9.0.0.tgz#bc7e386bb12fd7898b58d1509df21d3c29ab3460"
   integrity sha512-WHN8KDQblxd32odxeIgo83rdVDE2bvdkb86it7bMhYZwWKJz0+O0RK/eZiHYnM+zgt/U7hAHOlCQGfjjvSkw2g==
 
+use-chrome-storage@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/use-chrome-storage/-/use-chrome-storage-1.2.2.tgz#0b15de3e13513e3d3dbdbe5c7c1c3caba1c93069"
+  integrity sha512-/9xW7LWERd4q58n2oApAeOLKvqhGYEtcFXnU82Kcv9bCPeGF784zkm1dN9dJYXBZjdYQbLDHTwIvacagZDhjKQ==
+
 use-sync-external-store@^1.0.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz#7dbefd6ef3fe4e767a0cf5d7287aacfb5846928a"

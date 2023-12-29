@@ -2,23 +2,23 @@ import { auth } from '@shared/common/auth/actions';
 import { fetchEmails } from '@shared/common/email/actions';
 import Sidebar from '@shared/components/sidebar';
 import { DEFAULT_STYLES } from '@shared/configurations/twind';
+import common from '@shared/constants/common';
 import delay from '@shared/constants/delay';
 import withErrorBoundary from '@shared/hoc/with-error-boundary';
 import withSuspense from '@shared/hoc/with-suspense';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
-import useStorage from '@shared/hooks/use-storage';
 import { setEmails } from '@shared/slices/email';
 import { collapse, open } from '@shared/slices/sidebar';
-import credentialStorage from '@shared/storages/credential';
 import classNames from 'classnames';
 import { useEffect } from 'react';
+import { useChromeStorageLocal } from 'use-chrome-storage';
 import { useInterval } from 'usehooks-ts';
 import type { IEmail } from '@shared/types/email';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
   const callback = (emails: IEmail[]) => dispatch(setEmails(emails));
-  const { clientId, clientSecret } = useStorage(credentialStorage);
+  const [credential, setCredential] = useChromeStorageLocal(common.CREDENTIAL, { clientId: '', clientSecret: '' });
 
   useEffect(() => {
     dispatch(open());
@@ -38,8 +38,8 @@ const NewTab = () => {
             type="text"
             id="id"
             className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-            value={clientId}
-            onChange={(e) => credentialStorage.setClientId(e.target.value)}
+            value={credential.clientId}
+            onChange={(e) => setCredential((prev) => ({ ...prev, clientId: e.target.value }))}
           />
         </div>
         <div className="mb-2 w-96">
@@ -50,8 +50,8 @@ const NewTab = () => {
             type="password"
             id="secret"
             className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-            value={clientSecret}
-            onChange={(e) => credentialStorage.setClientSecret(e.target.value)}
+            value={credential.clientSecret}
+            onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
           />
         </div>
         <button className="bg-stone-300 rounded-md p-2" onClick={auth}>
