@@ -32,5 +32,6 @@ export const parseEmail: BackgroundFunction<string, string> = async (base64Email
 
 export const playSound: BackgroundFunction<string, void> = async (url: string) => {
   const audio = new Audio(url);
+  audio.volume = 0.5;
   audio.play();
 };

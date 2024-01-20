@@ -1,4 +1,5 @@
 import { auth } from '@shared/common/auth/backgrounds';
+import { setupClock, startClock } from '@shared/common/clock/backgrounds';
 import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@shared/common/email/backgrounds';
 import { setupFrame } from '@shared/common/frame/backgrounds';
 import { setupOffscreen } from '@shared/common/offscreen/backgrounds';
@@ -18,6 +19,7 @@ const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
   [event.OPEN_EMAIL]: openEmail,
   [event.MARK_AS_READ]: markAsRead,
   [event.DELETE_EMAIL]: deleteEmail,
+  [event.START_CLOCK]: startClock,
 };
 chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendResponse) => {
   (async () => {
@@ -34,3 +36,4 @@ chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendRespons
 
 setupFrame();
 setupOffscreen();
+setupClock();

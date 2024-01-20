@@ -1,3 +1,4 @@
+import Clock from '@shared/components/clock';
 import Email from '@shared/components/email';
 import { variants, sizes, sidebarFeatures } from '@shared/components/sidebar/configurations';
 import { MAX_Z_INDEX } from '@shared/configurations/twind';
@@ -26,6 +27,19 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
     switch (feature) {
       case 'email': {
         return <Email />;
+      }
+      case 'translator': {
+        const frameUrl = chrome.runtime.getURL('src/pages/frame/index.html');
+        return (
+          <iframe
+            title={feature}
+            src={`${frameUrl}?src=${encodeURIComponent('https://translate.google.com/')}`}
+            className="w-full h-full border-0"
+          />
+        );
+      }
+      case 'clock': {
+        return <Clock />;
       }
       default:
         return <></>;
