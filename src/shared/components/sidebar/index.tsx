@@ -24,8 +24,9 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
 
   const renderView = (feature: Feature) => {
     switch (feature) {
-      case 'email':
+      case 'email': {
         return <Email />;
+      }
       default:
         return <></>;
     }
