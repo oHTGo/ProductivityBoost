@@ -13,12 +13,16 @@ import classNames from 'classnames';
 import { useEffect } from 'react';
 import { useChromeStorageLocal } from 'use-chrome-storage';
 import { useInterval } from 'usehooks-ts';
+import type { ICredential } from '@shared/types/auth';
 import type { IEmail } from '@shared/types/email';
 
 const NewTab = () => {
   const dispatch = useAppDispatch();
   const callback = (emails: IEmail[]) => dispatch(setEmails(emails));
-  const [credential, setCredential] = useChromeStorageLocal(common.CREDENTIAL, { clientId: '', clientSecret: '' });
+  const [credential, setCredential] = useChromeStorageLocal<ICredential>(common.CREDENTIAL, {
+    clientId: '',
+    clientSecret: '',
+  });
 
   useEffect(() => {
     dispatch(open());
