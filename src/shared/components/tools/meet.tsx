@@ -25,7 +25,7 @@ const Meet: FC = () => {
 
   return (
     <div>
-      <span className="inline-block prose prose-sm font-semibold ml-2">Google Meet</span>
+      <span className="inline-block prose prose-sm font-semibold ml-2 mt-2 mb-1">Google Meet</span>
       <div className="w-full border-1 border-gray-300 rounded-md">
         {toggles.map(({ isChecked, onChange, label }) => (
           <div key={label} className="flex items-center m-3">
