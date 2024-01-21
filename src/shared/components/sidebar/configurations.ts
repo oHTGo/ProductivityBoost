@@ -1,4 +1,4 @@
-import { EmailIcon, CalendarIcon, TranslatorIcon } from '@shared/components/icons';
+import { EmailIcon, CalendarIcon, TranslatorIcon, ToolsIcon } from '@shared/components/icons';
 import type { Feature } from '@shared/types/commons';
 import type { FC, SVGProps } from 'react';
 
@@ -28,5 +28,9 @@ export const sidebarFeatures: {
   {
     Icon: TranslatorIcon,
     feature: 'translator',
+  },
+  {
+    Icon: ToolsIcon,
+    feature: 'tools',
   },
 ];

@@ -1,5 +1,6 @@
 import Email from '@shared/components/email';
 import { variants, sizes, sidebarFeatures } from '@shared/components/sidebar/configurations';
+import Tools from '@shared/components/tools';
 import { MAX_Z_INDEX } from '@shared/configurations/twind';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import useAppSelector from '@shared/hooks/use-app-selector';
@@ -26,6 +27,9 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
     switch (feature) {
       case 'email': {
         return <Email />;
+      }
+      case 'tools': {
+        return <Tools />;
       }
       default:
         return <></>;
