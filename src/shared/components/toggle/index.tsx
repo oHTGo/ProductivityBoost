@@ -9,7 +9,7 @@ const Toggle: FC<ToggleProps> = ({ isChecked, onChange }) => {
   return (
     <input
       type="checkbox"
-      className="text-black focus:ring-transparent rounded-sm"
+      className="text-black focus:ring-transparent rounded-sm cursor-pointer"
       checked={isChecked}
       onChange={onChange}
     />
