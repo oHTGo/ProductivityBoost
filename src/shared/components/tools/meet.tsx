@@ -6,8 +6,9 @@ import type { FC } from 'react';
 
 const Meet: FC = () => {
   const [config, setConfig] = useChromeStorageLocal<IMeet>(common.MEET, {
-    turnOffMicro: true,
-    turnOffCamera: true,
+    turnOffMicro: false,
+    turnOffCamera: false,
+    join: false,
   });
 
   const toggles = [
@@ -20,6 +21,11 @@ const Meet: FC = () => {
       label: 'Automate turn off camera',
       isChecked: config.turnOffCamera,
       onChange: () => setConfig({ ...config, turnOffCamera: !config.turnOffCamera }),
+    },
+    {
+      label: 'Automate join',
+      isChecked: config.join,
+      onChange: () => setConfig({ ...config, join: !config.join }),
     },
   ];
 
