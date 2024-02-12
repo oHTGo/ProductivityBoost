@@ -65,4 +65,4 @@ jobs:
       - name: Build
         run: yarn build
       - name: Test
-        run: docker run -i --init --cap-add=SYS_ADMIN -v ./:/app/ -w /app --rm ghcr.io/puppeteer/puppeteer:latest yarn test
+        run: docker run -i --init --cap-add=SYS_ADMIN -v ./:/app/ -w /app --rm ghcr.io/puppeteer/puppeteer:21.6.0 yarn test
