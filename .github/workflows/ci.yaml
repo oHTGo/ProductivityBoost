@@ -44,8 +44,6 @@ jobs:
         run: yarn list
       - name: Install packages
         run: yarn install --frozen-lockfile
-        env:
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - name: Lint PR
         uses: amannn/action-semantic-pull-request@v5
         env:
@@ -64,5 +62,12 @@ jobs:
           check-name: "eslint-report"
       - name: Build
         run: yarn build
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -yq libgconf-2-4
+          sudo apt install -y wget xvfb --no-install-recommends
       - name: Test
-        run: docker run -i --init --cap-add=SYS_ADMIN -v ./:/app/ -w /app --rm ghcr.io/puppeteer/puppeteer:21.6.0 yarn test
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x1024x24" -- yarn test
+        env:
+          DISPLAY: :99
