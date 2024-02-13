@@ -11,7 +11,7 @@ describe('content script', () => {
     const ui = await page.$('productivity-booster');
     const sidebarIcons = await ui?.$$('>>> div > div > svg');
 
-    expect(sidebarIcons?.length).toBe(5);
+    expect(sidebarIcons?.length).toBe(3);
   });
 
   it('should be able to close extension', async () => {
