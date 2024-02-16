@@ -52,7 +52,7 @@ jobs:
           check-name: "eslint-report"
       - name: Build
         run: yarn build
-      - name: Install dependencies
+      - name: Install xvfb
         run: |
           sudo apt update
           sudo apt install -yq libgconf-2-4
