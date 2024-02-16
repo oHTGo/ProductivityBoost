@@ -39,14 +39,16 @@ describe('meet tool', () => {
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted="true"]', {
-      visible: true,
-    });
-    await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted="true"]', {
-      visible: true,
-    });
+    await Promise.all([
+      page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted="true"]', {
+        visible: true,
+      }),
+      page.waitForSelector('[jsname="R3GXJb"] [data-is-muted="true"]', {
+        visible: true,
+      }),
+    ]);
+
     expect(await page.$('[jsname="Qx7uuf"]')).toBeFalsy();
   }, 20000);
 });
