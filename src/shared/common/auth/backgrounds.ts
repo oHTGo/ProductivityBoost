@@ -5,7 +5,7 @@ import {
   getCustomClientSecret,
 } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
-import { setLocalStorage } from '@shared/utils/storage';
+import { getLocalStorage, setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 import type { BackgroundFunction } from '@shared/types/commons';
 
@@ -25,7 +25,7 @@ const getProfile = async (accessToken: string): Promise<{ id: string; name: stri
   return { id, name, email };
 };
 
-const defaultAuth = async (): Promise<void> => {
+const defaultAuth = async (): Promise<boolean> => {
   const { token } = await chrome.identity.getAuthToken({
     interactive: true,
   });
@@ -37,15 +37,16 @@ const defaultAuth = async (): Promise<void> => {
   }
 
   const accessToken = await getToken();
-  if (!accessToken) return;
+  if (!accessToken) return false;
 
   const profile = await getProfile(accessToken);
-  if (!profile) return;
+  if (!profile) return false;
 
   const { id, name, email } = profile;
   await setLocalStorage(common.USER_ID, id);
   await setLocalStorage(common.USER_NAME, name);
   await setLocalStorage(common.USER_EMAIL, email);
+  return true;
 };
 const getToken = async (): Promise<string | undefined> => {
   const response = await chrome.identity.launchWebAuthFlow({
@@ -68,24 +69,25 @@ const getToken = async (): Promise<string | undefined> => {
   return token;
 };
 
-const customAuth = async (): Promise<void> => {
+const customAuth = async (): Promise<boolean> => {
   const code = await getAuthorizationCode();
-  if (!code) return;
+  if (!code) return false;
 
   const tokens = await getTokens(code);
-  if (!tokens) return;
+  if (!tokens) return false;
 
   const { accessToken, refreshToken } = tokens;
   await setLocalStorage(common.ACCESS_TOKEN, accessToken);
   await setLocalStorage(common.REFRESH_TOKEN, refreshToken);
 
   const profile = await getProfile(accessToken);
-  if (!profile) return;
+  if (!profile) return false;
 
   const { id, name, email } = profile;
   await setLocalStorage(common.USER_ID, id);
   await setLocalStorage(common.USER_NAME, name);
   await setLocalStorage(common.USER_EMAIL, email);
+  return true;
 };
 const getAuthorizationCode = async (): Promise<string | undefined> => {
   const clientId = await getCustomClientId();
@@ -138,9 +140,16 @@ const getTokens = async (code: string): Promise<{ accessToken: string; refreshTo
   return { accessToken: access_token, refreshToken: refresh_token };
 };
 
-export const auth: BackgroundFunction<void, void> = async () => {
-  const isCustomAuth = await checkCustomClient();
+export const login: BackgroundFunction<void, boolean> = async () => {
+  try {
+    const isCustomAuth = await checkCustomClient();
+    return (isCustomAuth ? customAuth : defaultAuth)();
+  } catch (err) {
+    return false;
+  }
+};
 
-  if (isCustomAuth) await customAuth();
-  else await defaultAuth();
+export const isLoggedIn: BackgroundFunction<void, boolean> = async () => {
+  const userId = await getLocalStorage(common.USER_ID);
+  return !!userId;
 };

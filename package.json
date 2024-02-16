@@ -28,7 +28,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
-    "@dotlottie/react-player": "^1.6.5",
+    "@dotlottie/react-player": "^1.6.15",
     "@reduxjs/toolkit": "^1.9.7",
     "@twind/preset-tailwind-forms": "^1.1.2",
     "buffer": "^6.0.3",

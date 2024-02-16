@@ -1,4 +1,5 @@
-import { auth } from '@shared/common/auth/actions';
+import { DotLottiePlayer, PlayerEvents } from '@dotlottie/react-player';
+import { checkLoggedIn, login } from '@shared/common/auth/actions';
 import { fetchEmails } from '@shared/common/email/actions';
 import Sidebar from '@shared/components/sidebar';
 import TextField from '@shared/components/text-field';
@@ -11,19 +12,39 @@ import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import { setEmails } from '@shared/slices/email';
 import { collapse, open } from '@shared/slices/sidebar';
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useChromeStorageLocal } from 'use-chrome-storage';
 import { useInterval } from 'usehooks-ts';
+import type { DotLottieCommonPlayer } from '@dotlottie/react-player';
 import type { ICredential } from '@shared/types/auth';
 import type { IEmail } from '@shared/types/email';
 
+const LOGIN_FRAMES = {
+  LOG_IN: {
+    start: 0,
+    end: 112,
+  },
+  LOG_OUT: {
+    start: 113,
+    end: 181,
+  },
+};
+
 const NewTab = () => {
+  const loginRef = useRef<DotLottieCommonPlayer>(null);
+  const [loginState, setLoginState] = useState<keyof typeof LOGIN_FRAMES>();
+
   const dispatch = useAppDispatch();
   const callback = (emails: IEmail[]) => dispatch(setEmails(emails));
   const [credential, setCredential] = useChromeStorageLocal<ICredential>(common.CREDENTIAL, {
     clientId: '',
     clientSecret: '',
   });
+
+  useEffect(() => {
+    if (!loginState) return;
+    loginRef.current?.playSegments([LOGIN_FRAMES[loginState].start, LOGIN_FRAMES[loginState].end], true);
+  }, [loginState]);
 
   useEffect(() => {
     dispatch(open());
@@ -35,6 +56,14 @@ const NewTab = () => {
     <div className={classNames(DEFAULT_STYLES)}>
       <Sidebar onClickOutside={() => dispatch(collapse())} />
       <div className="w-screen h-screen flex flex-col justify-center items-center">
+        <DotLottiePlayer
+          ref={loginRef}
+          className="w-44 h-44"
+          onEvent={(e) => {
+            if (e !== PlayerEvents.Ready) return;
+            checkLoggedIn((isLoggedIn) => setLoginState(isLoggedIn ? 'LOG_IN' : 'LOG_OUT'));
+          }}
+          src={chrome.runtime.getURL('assets/lotties/login.lottie')}></DotLottiePlayer>
         <TextField
           id="client-id"
           label="Client ID"
@@ -49,7 +78,15 @@ const NewTab = () => {
           onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
           className="mb-2 w-96"
         />
-        <button className="bg-stone-300 rounded-md p-2" onClick={auth}>
+        <button
+          className="bg-stone-300 rounded-md p-2"
+          onClick={() =>
+            login((isSuccess) => {
+              if (!isSuccess) return setLoginState('LOG_OUT');
+              setLoginState('LOG_IN');
+              fetchEmails(callback);
+            })
+          }>
           Login
         </button>
       </div>
