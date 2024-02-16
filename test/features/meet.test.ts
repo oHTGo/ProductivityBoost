@@ -24,8 +24,8 @@ describe('meet tool', () => {
   it('should be enable turn off camera & turn off microphone & auto join', async () => {
     const targets = browser.targets();
     const extension = await targets.find((target) => target.type() === 'service_worker')?.worker();
-    await extension?.evaluate(() => {
-      chrome.storage.local.set({
+    await extension?.evaluate(async () => {
+      await chrome.storage.local.set({
         MEET: {
           turnOffMicro: true,
           turnOffCamera: true,
