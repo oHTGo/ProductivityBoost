@@ -1,5 +1,7 @@
 import Email from '@shared/components/email';
 import { variants, sizes, sidebarFeatures } from '@shared/components/sidebar/configurations';
+import Tools from '@shared/components/tools';
+import { MAX_Z_INDEX } from '@shared/configurations/twind';
 import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import useAppSelector from '@shared/hooks/use-app-selector';
 import { getEmails } from '@shared/slices/email';
@@ -23,8 +25,12 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
 
   const renderView = (feature: Feature) => {
     switch (feature) {
-      case 'email':
+      case 'email': {
         return <Email />;
+      }
+      case 'tools': {
+        return <Tools />;
+      }
       default:
         return <></>;
     }
@@ -50,7 +56,8 @@ const Sidebar: FC<SidebarProps> = ({ onClickOutside }) => {
       animate={isOpen ? 'open' : 'closed'}
       variants={variants}
       className={classNames(
-        'fixed ml-2 top-2 z-[2147483645] h-[calc(100%-1rem)] rounded-md border border-slate-300 bg-stone-50 shadow-2xl',
+        'fixed ml-2 top-2 h-[calc(100%-1rem)] rounded-md border border-slate-300 bg-stone-50 shadow-2xl',
+        MAX_Z_INDEX,
         'flex',
       )}>
       <div

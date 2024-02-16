@@ -7,12 +7,13 @@ type MenuItem = {
   isHide?: boolean;
 };
 type SidebarViewProps = PropsWithChildren & {
+  className?: string;
   startMenu?: MenuItem[];
   endMenu?: MenuItem[];
 };
 
 const DEFAULT_MENU_ITEM_STYLE = 'cursor-pointer w-4 h-4 hover:scale-110 mx-1';
-const SidebarView: FC<SidebarViewProps> = ({ startMenu, endMenu, children }) => {
+const SidebarView: FC<SidebarViewProps> = ({ className, startMenu, endMenu, children }) => {
   const renderStartMenu = () => {
     if (!startMenu) return null;
 
@@ -49,7 +50,7 @@ const SidebarView: FC<SidebarViewProps> = ({ startMenu, endMenu, children }) => 
           {renderEndMenu()}
         </div>
       ) : null}
-      <div className="flex-1 overflow-x-hidden overflow-y-auto">{children}</div>
+      <div className={classNames('flex-1 overflow-x-hidden overflow-y-auto', className)}>{children}</div>
     </>
   );
 };

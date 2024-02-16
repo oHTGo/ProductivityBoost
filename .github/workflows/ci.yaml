@@ -31,21 +31,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Cache node modules
-        id: cache_node_modules
-        uses: actions/cache@v3
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
-          restore-keys: ${{ runner.os }}-node_modules-${{ hashFiles('./yarn.lock') }}
-      - if: ${{ steps.cache_node_modules.outputs.cache-hit != 'true' }}
-        name: List the state of node modules
-        continue-on-error: true
-        run: yarn list
+          cache: yarn
       - name: Install packages
         run: yarn install --frozen-lockfile
-        env:
-          PUPPETEER_SKIP_CHROMIUM_DOWNLOAD: true
       - name: Lint PR
         uses: amannn/action-semantic-pull-request@v5
         env:
@@ -64,5 +52,14 @@ jobs:
           check-name: "eslint-report"
       - name: Build
         run: yarn build
+      - name: Install xvfb
+        run: |
+          sudo apt update
+          sudo apt install -yq libgconf-2-4
+          sudo apt install -y wget xvfb --no-install-recommends
       - name: Test
-        run: docker run -i --init --cap-add=SYS_ADMIN -v ./:/app/ -w /app --rm ghcr.io/puppeteer/puppeteer:latest yarn test
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x1024x24" -- yarn test
+        env:
+          DISPLAY: :99
+          GOOGLE_MAIL: ${{ secrets.GOOGLE_MAIL }}
+          GOOGLE_PASSWORD: ${{ secrets.GOOGLE_PASSWORD }}

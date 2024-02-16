@@ -12,6 +12,6 @@ describe('new tab page', () => {
 
     const sidebarIcons = await newPage?.$$('div > div > svg');
 
-    expect(sidebarIcons?.length).toBe(3);
+    expect(sidebarIcons?.length).toBe(4);
   });
 });

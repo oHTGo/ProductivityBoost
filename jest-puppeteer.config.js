@@ -6,16 +6,17 @@ const EXTENSION_PATH = join(process.cwd(), 'dist');
 export default {
   launch: {
     dumpio: true,
-    headless: 'new',
+    headless: false,
     ignoreHTTPSErrors: true,
     args: [
       '--disable-gpu',
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--disable-web-security',
       `--load-extension=${EXTENSION_PATH}`,
       `--disable-extensions-except=${EXTENSION_PATH}`,
       '--disable-dev-shm-usage',
+      '--use-fake-device-for-media-stream',
+      '--use-fake-ui-for-media-stream',
     ],
   },
 };
