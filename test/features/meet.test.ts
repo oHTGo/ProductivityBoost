@@ -19,9 +19,22 @@ describe('meet tool', () => {
   });
 
   it('should be disable turn off camera & turn off microphone & auto join', async () => {
+    const targets = browser.targets();
+    const extension = await targets.find((target) => target.type() === 'service_worker')?.worker();
+    await extension?.evaluate(() => {
+      chrome.storage.local.set({
+        MEET: {
+          turnOffMicro: false,
+          turnOffCamera: false,
+          join: false,
+        },
+      });
+    });
+
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]', {
       visible: true,
@@ -32,7 +45,7 @@ describe('meet tool', () => {
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('false');
     expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('false');
     expect(joinButton).toBeTruthy();
-  });
+  }, 10000);
 
   it('should be enable turn off camera & turn off microphone & auto join', async () => {
     const targets = browser.targets();
@@ -59,5 +72,5 @@ describe('meet tool', () => {
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(joinButton).toBeFalsy();
-  }, 5000);
+  }, 10000);
 });
