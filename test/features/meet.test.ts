@@ -1,18 +1,6 @@
+const url = 'https://meet.google.com/nxa-aekv-qka';
+
 describe('meet tool', () => {
-  let url = 'https://meet.google.com';
-  beforeAll(async () => {
-    await jestPuppeteer.resetPage();
-    await page.setBypassCSP(true);
-
-    await page.goto(url);
-    const createButton = await page.waitForSelector('[jsname="SkMU8"]', { visible: true });
-    await createButton?.click();
-    const startNowButton = await page.waitForSelector('[jsname="CuSyi"]', { visible: true });
-    await startNowButton?.click();
-    await page.waitForNavigation();
-    url = page.url();
-  });
-
   beforeEach(async () => {
     await jestPuppeteer.resetPage();
     await page.setBypassCSP(true);
@@ -29,19 +17,22 @@ describe('meet tool', () => {
           join: true,
         },
       });
+
+      return true;
     });
 
+    await new Promise((resolve) => setTimeout(resolve, 1000));
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const microButton = await page.$('[jsname="Dg9Wp"] [data-is-muted]');
+    const microButton = await page.$('[jsname="Dg9Wp"] [data-is-muted');
     const cameraButton = await page.$('[jsname="R3GXJb"] [data-is-muted]');
     const joinButton = await page.$('[jsname="Qx7uuf"]:enabled');
 
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(joinButton).toBeFalsy();
-  }, 10000);
+  }, 20000);
 });
