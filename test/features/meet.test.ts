@@ -27,7 +27,7 @@ describe('meet tool', () => {
     await extension?.evaluate(async () => {
       await chrome.storage.local.set({
         MEET: {
-          turnOffMicro: true,
+          // turnOffMicro: true,
           turnOffCamera: true,
           join: true,
         },
