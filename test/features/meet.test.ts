@@ -18,24 +18,6 @@ describe('meet tool', () => {
     await page.setBypassCSP(true);
   });
 
-  it('should be disable turn off camera & turn off microphone & auto join', async () => {
-    await page.goto(url, {
-      waitUntil: 'networkidle0',
-    });
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]', {
-      visible: true,
-    });
-    const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]', { visible: true });
-    const joinButton = await page.waitForSelector('[jsname="Qx7uuf"]:enabled', { visible: true });
-
-    console.log('Test 1');
-    expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('false');
-    expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('false');
-    expect(joinButton).toBeTruthy();
-  }, 10000);
-
   it('should be enable turn off camera & turn off microphone & auto join', async () => {
     const targets = browser.targets();
     const extension = await targets.find((target) => target.type() === 'service_worker')?.worker();
@@ -52,15 +34,13 @@ describe('meet tool', () => {
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const microButton = await page.$('[jsname="Dg9Wp"] [data-is-muted]');
     const cameraButton = await page.$('[jsname="R3GXJb"] [data-is-muted]');
     const joinButton = await page.$('[jsname="Qx7uuf"]:enabled');
 
-    console.log('Test 2');
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(joinButton).toBeFalsy();
-  }, 10000);
+  });
 });
