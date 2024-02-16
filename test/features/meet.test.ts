@@ -50,6 +50,7 @@ describe('meet tool', () => {
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     const microButton = await page.$('[jsname="Dg9Wp"] [data-is-muted]');
     const cameraButton = await page.$('[jsname="R3GXJb"] [data-is-muted]');
@@ -58,5 +59,5 @@ describe('meet tool', () => {
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
     expect(joinButton).toBeFalsy();
-  });
+  }, 5000);
 });
