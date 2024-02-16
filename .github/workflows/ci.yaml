@@ -71,3 +71,5 @@ jobs:
         run: xvfb-run --auto-servernum --server-args="-screen 0 1280x1024x24" -- yarn test
         env:
           DISPLAY: :99
+          GOOGLE_MAIL: ${{ secrets.GOOGLE_MAIL }}
+          GOOGLE_PASSWORD: ${{ secrets.GOOGLE_PASSWORD }}

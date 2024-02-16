@@ -4,4 +4,5 @@ export default {
   transform: {
     '.ts$': 'ts-jest',
   },
+  globalSetup: '<rootDir>/test/setup.ts',
 };

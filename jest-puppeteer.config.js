@@ -12,7 +12,6 @@ export default {
       '--disable-gpu',
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--disable-web-security',
       `--load-extension=${EXTENSION_PATH}`,
       `--disable-extensions-except=${EXTENSION_PATH}`,
       '--disable-dev-shm-usage',
