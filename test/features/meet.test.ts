@@ -4,6 +4,9 @@ describe('meet tool', () => {
   beforeEach(async () => {
     await jestPuppeteer.resetPage();
     await page.setBypassCSP(true);
+
+    const context = browser.defaultBrowserContext();
+    await context.overridePermissions('https://meet.google.com', ['microphone', 'camera', 'notifications']);
   });
 
   it('should be enable turn off camera & turn off microphone & auto join', async () => {
@@ -21,14 +24,12 @@ describe('meet tool', () => {
       return true;
     });
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
     await page.goto(url, {
       waitUntil: 'networkidle0',
     });
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const microButton = await page.$('[jsname="Dg9Wp"] [data-is-muted');
-    const cameraButton = await page.$('[jsname="R3GXJb"] [data-is-muted]');
+    const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted');
+    const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]');
     const joinButton = await page.$('[jsname="Qx7uuf"]:enabled');
 
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');

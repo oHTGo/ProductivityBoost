@@ -7,9 +7,6 @@ const setup = async (globalConfig) => {
   await setupPuppeteer(globalConfig);
   const [browser] = globalThis.__jestPptr.browsers as Browser[];
 
-  const context = browser.defaultBrowserContext();
-  await context.overridePermissions('https://meet.google.com', ['microphone', 'camera', 'notifications']);
-
   const page = await newInjectedPage(browser, {
     fingerprintOptions: {
       devices: ['desktop'],
