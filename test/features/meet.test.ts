@@ -1,12 +1,22 @@
-const url = 'https://meet.google.com/nxa-aekv-qka';
-
 describe('meet tool', () => {
+  let url = 'https://meet.google.com';
+  beforeAll(async () => {
+    const context = browser.defaultBrowserContext();
+    await context.overridePermissions('https://meet.google.com', ['microphone', 'camera', 'notifications']);
+
+    await page.goto(url);
+    const createButton = await page.waitForSelector('[jsname="SkMU8"]', { visible: true });
+    await createButton?.click();
+    const startNowButton = await page.waitForSelector('[jsname="CuSyi"]', { visible: true });
+    await startNowButton?.click();
+    await page.waitForNavigation();
+    await jestPuppeteer.resetPage();
+    url = page.url();
+  }, 10000);
+
   beforeEach(async () => {
     await jestPuppeteer.resetPage();
     await page.setBypassCSP(true);
-
-    const context = browser.defaultBrowserContext();
-    await context.overridePermissions('https://meet.google.com', ['microphone', 'camera', 'notifications']);
   });
 
   it('should be enable turn off camera & turn off microphone & auto join', async () => {
@@ -28,8 +38,8 @@ describe('meet tool', () => {
       waitUntil: 'networkidle0',
     });
 
-    const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted');
-    const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]');
+    const microButton = await page.$('[jsname="Dg9Wp"] [data-is-muted]');
+    const cameraButton = await page.$('[jsname="R3GXJb"] [data-is-muted]');
     const joinButton = await page.$('[jsname="Qx7uuf"]:enabled');
 
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
