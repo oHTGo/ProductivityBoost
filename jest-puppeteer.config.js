@@ -15,6 +15,7 @@ export default {
       `--load-extension=${EXTENSION_PATH}`,
       `--disable-extensions-except=${EXTENSION_PATH}`,
       '--disable-dev-shm-usage',
+      '--use-fake-ui-for-media-stream',
     ],
   },
 };

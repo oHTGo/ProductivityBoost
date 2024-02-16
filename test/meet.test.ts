@@ -5,7 +5,6 @@ describe('meet tool', () => {
   });
 
   it('should be disable turn off camera & turn off microphone', async () => {
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     await page.goto('https://meet.google.com/fyk-guwb-van');
 
     const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]', {
