@@ -11,80 +11,6 @@ import type { BackgroundFunction } from '@shared/types/commons';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
 const scopes = chrome.runtime.getManifest().oauth2?.scopes ?? [];
-
-const getToken = async (): Promise<string | undefined> => {
-  const response = await chrome.identity.launchWebAuthFlow({
-    url:
-      'https://accounts.google.com/o/oauth2/v2/auth?' +
-      new URLSearchParams({
-        scope: scopes.join(' '),
-        response_type: 'token',
-        redirect_uri: redirectUrl,
-        client_id: getConsentClientId(),
-        prompt: 'consent',
-      }).toString(),
-    interactive: true,
-  });
-  if (!response) return;
-
-  const params = new URLSearchParams(response.split('#')?.[1]);
-  const token = params.get('access_token') ?? '';
-
-  return token;
-};
-
-const getAuthorizationCode = async (): Promise<string | undefined> => {
-  const clientId = await getCustomClientId();
-  if (!clientId) return;
-
-  const response = await chrome.identity.launchWebAuthFlow({
-    url:
-      'https://accounts.google.com/o/oauth2/v2/auth?' +
-      new URLSearchParams({
-        scope: scopes.join(' '),
-        response_type: 'code',
-        redirect_uri: redirectUrl,
-        client_id: clientId,
-        prompt: 'consent',
-        access_type: 'offline',
-      }).toString(),
-    interactive: true,
-  });
-  if (!response) return;
-
-  const params = new URLSearchParams(response.split('?')?.[1]);
-  const code = params.get('code') ?? '';
-
-  return code;
-};
-
-const getTokens = async (code: string): Promise<{ accessToken: string; refreshToken: string } | undefined> => {
-  const clientId = await getCustomClientId();
-  const clientSecret = await getCustomClientSecret();
-  if (!clientId || !clientSecret) return;
-
-  const response = await ky
-    .post('https://oauth2.googleapis.com/token', {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        code,
-        client_id: clientId,
-        client_secret: clientSecret,
-        redirect_uri: redirectUrl,
-        grant_type: 'authorization_code',
-      }).toString(),
-    })
-    .json<{ access_token: string; refresh_token: string }>();
-  if (!response) return;
-
-  const { access_token, refresh_token } = response;
-  if (!access_token || !refresh_token) return;
-
-  return { accessToken: access_token, refreshToken: refresh_token };
-};
-
 const getProfile = async (accessToken: string): Promise<{ id: string; name: string; email: string } | undefined> => {
   const response = await ky
     .get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
@@ -121,6 +47,26 @@ const defaultAuth = async (): Promise<void> => {
   await setLocalStorage(common.USER_NAME, name);
   await setLocalStorage(common.USER_EMAIL, email);
 };
+const getToken = async (): Promise<string | undefined> => {
+  const response = await chrome.identity.launchWebAuthFlow({
+    url:
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+      new URLSearchParams({
+        scope: scopes.join(' '),
+        response_type: 'token',
+        redirect_uri: redirectUrl,
+        client_id: getConsentClientId(),
+        prompt: 'consent',
+      }).toString(),
+    interactive: true,
+  });
+  if (!response) return;
+
+  const params = new URLSearchParams(response.split('#')?.[1]);
+  const token = params.get('access_token') ?? '';
+
+  return token;
+};
 
 const customAuth = async (): Promise<void> => {
   const code = await getAuthorizationCode();
@@ -140,6 +86,56 @@ const customAuth = async (): Promise<void> => {
   await setLocalStorage(common.USER_ID, id);
   await setLocalStorage(common.USER_NAME, name);
   await setLocalStorage(common.USER_EMAIL, email);
+};
+const getAuthorizationCode = async (): Promise<string | undefined> => {
+  const clientId = await getCustomClientId();
+  if (!clientId) return;
+
+  const response = await chrome.identity.launchWebAuthFlow({
+    url:
+      'https://accounts.google.com/o/oauth2/v2/auth?' +
+      new URLSearchParams({
+        scope: scopes.join(' '),
+        response_type: 'code',
+        redirect_uri: redirectUrl,
+        client_id: clientId,
+        prompt: 'consent',
+        access_type: 'offline',
+      }).toString(),
+    interactive: true,
+  });
+  if (!response) return;
+
+  const params = new URLSearchParams(response.split('?')?.[1]);
+  const code = params.get('code') ?? '';
+
+  return code;
+};
+const getTokens = async (code: string): Promise<{ accessToken: string; refreshToken: string } | undefined> => {
+  const clientId = await getCustomClientId();
+  const clientSecret = await getCustomClientSecret();
+  if (!clientId || !clientSecret) return;
+
+  const response = await ky
+    .post('https://oauth2.googleapis.com/token', {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        code,
+        client_id: clientId,
+        client_secret: clientSecret,
+        redirect_uri: redirectUrl,
+        grant_type: 'authorization_code',
+      }).toString(),
+    })
+    .json<{ access_token: string; refresh_token: string }>();
+  if (!response) return;
+
+  const { access_token, refresh_token } = response;
+  if (!access_token || !refresh_token) return;
+
+  return { accessToken: access_token, refreshToken: refresh_token };
 };
 
 export const auth: BackgroundFunction<void, void> = async () => {
