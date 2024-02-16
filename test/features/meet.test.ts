@@ -40,6 +40,7 @@ describe('meet tool', () => {
       waitUntil: 'networkidle0',
     });
     await new Promise((resolve) => setTimeout(resolve, 2000));
+    console.log('page.url()', page.url());
 
     const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]');
     const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]');
