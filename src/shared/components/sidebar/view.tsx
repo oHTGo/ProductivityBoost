@@ -7,7 +7,7 @@ type MenuItem = {
   isHide?: boolean;
 };
 type SidebarViewProps = PropsWithChildren & {
-  className?: string;
+  className?: HTMLDivElement['className'];
   startMenu?: MenuItem[];
   endMenu?: MenuItem[];
 };

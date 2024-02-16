@@ -1,6 +1,7 @@
 import { auth } from '@shared/common/auth/actions';
 import { fetchEmails } from '@shared/common/email/actions';
 import Sidebar from '@shared/components/sidebar';
+import TextField from '@shared/components/text-field';
 import { DEFAULT_STYLES } from '@shared/configurations/twind';
 import common from '@shared/constants/common';
 import delay from '@shared/constants/delay';
@@ -34,30 +35,20 @@ const NewTab = () => {
     <div className={classNames(DEFAULT_STYLES)}>
       <Sidebar onClickOutside={() => dispatch(collapse())} />
       <div className="w-screen h-screen flex flex-col justify-center items-center">
-        <div className="mb-2 w-96">
-          <label htmlFor="id" className="block text-xs font-medium text-gray-700">
-            Client ID
-          </label>
-          <input
-            type="text"
-            id="id"
-            className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-            value={credential.clientId}
-            onChange={(e) => setCredential((prev) => ({ ...prev, clientId: e.target.value }))}
-          />
-        </div>
-        <div className="mb-2 w-96">
-          <label htmlFor="secret" className="block text-xs font-medium text-gray-700">
-            Client Secret
-          </label>
-          <input
-            type="password"
-            id="secret"
-            className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-            value={credential.clientSecret}
-            onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
-          />
-        </div>
+        <TextField
+          id="client-id"
+          label="Client ID"
+          value={credential.clientId}
+          onChange={(e) => setCredential((prev) => ({ ...prev, clientId: e.target.value }))}
+          className="mb-2 w-96"
+        />
+        <TextField
+          id="client-secret"
+          label="Client Secret"
+          value={credential.clientSecret}
+          onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
+          className="mb-2 w-96"
+        />
         <button className="bg-stone-300 rounded-md p-2" onClick={auth}>
           Login
         </button>
