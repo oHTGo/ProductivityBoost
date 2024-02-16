@@ -24,11 +24,11 @@ const setup = async (globalConfig) => {
   await page.goto('https://accounts.google.com');
 
   await page.waitForSelector('[type="email"]');
-  await page.type('[type="email"]', process.env.GOOGLE_MAIL, { delay: 20 });
+  await page.type('[type="email"]', process.env.GOOGLE_MAIL ?? '', { delay: 20 });
   await page.click('#identifierNext');
 
   await page.waitForSelector('[type="password"]', { visible: true });
-  await page.type('[type="password"]', process.env.GOOGLE_PASSWORD, { delay: 20 });
+  await page.type('[type="password"]', process.env.GOOGLE_PASSWORD ?? '', { delay: 20 });
 
   await page.click('#passwordNext');
   await page.waitForNavigation();
