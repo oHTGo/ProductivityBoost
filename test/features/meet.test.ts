@@ -42,8 +42,12 @@ describe('meet tool', () => {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     console.log('page.url()', page.url());
 
-    const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]');
-    const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]');
+    const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]', {
+      visible: true,
+    });
+    const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]', {
+      visible: true,
+    });
     const joinButton = await page.$('[jsname="Qx7uuf"]:enabled');
 
     expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
