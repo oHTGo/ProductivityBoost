@@ -40,18 +40,13 @@ describe('meet tool', () => {
       waitUntil: 'networkidle0',
     });
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log('page.url()', page.url());
 
-    const microButton = await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted]', {
+    await page.waitForSelector('[jsname="Dg9Wp"] [data-is-muted="true"]', {
       visible: true,
     });
-    const cameraButton = await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted]', {
+    await page.waitForSelector('[jsname="R3GXJb"] [data-is-muted="true"]', {
       visible: true,
     });
-    const joinButton = await page.$('[jsname="Qx7uuf"]:enabled');
-
-    expect(await microButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
-    expect(await cameraButton?.evaluate((e) => e.getAttribute('data-is-muted'))).toBe('true');
-    expect(joinButton).toBeFalsy();
+    expect(await page.$('[jsname="Qx7uuf"]')).toBeFalsy();
   }, 20000);
 });
