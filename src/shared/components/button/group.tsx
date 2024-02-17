@@ -22,7 +22,8 @@ const GroupButton: FC<GroupButtonProps> = ({ buttons, className }) => {
             active ? 'bg-white text-blue-500 shadow-sm' : '',
             disabled ? 'cursor-default' : '',
           )}
-          onClick={onClick}>
+          onClick={onClick}
+          disabled={disabled}>
           {label}
         </button>
       ))}
