@@ -9,7 +9,6 @@ describe('auth', () => {
   });
 
   it('should be able to login', async () => {
-    console.log('login test start');
     const loginButton = (await page.waitForXPath('//button[contains(text(), "Login") and not(@disabled)]', {
       visible: true,
     })) as ElementHandle<Element>;
@@ -45,11 +44,9 @@ describe('auth', () => {
     await page.waitForXPath('//button[contains(text(), "Login") and @disabled]', {
       visible: true,
     });
-    console.log('login test end');
   }, 20000);
 
   it('should be able to logout', async () => {
-    console.log('logout test start');
     const logoutButton = (await page.waitForXPath('//button[contains(text(), "Logout") and not(@disabled)]', {
       visible: true,
     })) as ElementHandle<Element>;
@@ -58,6 +55,5 @@ describe('auth', () => {
     await page.waitForXPath('//button[contains(text(), "Logout") and @disabled]', {
       visible: true,
     });
-    console.log('logout test end');
   });
 });
