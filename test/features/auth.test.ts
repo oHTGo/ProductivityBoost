@@ -15,7 +15,9 @@ describe('auth', () => {
     })) as ElementHandle<Element>;
     await loginButton?.click();
 
-    const googlePopup = await waitForNextOpenPage((page) => page.url().includes('accounts.google.com'));
+    const googlePopup = await waitForNextOpenPage((page) => page.url().includes('accounts.google.com'), {
+      timeout: 10000,
+    });
     expect(googlePopup).toBeTruthy();
 
     await (
