@@ -141,12 +141,8 @@ const getTokens = async (code: string): Promise<{ accessToken: string; refreshTo
 };
 
 export const login: BackgroundFunction<void, boolean> = async () => {
-  try {
-    const isCustomAuth = await checkCustomClient();
-    return (isCustomAuth ? customAuth : defaultAuth)();
-  } catch (err) {
-    return false;
-  }
+  const isCustomAuth = await checkCustomClient();
+  return (isCustomAuth ? customAuth : defaultAuth)();
 };
 
 export const isLoggedIn: BackgroundFunction<void, boolean> = async () => {
