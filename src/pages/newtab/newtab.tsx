@@ -67,10 +67,6 @@ const NewTab = () => {
           }}
           src={chrome.runtime.getURL('assets/lotties/login.lottie')}
         />
-        {loginState === 'LOGIN' ? <span className="prose prose-neutral">Logged in</span> : null}
-        {loginState === 'LOGOUT' ? (
-          <span className="prose prose-neutral">Please login to use this extension</span>
-        ) : null}
         <TextField
           id="client-id"
           label="Client ID"
