@@ -59,7 +59,7 @@ const NewTab = () => {
       <div className="w-screen h-screen flex flex-col justify-center items-center">
         <DotLottiePlayer
           ref={loginRef}
-          className="w-44 h-44"
+          className="w-32 h-32"
           onEvent={(e) => {
             if (e !== PlayerEvents.Ready) return;
             checkLoggedIn((isLoggedIn) => setLoginState(isLoggedIn ? 'LOG_IN' : 'LOG_OUT'));
