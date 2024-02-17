@@ -50,6 +50,10 @@ jobs:
           report-json: "eslint_report.json"
           markdown-report-on-step-summary: true
           check-name: "eslint-report"
+      - name: Create env file
+        run: |
+          echo "VITE_CONSENT_CLIENT_ID=${{ secrets.CONSENT_CLIENT_ID }}" >> .env.production
+          echo "VITE_REFRESH_CLIENT_ID=${{ secrets.REFRESH_CLIENT_ID }}" >> .env.production
       - name: Build
         run: yarn build
       - name: Install xvfb
