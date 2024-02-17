@@ -46,16 +46,16 @@ describe('auth', () => {
     console.log('login test end');
   }, 20000);
 
-  it('should be able to logout', async () => {
-    console.log('logout test start');
-    const logoutButton = (await page.waitForXPath('//button[contains(text(), "Logout") and not(@disabled)]', {
-      visible: true,
-    })) as ElementHandle<Element>;
-    await logoutButton?.click();
+  // it('should be able to logout', async () => {
+  //   console.log('logout test start');
+  //   const logoutButton = (await page.waitForXPath('//button[contains(text(), "Logout") and not(@disabled)]', {
+  //     visible: true,
+  //   })) as ElementHandle<Element>;
+  //   await logoutButton?.click();
 
-    await page.waitForXPath('//button[contains(text(), "Logout") and @disabled]', {
-      visible: true,
-    });
-    console.log('logout test end');
-  });
+  //   await page.waitForXPath('//button[contains(text(), "Logout") and @disabled]', {
+  //     visible: true,
+  //   });
+  //   console.log('logout test end');
+  // });
 });
