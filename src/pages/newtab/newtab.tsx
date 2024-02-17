@@ -60,6 +60,7 @@ const NewTab = () => {
         <DotLottiePlayer
           ref={loginRef}
           className="w-32 h-32"
+          renderer="canvas"
           onEvent={(e) => {
             if (e !== PlayerEvents.Ready) return;
             checkLoggedIn((isLoggedIn) => setLoginState(isLoggedIn ? 'LOGIN' : 'LOGOUT'));

@@ -33,8 +33,10 @@ const Email: FC = () => {
             <DotLottiePlayer
               className="w-20 h-20"
               src={chrome.runtime.getURL('assets/lotties/empty.lottie')}
+              renderer="canvas"
               autoplay
-              loop></DotLottiePlayer>
+              loop
+            />
           </div>
           <span className="prose prose-slate select-none">No email</span>
         </div>
