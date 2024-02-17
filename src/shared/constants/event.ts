@@ -1,5 +1,6 @@
 export default {
   LOGIN: 'LOGIN',
+  LOGOUT: 'LOGOUT',
   IS_LOGGED_IN: 'IS_LOGGED_IN',
 
   GET_ALL_EMAILS: 'GET_ALL_EMAILS',

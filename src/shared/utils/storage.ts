@@ -10,3 +10,7 @@ export const updateLocalStorage = async <T extends object>(key: string, value: P
   const prev = await getLocalStorage<T>(key);
   await setLocalStorage(key, { ...prev, ...value });
 };
+
+export const removeLocalStorage = async (key: string): Promise<void> => {
+  await chrome.storage.local.remove(key);
+};

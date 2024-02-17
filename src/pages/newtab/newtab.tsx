@@ -1,6 +1,7 @@
 import { DotLottiePlayer, PlayerEvents } from '@dotlottie/react-player';
-import { checkLoggedIn, login } from '@shared/common/auth/actions';
+import { checkLoggedIn, login, logout } from '@shared/common/auth/actions';
 import { fetchEmails } from '@shared/common/email/actions';
+import GroupButton from '@shared/components/button/group';
 import Sidebar from '@shared/components/sidebar';
 import TextField from '@shared/components/text-field';
 import { DEFAULT_STYLES } from '@shared/configurations/twind';
@@ -35,7 +36,7 @@ const NewTab = () => {
   const [loginState, setLoginState] = useState<keyof typeof LOGIN_FRAMES>();
 
   const dispatch = useAppDispatch();
-  const callback = (emails: IEmail[]) => dispatch(setEmails(emails));
+  const emailCallback = (emails: IEmail[]) => dispatch(setEmails(emails));
   const [credential, setCredential] = useChromeStorageLocal<ICredential>(common.CREDENTIAL, {
     clientId: '',
     clientSecret: '',
@@ -48,9 +49,9 @@ const NewTab = () => {
 
   useEffect(() => {
     dispatch(open());
-    fetchEmails(callback);
+    fetchEmails(emailCallback);
   }, [dispatch]);
-  useInterval(() => fetchEmails(callback), delay.FETCH_EMAILS);
+  useInterval(() => fetchEmails(emailCallback), delay.FETCH_EMAILS);
 
   return (
     <div className={classNames(DEFAULT_STYLES)}>
@@ -78,17 +79,34 @@ const NewTab = () => {
           onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
           className="mb-2 w-96"
         />
-        <button
-          className="bg-stone-300 rounded-md p-2"
-          onClick={() =>
-            login((isSuccess) => {
-              if (!isSuccess) return setLoginState('LOG_OUT');
-              setLoginState('LOG_IN');
-              fetchEmails(callback);
-            })
-          }>
-          Login
-        </button>
+        <GroupButton
+          buttons={[
+            {
+              label: 'Login',
+              onClick: () => {
+                login((isSuccess) => {
+                  if (!isSuccess) return setLoginState('LOG_OUT');
+                  setLoginState('LOG_IN');
+                  fetchEmails(emailCallback);
+                });
+              },
+              active: loginState === 'LOG_IN',
+              disabled: loginState === 'LOG_IN',
+            },
+            {
+              label: 'Logout',
+              onClick: () => {
+                logout((isSuccess) => {
+                  if (!isSuccess) return setLoginState('LOG_IN');
+                  setLoginState('LOG_OUT');
+                  emailCallback([]);
+                });
+              },
+              active: loginState === 'LOG_OUT',
+              disabled: loginState === 'LOG_OUT',
+            },
+          ]}
+        />
       </div>
     </div>
   );

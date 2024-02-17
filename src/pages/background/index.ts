@@ -1,4 +1,4 @@
-import { login, isLoggedIn } from '@shared/common/auth/backgrounds';
+import { login, isLoggedIn, logout } from '@shared/common/auth/backgrounds';
 import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@shared/common/email/backgrounds';
 import { setupFrame } from '@shared/common/frame/backgrounds';
 import { setupOffscreen } from '@shared/common/offscreen/backgrounds';
@@ -14,6 +14,7 @@ console.log('background loaded');
 
 const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
   [event.LOGIN]: login,
+  [event.LOGOUT]: logout,
   [event.IS_LOGGED_IN]: isLoggedIn,
   [event.GET_ALL_EMAILS]: getAllEmails,
   [event.OPEN_EMAIL]: openEmail,

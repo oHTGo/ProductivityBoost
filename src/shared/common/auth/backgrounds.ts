@@ -5,7 +5,7 @@ import {
   getCustomClientSecret,
 } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
-import { getLocalStorage, setLocalStorage } from '@shared/utils/storage';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 import type { BackgroundFunction } from '@shared/types/commons';
 
@@ -31,9 +31,9 @@ const defaultAuth = async (): Promise<boolean> => {
   });
   if (token) {
     await chrome.identity.removeCachedAuthToken({ token });
-    await setLocalStorage(common.USER_ID, '');
-    await setLocalStorage(common.USER_NAME, '');
-    await setLocalStorage(common.USER_EMAIL, '');
+    await removeLocalStorage(common.USER_ID);
+    await removeLocalStorage(common.USER_NAME);
+    await removeLocalStorage(common.USER_EMAIL);
   }
 
   const accessToken = await getToken();
@@ -143,6 +143,18 @@ const getTokens = async (code: string): Promise<{ accessToken: string; refreshTo
 export const login: BackgroundFunction<void, boolean> = async () => {
   const isCustomAuth = await checkCustomClient();
   return (isCustomAuth ? customAuth : defaultAuth)();
+};
+
+export const logout: BackgroundFunction<void, boolean> = async () => {
+  await removeLocalStorage(common.USER_ID);
+  await removeLocalStorage(common.USER_NAME);
+  await removeLocalStorage(common.USER_EMAIL);
+
+  await chrome.identity.clearAllCachedAuthTokens();
+
+  await removeLocalStorage(common.ACCESS_TOKEN);
+  await removeLocalStorage(common.REFRESH_TOKEN);
+  return true;
 };
 
 export const isLoggedIn: BackgroundFunction<void, boolean> = async () => {
