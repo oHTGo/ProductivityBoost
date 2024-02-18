@@ -58,6 +58,7 @@
     "@twind/preset-typography": "^1.0.7",
     "@types/chrome": "0.0.248",
     "@types/jest": "29.5.7",
+    "@types/jest-environment-puppeteer": "^5.0.6",
     "@types/lodash.isnil": "^4.0.9",
     "@types/lodash.unescape": "^4.0.9",
     "@types/node": "20.8.10",
