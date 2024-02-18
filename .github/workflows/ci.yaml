@@ -67,3 +67,5 @@ jobs:
           DISPLAY: :99
           GOOGLE_MAIL: ${{ secrets.GOOGLE_MAIL }}
           GOOGLE_PASSWORD: ${{ secrets.GOOGLE_PASSWORD }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
