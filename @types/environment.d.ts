@@ -7,6 +7,8 @@ declare global {
       // Environment for testing
       GOOGLE_MAIL: string;
       GOOGLE_PASSWORD: string;
+      GOOGLE_CLIENT_ID: string;
+      GOOGLE_CLIENT_SECRET: string;
     }
   }
 }
