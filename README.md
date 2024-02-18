@@ -2,7 +2,7 @@
 
 ## Auth feature
 
-### Default auth
+### Default credential
 
 We use 2 OAuth2.0 credentials for auth
 
@@ -17,7 +17,7 @@ We use 2 OAuth2.0 credentials for auth
 * Use in manifest
 * Use the client to request new access token
 
-### Custom auth
+### Custom credential
 
 You need to create a OAuth2.0 credential:
 
