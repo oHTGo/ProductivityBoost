@@ -70,6 +70,7 @@ const NewTab = () => {
         <TextField
           id="client-id"
           label="Client ID"
+          type="text"
           value={credential.clientId}
           onChange={(e) => setCredential((prev) => ({ ...prev, clientId: e.target.value }))}
           className="mb-2 w-96"
@@ -77,6 +78,7 @@ const NewTab = () => {
         <TextField
           id="client-secret"
           label="Client Secret"
+          type="password"
           value={credential.clientSecret}
           onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
           className="mb-2 w-96"
