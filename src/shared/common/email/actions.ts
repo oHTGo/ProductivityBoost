@@ -3,31 +3,17 @@ import type { IMessage } from '@shared/types/commons';
 import type { IEmail } from '@shared/types/email';
 
 export const fetchEmails = (callback: (emails: IEmail[]) => void) => {
-  chrome.runtime.sendMessage<IMessage<void>, IEmail[]>(
-    {
-      event: event.GET_ALL_EMAILS,
-    },
-    callback,
-  );
+  chrome.runtime.sendMessage<IMessage<void>, IEmail[]>({ event: event.GET_ALL_EMAILS }, callback);
 };
 
 export const markAsRead = (id: string) => {
-  chrome.runtime.sendMessage<IMessage<string>>({
-    event: event.MARK_AS_READ,
-    payload: id,
-  });
+  chrome.runtime.sendMessage<IMessage<string>>({ event: event.MARK_AS_READ, payload: id });
 };
 
 export const openEmail = (id: string) => {
-  chrome.runtime.sendMessage<IMessage<string>>({
-    event: event.OPEN_EMAIL,
-    payload: id,
-  });
+  chrome.runtime.sendMessage<IMessage<string>>({ event: event.OPEN_EMAIL, payload: id });
 };
 
 export const deleteEmail = (id: string) => {
-  chrome.runtime.sendMessage<IMessage<string>>({
-    event: event.DELETE_EMAIL,
-    payload: id,
-  });
+  chrome.runtime.sendMessage<IMessage<string>>({ event: event.DELETE_EMAIL, payload: id });
 };

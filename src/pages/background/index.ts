@@ -1,4 +1,4 @@
-import { auth } from '@shared/common/auth/backgrounds';
+import { login, isLoggedIn, logout } from '@shared/common/auth/backgrounds';
 import { deleteEmail, getAllEmails, markAsRead, openEmail } from '@shared/common/email/backgrounds';
 import { setupFrame } from '@shared/common/frame/backgrounds';
 import { setupOffscreen } from '@shared/common/offscreen/backgrounds';
@@ -13,7 +13,9 @@ reloadOnUpdate('pages/background');
 console.log('background loaded');
 
 const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
-  [event.LOGIN]: auth,
+  [event.LOGIN]: login,
+  [event.LOGOUT]: logout,
+  [event.IS_LOGGED_IN]: isLoggedIn,
   [event.GET_ALL_EMAILS]: getAllEmails,
   [event.OPEN_EMAIL]: openEmail,
   [event.MARK_AS_READ]: markAsRead,
@@ -21,13 +23,18 @@ const eventsMap: Record<string, BackgroundFunction<unknown, unknown>> = {
 };
 chrome.runtime.onMessage.addListener((message: IMessage<unknown>, _, sendResponse) => {
   (async () => {
-    const { event, payload } = message;
+    try {
+      const { event, payload } = message;
 
-    const func = eventsMap[event];
-    if (!func) return sendResponse();
+      const func = eventsMap[event];
+      if (!func) return sendResponse();
 
-    const response = !isNil(payload) ? await func(payload) : await func();
-    sendResponse(response);
+      const response = !isNil(payload) ? await func(payload) : await func();
+      sendResponse(response);
+    } catch (err) {
+      console.error('Something went wrong at background script', err);
+      sendResponse();
+    }
   })();
   return true;
 });

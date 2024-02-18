@@ -1,6 +1,9 @@
-import { auth } from '@shared/common/auth/actions';
+import { DotLottiePlayer, PlayerEvents } from '@dotlottie/react-player';
+import { checkLoggedIn, login, logout } from '@shared/common/auth/actions';
 import { fetchEmails } from '@shared/common/email/actions';
+import GroupButton from '@shared/components/button/group';
 import Sidebar from '@shared/components/sidebar';
+import TextField from '@shared/components/text-field';
 import { DEFAULT_STYLES } from '@shared/configurations/twind';
 import common from '@shared/constants/common';
 import delay from '@shared/constants/delay';
@@ -10,57 +13,104 @@ import useAppDispatch from '@shared/hooks/use-app-dispatch';
 import { setEmails } from '@shared/slices/email';
 import { collapse, open } from '@shared/slices/sidebar';
 import classNames from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useChromeStorageLocal } from 'use-chrome-storage';
 import { useInterval } from 'usehooks-ts';
+import type { DotLottieCommonPlayer } from '@dotlottie/react-player';
 import type { ICredential } from '@shared/types/auth';
 import type { IEmail } from '@shared/types/email';
 
+const ANIMATION_FRAMES = {
+  LOGIN: {
+    start: 0,
+    end: 112,
+  },
+  LOGOUT: {
+    start: 113,
+    end: 181,
+  },
+};
+
 const NewTab = () => {
+  const loginRef = useRef<DotLottieCommonPlayer>(null);
+  const [loginState, setLoginState] = useState<keyof typeof ANIMATION_FRAMES>();
+
   const dispatch = useAppDispatch();
-  const callback = (emails: IEmail[]) => dispatch(setEmails(emails));
+  const emailCallback = (emails: IEmail[]) => dispatch(setEmails(emails));
   const [credential, setCredential] = useChromeStorageLocal<ICredential>(common.CREDENTIAL, {
     clientId: '',
     clientSecret: '',
   });
 
   useEffect(() => {
+    if (!loginState) return;
+    loginRef.current?.playSegments([ANIMATION_FRAMES[loginState].start, ANIMATION_FRAMES[loginState].end], true);
+  }, [loginState]);
+
+  useEffect(() => {
     dispatch(open());
-    fetchEmails(callback);
+    fetchEmails(emailCallback);
   }, [dispatch]);
-  useInterval(() => fetchEmails(callback), delay.FETCH_EMAILS);
+  useInterval(() => fetchEmails(emailCallback), delay.FETCH_EMAILS);
 
   return (
     <div className={classNames(DEFAULT_STYLES)}>
       <Sidebar onClickOutside={() => dispatch(collapse())} />
       <div className="w-screen h-screen flex flex-col justify-center items-center">
-        <div className="mb-2 w-96">
-          <label htmlFor="id" className="block text-xs font-medium text-gray-700">
-            Client ID
-          </label>
-          <input
-            type="text"
-            id="id"
-            className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-            value={credential.clientId}
-            onChange={(e) => setCredential((prev) => ({ ...prev, clientId: e.target.value }))}
-          />
-        </div>
-        <div className="mb-2 w-96">
-          <label htmlFor="secret" className="block text-xs font-medium text-gray-700">
-            Client Secret
-          </label>
-          <input
-            type="password"
-            id="secret"
-            className="mt-1 w-full rounded-md border-gray-200 shadow-sm sm:text-sm"
-            value={credential.clientSecret}
-            onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
-          />
-        </div>
-        <button className="bg-stone-300 rounded-md p-2" onClick={auth}>
-          Login
-        </button>
+        <DotLottiePlayer
+          ref={loginRef}
+          className="w-32 h-32"
+          renderer="canvas"
+          onEvent={(e) => {
+            if (e !== PlayerEvents.Ready) return;
+            checkLoggedIn((isLoggedIn) => setLoginState(isLoggedIn ? 'LOGIN' : 'LOGOUT'));
+          }}
+          src={chrome.runtime.getURL('assets/lotties/login.lottie')}
+        />
+        <TextField
+          id="client-id"
+          label="Client ID"
+          type="text"
+          value={credential.clientId}
+          onChange={(e) => setCredential((prev) => ({ ...prev, clientId: e.target.value }))}
+          className="mb-2 w-96"
+        />
+        <TextField
+          id="client-secret"
+          label="Client Secret"
+          type="password"
+          value={credential.clientSecret}
+          onChange={(e) => setCredential((prev) => ({ ...prev, clientSecret: e.target.value }))}
+          className="mb-2 w-96"
+        />
+        <GroupButton
+          buttons={[
+            {
+              label: 'Login',
+              onClick: () => {
+                login((isSuccess) => {
+                  if (!isSuccess) return setLoginState('LOGOUT');
+                  setLoginState('LOGIN');
+                  fetchEmails(emailCallback);
+                });
+              },
+              active: loginState === 'LOGIN',
+              disabled: loginState === 'LOGIN',
+            },
+            {
+              label: 'Logout',
+              onClick: () => {
+                logout((isSuccess) => {
+                  if (!isSuccess) return setLoginState('LOGIN');
+                  setLoginState('LOGOUT');
+                  emailCallback([]);
+                });
+              },
+              active: loginState === 'LOGOUT',
+              disabled: loginState === 'LOGOUT',
+            },
+          ]}
+        />
       </div>
     </div>
   );

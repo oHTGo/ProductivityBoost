@@ -5,13 +5,49 @@ import {
   getCustomClientSecret,
 } from '@shared/configurations/auth';
 import common from '@shared/constants/common';
-import { setLocalStorage } from '@shared/utils/storage';
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '@shared/utils/storage';
 import ky from 'ky';
 import type { BackgroundFunction } from '@shared/types/commons';
 
 const redirectUrl = chrome.identity.getRedirectURL('oauth2');
 const scopes = chrome.runtime.getManifest().oauth2?.scopes ?? [];
+const getProfile = async (accessToken: string): Promise<{ id: string; name: string; email: string } | undefined> => {
+  const response = await ky
+    .get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .json<{ id: string; name: string; email: string }>();
+  if (!response) return;
 
+  const { id, name, email } = response;
+  return { id, name, email };
+};
+
+const defaultAuth = async (): Promise<boolean> => {
+  const { token } = await chrome.identity.getAuthToken({
+    interactive: true,
+  });
+  if (token) {
+    await chrome.identity.removeCachedAuthToken({ token });
+    await removeLocalStorage(common.USER_ID);
+    await removeLocalStorage(common.USER_NAME);
+    await removeLocalStorage(common.USER_EMAIL);
+  }
+
+  const accessToken = await getToken();
+  if (!accessToken) return false;
+
+  const profile = await getProfile(accessToken);
+  if (!profile) return false;
+
+  const { id, name, email } = profile;
+  await setLocalStorage(common.USER_ID, id);
+  await setLocalStorage(common.USER_NAME, name);
+  await setLocalStorage(common.USER_EMAIL, email);
+  return true;
+};
 const getToken = async (): Promise<string | undefined> => {
   const response = await chrome.identity.launchWebAuthFlow({
     url:
@@ -33,6 +69,26 @@ const getToken = async (): Promise<string | undefined> => {
   return token;
 };
 
+const customAuth = async (): Promise<boolean> => {
+  const code = await getAuthorizationCode();
+  if (!code) return false;
+
+  const tokens = await getTokens(code);
+  if (!tokens) return false;
+
+  const { accessToken, refreshToken } = tokens;
+  await setLocalStorage(common.ACCESS_TOKEN, accessToken);
+  await setLocalStorage(common.REFRESH_TOKEN, refreshToken);
+
+  const profile = await getProfile(accessToken);
+  if (!profile) return false;
+
+  const { id, name, email } = profile;
+  await setLocalStorage(common.USER_ID, id);
+  await setLocalStorage(common.USER_NAME, name);
+  await setLocalStorage(common.USER_EMAIL, email);
+  return true;
+};
 const getAuthorizationCode = async (): Promise<string | undefined> => {
   const clientId = await getCustomClientId();
   if (!clientId) return;
@@ -57,7 +113,6 @@ const getAuthorizationCode = async (): Promise<string | undefined> => {
 
   return code;
 };
-
 const getTokens = async (code: string): Promise<{ accessToken: string; refreshToken: string } | undefined> => {
   const clientId = await getCustomClientId();
   const clientSecret = await getCustomClientSecret();
@@ -85,66 +140,24 @@ const getTokens = async (code: string): Promise<{ accessToken: string; refreshTo
   return { accessToken: access_token, refreshToken: refresh_token };
 };
 
-const getProfile = async (accessToken: string): Promise<{ id: string; name: string; email: string } | undefined> => {
-  const response = await ky
-    .get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-    .json<{ id: string; name: string; email: string }>();
-  if (!response) return;
-
-  const { id, name, email } = response;
-  return { id, name, email };
-};
-
-const defaultAuth = async (): Promise<void> => {
-  const { token } = await chrome.identity.getAuthToken({
-    interactive: true,
-  });
-  if (token) {
-    await chrome.identity.removeCachedAuthToken({ token });
-    await setLocalStorage(common.USER_ID, '');
-    await setLocalStorage(common.USER_NAME, '');
-    await setLocalStorage(common.USER_EMAIL, '');
-  }
-
-  const accessToken = await getToken();
-  if (!accessToken) return;
-
-  const profile = await getProfile(accessToken);
-  if (!profile) return;
-
-  const { id, name, email } = profile;
-  await setLocalStorage(common.USER_ID, id);
-  await setLocalStorage(common.USER_NAME, name);
-  await setLocalStorage(common.USER_EMAIL, email);
-};
-
-const customAuth = async (): Promise<void> => {
-  const code = await getAuthorizationCode();
-  if (!code) return;
-
-  const tokens = await getTokens(code);
-  if (!tokens) return;
-
-  const { accessToken, refreshToken } = tokens;
-  await setLocalStorage(common.ACCESS_TOKEN, accessToken);
-  await setLocalStorage(common.REFRESH_TOKEN, refreshToken);
-
-  const profile = await getProfile(accessToken);
-  if (!profile) return;
-
-  const { id, name, email } = profile;
-  await setLocalStorage(common.USER_ID, id);
-  await setLocalStorage(common.USER_NAME, name);
-  await setLocalStorage(common.USER_EMAIL, email);
-};
-
-export const auth: BackgroundFunction<void, void> = async () => {
+export const login: BackgroundFunction<void, boolean> = async () => {
   const isCustomAuth = await checkCustomClient();
+  return (isCustomAuth ? customAuth : defaultAuth)();
+};
 
-  if (isCustomAuth) await customAuth();
-  else await defaultAuth();
+export const logout: BackgroundFunction<void, boolean> = async () => {
+  await removeLocalStorage(common.USER_ID);
+  await removeLocalStorage(common.USER_NAME);
+  await removeLocalStorage(common.USER_EMAIL);
+
+  await chrome.identity.clearAllCachedAuthTokens();
+
+  await removeLocalStorage(common.ACCESS_TOKEN);
+  await removeLocalStorage(common.REFRESH_TOKEN);
+  return true;
+};
+
+export const isLoggedIn: BackgroundFunction<void, boolean> = async () => {
+  const userId = await getLocalStorage(common.USER_ID);
+  return !!userId;
 };
