@@ -15,15 +15,15 @@
     "allowSyntheticDefaultImports": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "forceConsistentCasingInFileNames": true,
-    "typeRoots": ["./@types", "node_modules/@types"],
+    "typeRoots": ["@types", "node_modules/@types"],
     "strictNullChecks": true,
     "paths": {
       "@assets/*": ["src/assets/*"],
       "@pages/*": ["src/pages/*"],
       "@shared/*": ["src/shared/*"],
-      "virtual:reload-on-update-in-background-script": ["./@types/global.d.ts"],
-      "virtual:reload-on-update-in-view": ["./@types/global.d.ts"]
+      "virtual:reload-on-update-in-background-script": ["@types/global.d.ts"],
+      "virtual:reload-on-update-in-view": ["@types/global.d.ts"]
     }
   },
-  "include": ["src", "utils", "vite.config.ts", "node_modules/@types"]
+  "include": ["src", "utils", "vite.config.ts", "@types", "node_modules/@types"]
 }
