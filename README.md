@@ -22,4 +22,4 @@ We use 2 OAuth2.0 credentials for auth
 You need to create a OAuth2.0 credential:
 
 - Type: Web application
-- Use own credential if you don't want to use the default credential
+- Use your credential if you don't want to use the default credential
