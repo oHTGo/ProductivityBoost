@@ -18,10 +18,12 @@ describe('auth', () => {
         visible: true,
       });
       await idInput?.type(id ?? '');
+
       const secretInput = await page.waitForSelector('input[id="client-secret"]', {
         visible: true,
       });
       await secretInput?.type(secret ?? '');
+      expect(secretInput?._?.type).toBe('password');
 
       const loginButton = (await page.waitForXPath('//button[contains(text(), "Login") and not(@disabled)]', {
         visible: true,
