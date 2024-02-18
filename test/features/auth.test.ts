@@ -25,8 +25,7 @@ describe('auth', () => {
       })
     )?.click();
 
-    // eslint-disable-next-line no-constant-condition
-    while (true) {
+    for (let i = 0; i < 10; i++) {
       try {
         await new Promise((resolve) => setTimeout(resolve, 500));
         await googlePopup.waitForSelector('button[jsname="LgbsSe"]', {
@@ -37,7 +36,7 @@ describe('auth', () => {
           (buttons) => buttons.find((b) => b.textContent === 'Continue' || b.textContent === 'Allow')?.click(),
         );
       } catch (err) {
-        break;
+        /* empty */
       }
     }
 
