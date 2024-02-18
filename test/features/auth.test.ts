@@ -10,7 +10,7 @@ describe('auth', () => {
 
   it.each([
     ['', ''],
-    [process.env.GOOGLE_CLIENT_ID, process.env.GOOGLE_CLIENT_SECRET],
+    [process.env.GOOGLE_CLIENT_ID ?? 'none', process.env.GOOGLE_CLIENT_SECRET ?? 'none'],
   ])(
     'should be able to login',
     async (id, secret) => {
